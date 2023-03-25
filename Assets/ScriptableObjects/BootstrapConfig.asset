@@ -23,7 +23,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: StartFromMenu
       Entry: 5
-      Data: false
+      Data: true
     - Name: StartScene
       Entry: 3
       Data: 0
