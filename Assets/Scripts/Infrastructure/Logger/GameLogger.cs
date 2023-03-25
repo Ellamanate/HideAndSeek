@@ -2,7 +2,7 @@
 
 namespace Infrastructure
 {
-    public static class Logger
+    public static class GameLogger
     {
         public static void Log(string message)
         {

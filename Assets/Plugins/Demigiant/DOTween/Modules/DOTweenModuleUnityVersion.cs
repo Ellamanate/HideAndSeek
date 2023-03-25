@@ -227,6 +227,7 @@ namespace DG.Tweening
         /// </summary>
         public static async System.Threading.Tasks.Task AsyncWaitForCompletion(this Tween t)
         {
+            throw new NotImplementedException();
             if (!t.active) {
                 if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
                 return;
@@ -241,6 +242,7 @@ namespace DG.Tweening
         /// </summary>
         public static async System.Threading.Tasks.Task AsyncWaitForRewind(this Tween t)
         {
+            throw new NotImplementedException();
             if (!t.active) {
                 if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
                 return;
@@ -253,13 +255,29 @@ namespace DG.Tweening
         /// It can be used inside an async operation.
         /// <para>Example usage:</para><code>await myTween.AsyncWaitForKill();</code>
         /// </summary>
-        public static async System.Threading.Tasks.Task AsyncWaitForKill(this Tween t)
+        public static async System.Threading.Tasks.Task AsyncWaitForKill(this Tween t, System.Threading.CancellationToken token)
         {
-            if (!t.active) {
+            if (token.IsCancellationRequested)
+            {
+                t.Kill();
+                throw new OperationCanceledException();
+            }
+
+            if (!t.active)
+            {
                 if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
                 return;
             }
-            while (t.active) await System.Threading.Tasks.Task.Yield();
+            while (t.active)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    t.Kill();
+                    throw new OperationCanceledException();
+                }
+
+                await System.Threading.Tasks.Task.Yield();
+            }
         }
 
         /// <summary>
@@ -270,6 +288,7 @@ namespace DG.Tweening
         /// <param name="elapsedLoops">Elapsed loops to wait for</param>
         public static async System.Threading.Tasks.Task AsyncWaitForElapsedLoops(this Tween t, int elapsedLoops)
         {
+            throw new NotImplementedException();
             if (!t.active) {
                 if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
                 return;
@@ -286,6 +305,7 @@ namespace DG.Tweening
         /// <param name="position">Position (loops included, delays excluded) to wait for</param>
         public static async System.Threading.Tasks.Task AsyncWaitForPosition(this Tween t, float position)
         {
+            throw new NotImplementedException();
             if (!t.active) {
                 if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
                 return;
@@ -300,6 +320,7 @@ namespace DG.Tweening
         /// </summary>
         public static async System.Threading.Tasks.Task AsyncWaitForStart(this Tween t)
         {
+            throw new NotImplementedException();
             if (!t.active) {
                 if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
                 return;

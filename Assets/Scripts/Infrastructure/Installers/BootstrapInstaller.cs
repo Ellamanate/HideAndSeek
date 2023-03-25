@@ -10,7 +10,7 @@ namespace Infrastructure
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<BootstrapInstaller>().FromInstance(this).AsSingle();
+            Container.BindInterfacesTo<BootstrapInstaller>().FromInstance(this).AsSingle();
 
             BindData();
             BindStates();
