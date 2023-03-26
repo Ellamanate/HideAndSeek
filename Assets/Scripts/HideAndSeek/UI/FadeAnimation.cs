@@ -35,7 +35,7 @@ namespace HideAndSeek
             _canvasGroup.blocksRaycasts = blocksRaycasts;
         }
 
-        public async UniTask Play(CancellationToken token)
+        public async UniTask Play(CancellationToken token = default)
         {
             if (_tween != null && _tween.active)
             {

@@ -5,6 +5,6 @@ namespace HideAndSeek
 {
     public interface IAnimatable
     {
-        public UniTask Play(CancellationToken token);
+        public UniTask Play(CancellationToken token = default);
     }
 }

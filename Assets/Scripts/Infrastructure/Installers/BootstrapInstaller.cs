@@ -1,3 +1,4 @@
+using HideAndSeek;
 using UnityEngine;
 using Zenject;
 
@@ -7,6 +8,7 @@ namespace Infrastructure
     {
         [SerializeField] private BootstrapConfig _bootstrapConfig;
         [SerializeField] private ScenesConfig _sceneConfig;
+        [SerializeField] private PlayerConfig _playerConfig;
 
         public override void InstallBindings()
         {
@@ -15,6 +17,7 @@ namespace Infrastructure
             BindData();
             BindStates();
             BindLoading();
+            BindInput();
         }
 
         public void Initialize()
@@ -27,6 +30,7 @@ namespace Infrastructure
         {
             Container.Bind<BootstrapConfig>().FromInstance(_bootstrapConfig).AsSingle();
             Container.Bind<ScenesConfig>().FromInstance(_sceneConfig).AsSingle();
+            Container.Bind<PlayerConfig>().FromInstance(_playerConfig).AsSingle();
         }
 
         private void BindStates()
@@ -41,6 +45,11 @@ namespace Infrastructure
         private void BindLoading()
         {
             Container.Bind<LoadingScene>().AsSingle();
+        }
+
+        private void BindInput()
+        {
+            Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
         }
     }
 }

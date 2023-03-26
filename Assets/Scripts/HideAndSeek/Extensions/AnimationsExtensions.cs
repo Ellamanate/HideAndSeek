@@ -5,7 +5,7 @@ namespace HideAndSeek.Extensions
 {
     public static class AnimationsExtension
     {
-        public static async UniTask FadeIn(this FadeAnimation fade, CancellationToken token)
+        public static async UniTask FadeIn(this FadeAnimation fade, CancellationToken token = default)
         {
             fade.SetBlockingRaycasts(true);
             fade.SetTargetFade(1);
@@ -13,7 +13,7 @@ namespace HideAndSeek.Extensions
             await fade.Play(token);
         }
 
-        public static async UniTask FadeOut(this FadeAnimation fade, CancellationToken token)
+        public static async UniTask FadeOut(this FadeAnimation fade, CancellationToken token = default)
         {
             fade.SetTargetFade(0);
 

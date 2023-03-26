@@ -23,7 +23,7 @@ namespace HideAndSeek
 
         public void SetFaderAlpha(float alpha) => _fadeAnimation.SetAlpha(alpha);
         public void SetFaderBlockingRaycasts(bool blocksRaycasts) => _fadeAnimation.SetBlockingRaycasts(blocksRaycasts);
-        public async UniTask FadeIn(CancellationToken token) => await _fadeAnimation.FadeIn(token);
-        public async UniTask FadeOut(CancellationToken token) => await _fadeAnimation.FadeOut(token);
+        public async UniTask FadeIn(CancellationToken token = default) => await _fadeAnimation.FadeIn(token);
+        public async UniTask FadeOut(CancellationToken token = default) => await _fadeAnimation.FadeOut(token);
     }
 }

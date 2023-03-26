@@ -1,32 +1,28 @@
-﻿using HideAndSeek.Extensions;
-using System;
-using System.Threading;
-
-namespace HideAndSeek
+﻿namespace HideAndSeek
 {
-    public class StartGame : IDisposable
+    public class StartGame
     {
+        private readonly PlayerSpawner _playerSpawner;
         private readonly MainGameMediator _mediator;
 
-        private CancellationTokenSource _token;
+        private Player _player;
 
-        public StartGame(MainGameMediator mediator)
+        public StartGame(PlayerSpawner playerSpawner, MainGameMediator mediator)
         {
+            _playerSpawner = playerSpawner;
             _mediator = mediator;
-            _token = new CancellationTokenSource();
-        }
-
-        public void Dispose()
-        {
-            _token.CancelAndDispose();
         }
 
         public void Start()
         {
-            _token = _token.Refresh();
+            _player = _playerSpawner.Spawn();
+            _player.SetActive(true);
+            _player.SetUpdating(true);
+
             _mediator.SetFaderAlpha(1);
             _mediator.SetFaderBlockingRaycasts(true);
-            _ = _mediator.FadeOut(_token.Token);
+
+            _ = _mediator.FadeOut();
         }
     }
 }
