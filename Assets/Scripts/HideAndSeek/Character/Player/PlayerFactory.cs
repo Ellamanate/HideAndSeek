@@ -16,6 +16,7 @@ namespace HideAndSeek
         public Player Create(Transform parent, Vector3 position, Quaternion rotation)
         {
             PlayerBody body = Object.Instantiate(_config.BodyPrefab, position, rotation, parent);
+            body.Movement.SetSpeed(_config.Speed);
             return _factory.Create(body);
         }
     }

@@ -3,7 +3,7 @@ using Zenject;
 
 namespace HideAndSeek
 {
-    public class UpdateGame
+    public class UpdateGame : ITickable, IFixedTickable
     {
         private List<ITickable> _tickables;
         private List<IFixedTickable> _fixedTickables;

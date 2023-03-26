@@ -1,9 +1,9 @@
-﻿using Zenject;
-using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using HideAndSeek.Extensions;
 using Sirenix.OdinInspector;
 using System.Threading;
-using HideAndSeek.Extensions;
-using Cysharp.Threading.Tasks;
+using UnityEngine;
+using Zenject;
 
 namespace HideAndSeek
 {

@@ -13,7 +13,7 @@ namespace HideAndSeek
             Container.BindInterfacesTo<MainGameInstaller>().FromInstance(this).AsSingle();
 
             BindData();
-            BindGame();
+            MainGame();
             BindCharacters();
         }
 
@@ -28,19 +28,32 @@ namespace HideAndSeek
             Container.Bind<GameSceneReferences>().FromInstance(_sceneReferences).AsSingle();
         }
 
+        private void MainGame()
+        {
+            Container.Bind<MainGame>().AsSingle();
+            Container.BindInterfacesAndSelfTo<UpdateGame>().AsSingle();
+        }
+
         private void BindCharacters()
         {
             Container.Bind<PlayerFactory>().AsSingle();
             Container.Bind<PlayerSpawner>().AsSingle();
             Container.BindFactory<PlayerBody, Player, Player.Factory>().AsSingle();
+
+            Container
+                .BindFactory<Player, HideAdsSeekGame, HideAdsSeekGame.Factory>()
+                .FromSubContainerResolve()
+                .ByMethod(InstallHideAndSeek)
+                .AsSingle();
         }
 
-        private void BindGame()
+        private void InstallHideAndSeek(DiContainer container, Player player)
         {
-            Container.Bind<MainGame>().AsSingle();
-            Container.Bind<StartGame>().AsSingle();
-            Container.Bind<UpdateGame>().AsSingle();
-            Container.Bind<MainGameMediator>().FromInstance(_mediator).AsSingle();
+            container.Bind<Player>().FromInstance(player).AsSingle();
+            container.Bind<HideAdsSeekGame>().AsSingle();
+            container.Bind<StartGame>().AsSingle();
+            container.Bind<PlayerInput>().AsSingle();
+            container.Bind<MainGameMediator>().FromInstance(_mediator).AsSingle();
         }
     }
 }

@@ -1,28 +1,37 @@
-﻿namespace HideAndSeek
+﻿using Cysharp.Threading.Tasks;
+
+namespace HideAndSeek
 {
     public class StartGame
     {
-        private readonly PlayerSpawner _playerSpawner;
         private readonly MainGameMediator _mediator;
+        private readonly Player _player;
+        private readonly PlayerInput _input;
+        private readonly UpdateGame _updateGame;
 
-        private Player _player;
-
-        public StartGame(PlayerSpawner playerSpawner, MainGameMediator mediator)
+        public StartGame(MainGameMediator mediator, Player player, PlayerInput input, UpdateGame updateGame)
         {
-            _playerSpawner = playerSpawner;
             _mediator = mediator;
+            _player = player;
+            _input = input;
+            _updateGame = updateGame;
         }
 
         public void Start()
         {
-            _player = _playerSpawner.Spawn();
-            _player.SetActive(true);
-            _player.SetUpdating(true);
+            _updateGame.AddFixedTickable(_input);
 
             _mediator.SetFaderAlpha(1);
             _mediator.SetFaderBlockingRaycasts(true);
 
-            _ = _mediator.FadeOut();
+            _ = PlayStartAnimation();
+        }
+
+        private async UniTask PlayStartAnimation()
+        {
+            await _mediator.FadeOut();
+
+            _player.SetActive(true);
         }
     }
 }

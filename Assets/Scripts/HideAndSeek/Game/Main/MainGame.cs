@@ -4,16 +4,26 @@ namespace HideAndSeek
 {
     public class MainGame
     {
-        private GameStateMachine _gameStateMachine;
-        private StartGame _startGame;
+        private readonly GameStateMachine _gameStateMachine;
+        private readonly PlayerSpawner _playerSpawner;
+        private readonly HideAdsSeekGame.Factory _gameFactory;
 
-        public MainGame(GameStateMachine gameStateMachine, StartGame startGame)
+        private HideAdsSeekGame _gameInstance;
+
+        public MainGame(GameStateMachine gameStateMachine, PlayerSpawner playerSpawner, HideAdsSeekGame.Factory gameFactory)
         {
             _gameStateMachine = gameStateMachine;
-            _startGame = startGame;
+            _playerSpawner = playerSpawner;
+            _gameFactory = gameFactory;
         }
 
         public void Exit() => _gameStateMachine.MoveToState<MenuState>();
-        public void StartGame() => _startGame.Start();
+
+        public void StartGame()
+        {
+            Player player = _playerSpawner.Spawn();
+            _gameInstance = _gameFactory.Create(player);
+            _gameInstance.Start();
+        }
     }
 }
