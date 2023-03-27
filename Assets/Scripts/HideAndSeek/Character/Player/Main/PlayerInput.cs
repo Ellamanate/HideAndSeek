@@ -8,6 +8,8 @@ namespace HideAndSeek
         private readonly Player _player;
         private readonly InputSystem _inputSystem;
 
+        public bool Active { get; private set; }
+
         public PlayerInput(Player player, InputSystem inputSystem)
         {
             _player = player;
@@ -16,7 +18,16 @@ namespace HideAndSeek
 
         public void FixedTick()
         {
-            _player.SetMovementDirection(CalculateMovementDirection(_inputSystem.MovementUp, _inputSystem.MovementSide));
+            if (Active && _player.CanUpdate)
+            {
+                _player.SetMovementDirection(CalculateMovementDirection(_inputSystem.MovementUp,
+                    _inputSystem.MovementSide));
+            }
+        }
+
+        public void SetActive(bool active)
+        {
+            Active = active;
         }
 
         private Vector3 CalculateMovementDirection(float up, float side)

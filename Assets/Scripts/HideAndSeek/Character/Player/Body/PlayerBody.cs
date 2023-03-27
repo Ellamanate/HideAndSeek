@@ -8,6 +8,7 @@ namespace HideAndSeek
         public event Action OnDestroyed;
 
         [field: SerializeField] public PlayerMovement Movement { get; private set; }
+        [field: SerializeField] public TriggerSensor TriggerSensor { get; private set; }
 
         private void OnDestroy()
         {

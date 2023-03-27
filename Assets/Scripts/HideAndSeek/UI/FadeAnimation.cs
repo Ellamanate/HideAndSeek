@@ -15,6 +15,11 @@ namespace HideAndSeek
 
         private Tween _tween;
 
+        private void OnDestroy()
+        {
+            _tween?.Kill();
+        }
+
         public void SetAlpha(float alpha)
         {
             _canvasGroup.alpha = alpha;

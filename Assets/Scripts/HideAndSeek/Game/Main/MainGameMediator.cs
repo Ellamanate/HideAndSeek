@@ -9,7 +9,7 @@ namespace HideAndSeek
 {
     public class MainGameMediator : SerializedMonoBehaviour
     {
-        [SerializeField] FadeAnimation _fadeAnimation;
+        [SerializeField] private FadeAnimation _fadeAnimation;
 
         private MainGame _mainGame;
 

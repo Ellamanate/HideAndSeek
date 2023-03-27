@@ -270,13 +270,13 @@ namespace DG.Tweening
             }
             while (t.active)
             {
+                await System.Threading.Tasks.Task.Yield();
+
                 if (token.IsCancellationRequested)
                 {
                     t.Kill();
                     throw new OperationCanceledException();
                 }
-
-                await System.Threading.Tasks.Task.Yield();
             }
         }
 

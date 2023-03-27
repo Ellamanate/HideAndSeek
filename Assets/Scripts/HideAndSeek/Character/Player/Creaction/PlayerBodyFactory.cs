@@ -2,22 +2,20 @@
 
 namespace HideAndSeek
 {
-    public class PlayerFactory
+    public class PlayerBodyFactory
     {
-        private readonly Player.Factory _factory;
         private readonly PlayerConfig _config;
 
-        public PlayerFactory(Player.Factory factory, PlayerConfig config)
+        public PlayerBodyFactory(PlayerConfig config)
         {
-            _factory = factory;
             _config = config;
         }
 
-        public Player Create(Transform parent, Vector3 position, Quaternion rotation)
+        public PlayerBody Create(Transform parent, Vector3 position, Quaternion rotation)
         {
             PlayerBody body = Object.Instantiate(_config.BodyPrefab, position, rotation, parent);
             body.Movement.SetSpeed(_config.Speed);
-            return _factory.Create(body);
+            return body;
         }
     }
 }

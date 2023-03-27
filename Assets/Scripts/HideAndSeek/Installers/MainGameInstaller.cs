@@ -20,7 +20,7 @@ namespace HideAndSeek
         public void Initialize()
         {
             MainGame game = Container.Resolve<MainGame>();
-            game.StartGame();
+            game.Initialize();
         }
 
         private void BindData()
@@ -30,30 +30,19 @@ namespace HideAndSeek
 
         private void MainGame()
         {
-            Container.Bind<MainGame>().AsSingle();
-            Container.BindInterfacesAndSelfTo<UpdateGame>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MainGame>().AsSingle();
+            Container.Bind<StartGame>().AsSingle().WithArguments(_mediator);
+            Container.Bind<GameOver>().AsSingle().WithArguments(_mediator);
+
+            Container.Bind<DetectEndGame>().AsSingle().NonLazy();
         }
 
         private void BindCharacters()
         {
-            Container.Bind<PlayerFactory>().AsSingle();
+            Container.Bind<PlayerBodyFactory>().AsSingle();
             Container.Bind<PlayerSpawner>().AsSingle();
-            Container.BindFactory<PlayerBody, Player, Player.Factory>().AsSingle();
-
-            Container
-                .BindFactory<Player, HideAdsSeekGame, HideAdsSeekGame.Factory>()
-                .FromSubContainerResolve()
-                .ByMethod(InstallHideAndSeek)
-                .AsSingle();
-        }
-
-        private void InstallHideAndSeek(DiContainer container, Player player)
-        {
-            container.Bind<Player>().FromInstance(player).AsSingle();
-            container.Bind<HideAdsSeekGame>().AsSingle();
-            container.Bind<StartGame>().AsSingle();
-            container.Bind<PlayerInput>().AsSingle();
-            container.Bind<MainGameMediator>().FromInstance(_mediator).AsSingle();
+            Container.Bind<Player>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
         }
     }
 }

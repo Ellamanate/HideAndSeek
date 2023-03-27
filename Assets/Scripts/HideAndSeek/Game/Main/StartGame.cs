@@ -1,37 +1,27 @@
 ﻿using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace HideAndSeek
 {
     public class StartGame
     {
         private readonly MainGameMediator _mediator;
-        private readonly Player _player;
-        private readonly PlayerInput _input;
-        private readonly UpdateGame _updateGame;
+        private readonly PlayerInput _playerInput;
 
-        public StartGame(MainGameMediator mediator, Player player, PlayerInput input, UpdateGame updateGame)
+        public StartGame(MainGameMediator mediator, PlayerInput playerInput)
         {
             _mediator = mediator;
-            _player = player;
-            _input = input;
-            _updateGame = updateGame;
+            _playerInput = playerInput;
         }
-
-        public void Start()
+        
+        public async UniTask Start(CancellationToken token)
         {
-            _updateGame.AddFixedTickable(_input);
-
             _mediator.SetFaderAlpha(1);
             _mediator.SetFaderBlockingRaycasts(true);
 
-            _ = PlayStartAnimation();
-        }
+            await _mediator.FadeOut(token);
 
-        private async UniTask PlayStartAnimation()
-        {
-            await _mediator.FadeOut();
-
-            _player.SetActive(true);
+            _playerInput.SetActive(true);
         }
     }
 }
