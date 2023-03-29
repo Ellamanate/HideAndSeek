@@ -12,6 +12,7 @@ namespace HideAndSeek
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField, MinValue(0)] private float _duration;
         [SerializeField, MinValue(0), MaxValue(1)] private float _targetFade;
+        [SerializeField] private bool _independentTimeScale;
 
         private Tween _tween;
 
@@ -48,6 +49,8 @@ namespace HideAndSeek
             }
 
             _tween = DOTween.To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, _targetFade, _duration);
+            _tween.SetUpdate(_independentTimeScale);
+
             await _tween.AsyncWaitForKill(token);
         }
     }

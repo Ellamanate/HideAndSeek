@@ -11,15 +11,22 @@ namespace HideAndSeek
         private readonly PlayerSpawner _playerSpawner;
         private readonly StartGame _startGame;
         private readonly GameOver _gameOver;
+        private readonly GamePause _pause;
+        private readonly PauseMenu _pauseMenu;
 
         private CancellationTokenSource _token;
 
-        public MainGame(GameStateMachine gameStateMachine, PlayerSpawner playerSpawner, StartGame startGame, GameOver endGame)
+        public bool GameOver { get; private set; }
+
+        public MainGame(GameStateMachine gameStateMachine, PlayerSpawner playerSpawner, StartGame startGame, 
+            GameOver endGame, GamePause pause, PauseMenu pauseMenu)
         {
             _gameStateMachine = gameStateMachine;
             _playerSpawner = playerSpawner;
             _startGame = startGame;
             _gameOver = endGame;
+            _pause = pause;
+            _pauseMenu = pauseMenu;
             _token = new CancellationTokenSource();
         }
 
@@ -29,21 +36,48 @@ namespace HideAndSeek
         public void Initialize()
         {
             _playerSpawner.Spawn();
+            RestartGame();
+        }
 
+        public void RestartGame()
+        {
+            GameOver = false;
             _token = _token.Refresh();
             _ = _startGame.Start(_token.Token);
         }
 
         public void CompleteGame()
         {
+            GameOver = true;
             _token = _token.Refresh();
             _ = _gameOver.CompleteGame(_token.Token);
         }
 
-        public void GameOver()
+        public void FailGame()
         {
+            GameOver = true;
             _token = _token.Refresh();
             _ = _gameOver.FailGame(_token.Token);
+        }
+
+        public void OpenPauseMenu()
+        {
+            if (!GameOver)
+            {
+                _token = _token.Refresh();
+                _pauseMenu.OpenPauseMenu(_token.Token);
+                _pause.Pause();
+            }
+        }
+
+        public void ClosePauseMenu()
+        {
+            if (!GameOver)
+            {
+                _token = _token.Refresh();
+                _pauseMenu.ClosePauseMenu(_token.Token);
+                _pause.Unpause();
+            }
         }
     }
 }

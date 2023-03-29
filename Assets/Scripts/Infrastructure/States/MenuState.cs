@@ -1,4 +1,6 @@
-﻿namespace Infrastructure
+﻿using UnityEngine;
+
+namespace Infrastructure
 {
     public class MenuState : IGameState
     {
@@ -13,6 +15,7 @@
 
         public void Enter()
         {
+            Time.timeScale = 1;
             _loadingScene.LoadScene(_scenesConfig.MenuSceneName);
         }
     }

@@ -30,9 +30,12 @@ namespace HideAndSeek
 
         private void MainGame()
         {
+
             Container.BindInterfacesAndSelfTo<MainGame>().AsSingle();
             Container.Bind<StartGame>().AsSingle().WithArguments(_mediator);
             Container.Bind<GameOver>().AsSingle().WithArguments(_mediator);
+            Container.Bind<PauseMenu>().AsSingle().WithArguments(_mediator);
+            Container.Bind<GamePause>().AsSingle();
 
             Container.Bind<DetectEndGame>().AsSingle().NonLazy();
         }

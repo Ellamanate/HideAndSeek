@@ -17,13 +17,17 @@ namespace HideAndSeek
         public async UniTask FailGame(CancellationToken token)
         {
             _playerInput.SetActive(false);
-            await _mediator.FadeIn(token);
+            await _mediator.FadeIn(MainGameMediator.FadeType.Screen, token);
         }
 
         public async UniTask CompleteGame(CancellationToken token)
         {
             _playerInput.SetActive(false);
-            await _mediator.FadeIn(token);
+
+            _ = _mediator.FadeOut(MainGameMediator.FadeType.HUD, token);
+
+            await _mediator.FadeIn(MainGameMediator.FadeType.Screen, token);
+            await _mediator.FadeIn(MainGameMediator.FadeType.Complete, token);
         }
     }
 }

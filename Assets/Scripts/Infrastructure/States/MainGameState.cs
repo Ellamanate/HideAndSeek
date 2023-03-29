@@ -1,4 +1,6 @@
-﻿namespace Infrastructure
+﻿using UnityEngine;
+
+namespace Infrastructure
 {
     public class MainGameState : IGameState
     {
@@ -13,6 +15,7 @@
 
         public void Enter()
         {
+            Time.timeScale = 1;
             _scenesConfig.TryGetGameScene(GameSceneType.GameScene1, out string sceneName);
             _loadingScene.LoadScene(sceneName);
         }

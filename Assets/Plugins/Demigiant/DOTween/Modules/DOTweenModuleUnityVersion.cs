@@ -268,15 +268,25 @@ namespace DG.Tweening
                 if (Debugger.logPriority > 0) Debugger.LogInvalidTween(t);
                 return;
             }
-            while (t.active)
-            {
-                await System.Threading.Tasks.Task.Yield();
 
-                if (token.IsCancellationRequested)
+            var register = token.Register(() => t.Kill());
+
+            try
+            {
+                while (t.active)
                 {
-                    t.Kill();
-                    throw new OperationCanceledException();
+                    await System.Threading.Tasks.Task.Yield();
+
+                    if (token.IsCancellationRequested)
+                    {
+                        t.Kill();
+                        throw new OperationCanceledException();
+                    }
                 }
+            }
+            finally
+            {
+                register.Dispose();
             }
         }
 

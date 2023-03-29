@@ -18,5 +18,15 @@ namespace HideAndSeek
         {
             _body.velocity = velocity * _speed;
         }
+
+        public void SetPosition(Vector3 position)
+        {
+            _body.position = position;
+        }
+
+        public void SetRotation(Quaternion rotation)
+        {
+            _body.rotation = rotation;
+        }
     }
 }

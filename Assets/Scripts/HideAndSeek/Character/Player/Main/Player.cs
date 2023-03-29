@@ -55,6 +55,9 @@ namespace HideAndSeek
             }
         }
 
+        public void SetPosition(Vector3 position) => _body.Movement.SetPosition(position);
+        public void SetRotation(Quaternion rotation) => _body.Movement.SetRotation(rotation);
+
         private void DestroyPlayer()
         {
             Destroyed = true;
