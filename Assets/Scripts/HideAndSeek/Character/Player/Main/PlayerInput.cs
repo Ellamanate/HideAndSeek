@@ -18,9 +18,9 @@ namespace HideAndSeek
 
         public void FixedTick()
         {
-            if (Active && _player.CanUpdate)
+            if (Active && _player.Available)
             {
-                _player.SetMovementDirection(CalculateMovementDirection(_inputSystem.MovementUp,
+                _player.MoveToDirection(CalculateMovementDirection(_inputSystem.MovementUp,
                     _inputSystem.MovementSide));
             }
         }
@@ -32,11 +32,11 @@ namespace HideAndSeek
 
         private Vector3 CalculateMovementDirection(float up, float side)
         {
-            var direction = ProjectOnFloor(_player.Transform.right) * side + ProjectOnFloor(_player.Transform.forward) * up;
+            var direction = ProjectOnFloor(_player.Model.Right) * side + ProjectOnFloor(_player.Model.Forward) * up;
 
             return direction.magnitude > 1 ? direction.normalized : direction;
 
-            Vector3 ProjectOnFloor(Vector3 direction) => Vector3.ProjectOnPlane(direction, _player.Transform.up).normalized;
+            Vector3 ProjectOnFloor(Vector3 direction) => Vector3.ProjectOnPlane(direction, _player.Model.Up).normalized;
         }
     }
 }

@@ -1,22 +1,27 @@
 ﻿using System;
 using Infrastructure;
 using UnityEngine;
+using Zenject;
 
 namespace HideAndSeek
 {
-    public class Player : IDisposable, IDestroyable
+    public class Player : IDisposable, ITickable, IDestroyable
     {
         public event Action<ITrigger> OnTriggerEnter;
         public event Action<ITrigger> OnTriggerExit;
         public event Action OnDestroyed;
 
-        private PlayerBody _body;
+        public readonly PlayerModel Model;
 
-        public Transform Transform => _body.transform;
-        public bool Destroyed { get; private set; }
+        private PlayerBody _body;
         
-        public bool CanUpdate => !Destroyed;
-        
+        public bool Available => !Model.Destroyed && _body != null;
+
+        public Player(PlayerModel model)
+        {
+            Model = model;
+        }
+
         public void Dispose()
         {
             _body.OnDestroyed -= DestroyPlayer;
@@ -41,26 +46,59 @@ namespace HideAndSeek
 
         public void Destroy()
         {
-            if (!Destroyed)
+            if (!Model.Destroyed)
             {
                 _body.Destroy();
             }
         }
 
-        public void SetMovementDirection(Vector3 velocity)
+        public void Tick()
         {
-            if (CanUpdate)
+            if (Available)
             {
-                _body.Movement.SetMovementDirection(velocity);
+                Model.Position = _body.transform.position;
+                Model.Rotation = _body.transform.rotation;
             }
         }
 
-        public void SetPosition(Vector3 position) => _body.Movement.SetPosition(position);
-        public void SetRotation(Quaternion rotation) => _body.Movement.SetRotation(rotation);
+        public void MoveToDirection(Vector3 direction)
+        {
+            if (Available)
+            {
+                _body.Movement.MoveToDirection(direction);
+            }
+        }
+
+        public void SetSpeed(float speed)
+        {
+            if (Available)
+            {
+                _body.Movement.SetSpeed(speed);
+                Model.Speed = speed;
+            }
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            if (Available)
+            {
+                _body.Movement.SetPosition(position);
+                Model.Position = position;
+            }
+        }
+
+        public void SetRotation(Quaternion rotation)
+        {
+            if (Available)
+            {
+                _body.Movement.SetRotation(rotation);
+                Model.Rotation = rotation;
+            }
+        }
 
         private void DestroyPlayer()
         {
-            Destroyed = true;
+            Model.Destroyed = true;
             Dispose();
             OnDestroyed?.Invoke();
         }

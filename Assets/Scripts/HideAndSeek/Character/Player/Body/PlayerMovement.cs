@@ -14,9 +14,9 @@ namespace HideAndSeek
             _speed = speed;
         }
 
-        public void SetMovementDirection(Vector3 velocity)
+        public void MoveToDirection(Vector3 direction)
         {
-            _body.velocity = velocity * _speed;
+            _body.velocity = direction * _speed;
         }
 
         public void SetPosition(Vector3 position)

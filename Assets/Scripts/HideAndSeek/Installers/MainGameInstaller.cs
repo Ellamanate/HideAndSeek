@@ -5,7 +5,7 @@ namespace HideAndSeek
 {
     public class MainGameInstaller : MonoInstaller, IInitializable
     {
-        [SerializeField] private MainGameMediator _mediator;
+        [SerializeField] private GameSceneConfig _config;
         [SerializeField] private GameSceneReferences _sceneReferences;
 
         public override void InstallBindings()
@@ -30,11 +30,10 @@ namespace HideAndSeek
 
         private void MainGame()
         {
-
             Container.BindInterfacesAndSelfTo<MainGame>().AsSingle();
-            Container.Bind<StartGame>().AsSingle().WithArguments(_mediator);
-            Container.Bind<GameOver>().AsSingle().WithArguments(_mediator);
-            Container.Bind<PauseMenu>().AsSingle().WithArguments(_mediator);
+            Container.Bind<StartGame>().AsSingle().WithArguments(_sceneReferences.Mediator);
+            Container.Bind<GameOver>().AsSingle().WithArguments(_sceneReferences.Mediator);
+            Container.Bind<PauseMenu>().AsSingle().WithArguments(_sceneReferences.Mediator);
             Container.Bind<GamePause>().AsSingle();
 
             Container.Bind<DetectEndGame>().AsSingle().NonLazy();
@@ -42,9 +41,9 @@ namespace HideAndSeek
 
         private void BindCharacters()
         {
-            Container.Bind<PlayerBodyFactory>().AsSingle();
-            Container.Bind<PlayerSpawner>().AsSingle();
             Container.Bind<Player>().AsSingle();
+            Container.Bind<PlayerModel>().AsSingle();
+            Container.Bind<PlayerSpawner>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
         }
     }

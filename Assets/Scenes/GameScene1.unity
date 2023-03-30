@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 284870651}
   - component: {fileID: 284870653}
   - component: {fileID: 284870652}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GoalTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -432,6 +432,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ee27e60bdf67042bb7bc553f2e957e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &289542248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 289542249}
+  - component: {fileID: 289542250}
+  m_Layer: 0
+  m_Name: NavMesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &289542249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289542248}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 926180556}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &289542250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289542248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 55
+  m_UseGeometry: 1
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_NavMeshData: {fileID: 23800000, guid: 2ebe4308081b2a240a7a04ec3c2c50fb, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &372613671
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,7 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34372090d5e56e6459ac954dcda89352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mediator: {fileID: 261079040}
+  _config: {fileID: 11400000, guid: 29e1b0e4d9562fe42ba8237ac985a850, type: 2}
   _sceneReferences: {fileID: 777773922}
 --- !u!114 &777773922
 MonoBehaviour:
@@ -661,7 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15523ae9240c8be4e935723677cb1589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Config>k__BackingField: {fileID: 11400000, guid: 29e1b0e4d9562fe42ba8237ac985a850, type: 2}
+  <Mediator>k__BackingField: {fileID: 261079040}
   <PlayerParent>k__BackingField: {fileID: 794471536}
 --- !u!1 &794471535
 GameObject:
@@ -710,7 +770,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &903323238
 MeshCollider:
@@ -821,6 +881,7 @@ Transform:
   - {fileID: 145040133}
   - {fileID: 2023409296}
   - {fileID: 261079039}
+  - {fileID: 289542249}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -1,23 +1,33 @@
-﻿namespace HideAndSeek
+﻿using UnityEngine;
+
+namespace HideAndSeek
 {
     public class PlayerSpawner
     {
         private readonly Player _player;
-        private readonly PlayerBodyFactory _factory;
+        private readonly PlayerModel _model;
+        private readonly PlayerConfig _config;
         private readonly GameSceneReferences _sceneReferences;
 
-        public PlayerSpawner(Player player, PlayerBodyFactory factory, GameSceneReferences sceneReferences)
+        public PlayerSpawner(Player player, PlayerModel model, PlayerConfig config, GameSceneReferences sceneReferences)
         {
             _player = player;
-            _factory = factory;
+            _model = model;
+            _config = config;
             _sceneReferences = sceneReferences;
         }
 
         public PlayerBody Spawn()
         {
-            PlayerBody player = _factory.Create(_sceneReferences.PlayerParent, _sceneReferences.PlayerParent.position, _sceneReferences.PlayerParent.rotation);
-            _player.Initialize(player);
-            return player;
+            var body = Object.Instantiate(_config.BodyPrefab, 
+                _sceneReferences.PlayerParent.position, 
+                _sceneReferences.PlayerParent.rotation, 
+                _sceneReferences.PlayerParent);
+            
+            _player.Initialize(body);
+            _player.SetSpeed(_config.Speed);
+
+            return body;
         }
     }
 }
