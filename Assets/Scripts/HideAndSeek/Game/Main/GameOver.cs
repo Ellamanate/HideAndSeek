@@ -17,6 +17,7 @@ namespace HideAndSeek
         public async UniTask FailGame(CancellationToken token)
         {
             _playerInput.SetActive(false);
+
             await _mediator.FadeIn(MainGameMediator.FadeType.Screen, token);
         }
 

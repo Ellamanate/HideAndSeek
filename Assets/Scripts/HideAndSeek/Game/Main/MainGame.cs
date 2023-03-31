@@ -9,6 +9,7 @@ namespace HideAndSeek
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly PlayerSpawner _playerSpawner;
+        private readonly EnemySpawner _enemySpawner;
         private readonly StartGame _startGame;
         private readonly GameOver _gameOver;
         private readonly GamePause _pause;
@@ -18,11 +19,12 @@ namespace HideAndSeek
 
         public bool GameOver { get; private set; }
 
-        public MainGame(GameStateMachine gameStateMachine, PlayerSpawner playerSpawner, StartGame startGame, 
-            GameOver endGame, GamePause pause, PauseMenu pauseMenu)
+        public MainGame(GameStateMachine gameStateMachine, PlayerSpawner playerSpawner, EnemySpawner enemySpawner,
+            StartGame startGame, GameOver endGame, GamePause pause, PauseMenu pauseMenu)
         {
             _gameStateMachine = gameStateMachine;
             _playerSpawner = playerSpawner;
+            _enemySpawner = enemySpawner;
             _startGame = startGame;
             _gameOver = endGame;
             _pause = pause;
@@ -36,6 +38,7 @@ namespace HideAndSeek
         public void Initialize()
         {
             _playerSpawner.Spawn();
+            _enemySpawner.Spawn();
             RestartGame();
         }
 

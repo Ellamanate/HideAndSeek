@@ -1,6 +1,6 @@
 ﻿namespace HideAndSeek
 {
-    public interface ITrigger
+    public interface IInteractable
     {
 
     }

@@ -33,6 +33,7 @@ namespace HideAndSeek
             _mediator.SetAlpha(MainGameMediator.FadeType.HUD, 0);
             _mediator.SetBlockingRaycasts(MainGameMediator.FadeType.HUD, false);
 
+            _player.SetVelocity(Vector3.zero);
             _player.SetPosition(_sceneReferences.PlayerParent.position);
             _player.SetRotation(_sceneReferences.PlayerParent.rotation);
 

@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a91c499a781414f40a046d33ae4d4f72, type: 3}
   m_Name: GameSceneConfig
   m_EditorClassIdentifier: 
+  <Enemys>k__BackingField:
+  - Config: {fileID: 11400000, guid: 0d7d84e1211d3184a98365871309f1f6, type: 2}
+    Position: {fileID: 0}

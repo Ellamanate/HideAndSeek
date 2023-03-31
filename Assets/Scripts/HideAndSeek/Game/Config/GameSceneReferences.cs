@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace HideAndSeek
 {
     public class GameSceneReferences : MonoBehaviour
     {
-        [field: SerializeField] public MainGameMediator Mediator { get; private set; }
-        [field: SerializeField] public Transform PlayerParent { get; private set; }
+        [field: SerializeField, FoldoutGroup("General")] public MainGameMediator Mediator { get; private set; }
+        [field: SerializeField, FoldoutGroup("Player")] public Transform PlayerParent { get; private set; }
+        [field: SerializeField, FoldoutGroup("Enemys")] public Transform EnemysParent { get; private set; }
+        [field: SerializeField, FoldoutGroup("Enemys")] public EnemySpawnData[] Enemys { get; private set; }
     }
 }

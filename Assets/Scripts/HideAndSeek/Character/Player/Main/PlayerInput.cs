@@ -20,7 +20,7 @@ namespace HideAndSeek
         {
             if (Active && _player.Available)
             {
-                _player.MoveToDirection(CalculateMovementDirection(_inputSystem.MovementUp,
+                _player.SetVelocity(CalculateMovementDirection(_inputSystem.MovementUp,
                     _inputSystem.MovementSide));
             }
         }

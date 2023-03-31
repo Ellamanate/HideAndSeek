@@ -4,7 +4,7 @@ using UnityEngine;
 namespace HideAndSeek
 {
     [RequireComponent(typeof(Collider))]
-    public abstract class BaseSensor<T> : MonoBehaviour
+    public abstract class BaseTrigger<T> : MonoBehaviour
     {
         public event Action<T> OnEnter;
         public event Action<T> OnExit;

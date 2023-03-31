@@ -3,7 +3,7 @@
 namespace HideAndSeek
 {
     [RequireComponent((typeof(Collider)))]
-    public class GoalTrigger : MonoBehaviour, ITrigger
+    public class ExitInteraction : MonoBehaviour, IInteractable
     {
         
     }

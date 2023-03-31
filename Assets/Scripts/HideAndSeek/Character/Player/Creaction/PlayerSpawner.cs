@@ -17,7 +17,7 @@ namespace HideAndSeek
             _sceneReferences = sceneReferences;
         }
 
-        public PlayerBody Spawn()
+        public void Spawn()
         {
             var body = Object.Instantiate(_config.BodyPrefab, 
                 _sceneReferences.PlayerParent.position, 
@@ -26,8 +26,6 @@ namespace HideAndSeek
             
             _player.Initialize(body);
             _player.SetSpeed(_config.Speed);
-
-            return body;
         }
     }
 }

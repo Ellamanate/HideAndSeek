@@ -12,17 +12,17 @@ namespace HideAndSeek
             _game = game;
             _player = player;
 
-            _player.OnTriggerEnter += CheckFinish;
+            _player.OnInteractableEnter += CheckFinish;
         }
 
         public void Dispose()
         {
-            _player.OnTriggerEnter -= CheckFinish;
+            _player.OnInteractableEnter -= CheckFinish;
         }
 
-        private void CheckFinish(ITrigger trigger)
+        private void CheckFinish(IInteractable interactable)
         {
-            if (trigger is GoalTrigger)
+            if (interactable is ExitInteraction)
             {
                 _game.CompleteGame();
             }

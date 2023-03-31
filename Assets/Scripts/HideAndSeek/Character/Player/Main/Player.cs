@@ -7,8 +7,8 @@ namespace HideAndSeek
 {
     public class Player : IDisposable, ITickable, IDestroyable
     {
-        public event Action<ITrigger> OnTriggerEnter;
-        public event Action<ITrigger> OnTriggerExit;
+        public event Action<IInteractable> OnInteractableEnter;
+        public event Action<IInteractable> OnInteractableExit;
         public event Action OnDestroyed;
 
         public readonly PlayerModel Model;
@@ -25,8 +25,8 @@ namespace HideAndSeek
         public void Dispose()
         {
             _body.OnDestroyed -= DestroyPlayer;
-            _body.TriggerSensor.OnEnter -= EnterTrigger;
-            _body.TriggerSensor.OnExit -= ExitTrigger;
+            _body.InteractableTrigger.OnEnter -= InteractableEnter;
+            _body.InteractableTrigger.OnExit -= InteractableExit;
         }
 
         public void Initialize(PlayerBody body)
@@ -40,8 +40,8 @@ namespace HideAndSeek
             _body = body;
 
             _body.OnDestroyed += DestroyPlayer;
-            _body.TriggerSensor.OnEnter += EnterTrigger;
-            _body.TriggerSensor.OnExit += ExitTrigger;
+            _body.InteractableTrigger.OnEnter += InteractableEnter;
+            _body.InteractableTrigger.OnExit += InteractableExit;
         }
 
         public void Destroy()
@@ -61,11 +61,16 @@ namespace HideAndSeek
             }
         }
 
-        public void MoveToDirection(Vector3 direction)
+        public bool HittedBody(RaycastHit hit)
+        {
+            return Available && _body.HittedBody(hit);
+        }
+
+        public void SetVelocity(Vector3 velocity)
         {
             if (Available)
             {
-                _body.Movement.MoveToDirection(direction);
+                _body.Movement.SetVelocity(velocity);
             }
         }
 
@@ -103,7 +108,7 @@ namespace HideAndSeek
             OnDestroyed?.Invoke();
         }
 
-        private void EnterTrigger(ITrigger trigger) => OnTriggerEnter?.Invoke(trigger);
-        private void ExitTrigger(ITrigger trigger) => OnTriggerExit?.Invoke(trigger);
+        private void InteractableEnter(IInteractable interactable) => OnInteractableEnter?.Invoke(interactable);
+        private void InteractableExit(IInteractable interactable) => OnInteractableExit?.Invoke(interactable);
     }
 }
