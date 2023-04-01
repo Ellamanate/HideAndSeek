@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using HideAndSeek.Extensions;
+using HideAndSeek.Utils;
 using Infrastructure;
 
 namespace HideAndSeek

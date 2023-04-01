@@ -17,9 +17,11 @@ namespace HideAndSeek
             var body = Object.Instantiate(config.EnemyPrefab, position, rotation, parent);
             var enemy = _enemyFactory.Create(enemyModel, body);
 
+            enemy.Initialize(config.Actions, config.Counters);
             enemy.SetSpeed(config.Speed);
             enemyModel.RaycastLayers = config.RaycastLayers;
             enemyModel.VisionDistance = config.VisionDistance;
+            enemyModel.RepathTime = config.RepathTime;
 
             return enemy;
         }

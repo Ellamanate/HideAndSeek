@@ -18,3 +18,5 @@ MonoBehaviour:
   <RaycastLayers>k__BackingField:
     serializedVersion: 2
     m_Bits: 385
+  <Actions>k__BackingField: 3
+  <Counters>k__BackingField: 1

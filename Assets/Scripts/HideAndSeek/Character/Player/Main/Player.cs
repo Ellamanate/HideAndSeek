@@ -5,7 +5,7 @@ using Zenject;
 
 namespace HideAndSeek
 {
-    public class Player : IDisposable, ITickable, IDestroyable
+    public class Player : IDisposable, ITickable, IDestroyable, ITransformable
     {
         public event Action<IInteractable> OnInteractableEnter;
         public event Action<IInteractable> OnInteractableExit;
@@ -16,6 +16,8 @@ namespace HideAndSeek
         private PlayerBody _body;
         
         public bool Available => !Model.Destroyed && _body != null;
+        public Vector3 Position => Model.Position;
+        public Quaternion Rotation => Model.Rotation;
 
         public Player(PlayerModel model)
         {

@@ -7,7 +7,7 @@ namespace HideAndSeek
     {
         public event Action OnDestroyed;
         
-        [field: SerializeField] public EnemyMovement Movement { get; private set; }
+        [field: SerializeField] public EnemyBodyMovement Movement { get; private set; }
 
         private void OnDestroy()
         {

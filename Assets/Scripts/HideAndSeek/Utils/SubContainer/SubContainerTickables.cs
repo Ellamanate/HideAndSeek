@@ -1,6 +1,6 @@
 ﻿using Zenject;
 
-namespace Infrastructure
+namespace HideAndSeek.Utils
 {
     public class SubContainerTickables : ITickable, IFixedTickable
     {

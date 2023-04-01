@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Threading;
 
-namespace HideAndSeek.Extensions
+namespace HideAndSeek.Utils
 {
     public static class AnimationsExtension
     {

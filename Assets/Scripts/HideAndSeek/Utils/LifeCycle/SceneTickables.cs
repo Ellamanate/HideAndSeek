@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Zenject;
 
-namespace HideAndSeek
+namespace HideAndSeek.Utils
 {
     public class SceneTickables : ITickable, IFixedTickable
     {

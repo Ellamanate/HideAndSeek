@@ -1,34 +1,43 @@
-﻿using Infrastructure;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 namespace HideAndSeek
 {
     public class EnemyVision : ITickable
     {
-        private readonly EnemyModel _model;
+        private readonly Enemy _enemy;
         private readonly Player _player;
 
-        public EnemyVision(EnemyModel model, Player player)
+        public bool PlayerVisible { get; private set; }
+
+        public EnemyVision(Enemy enemy, Player player)
         {
-            _model = model;
+            _enemy = enemy;
             _player = player;
         }
 
-        private bool Available => !_model.Destroyed;
+        private bool Available => !_enemy.Model.Destroyed;
 
         public void Tick()
         {
             if (Available && _player.Available)
             {
-                Vector3 direction = _player.Model.Position - _model.Position;
+                Vector3 direction = _player.Model.Position - _enemy.Model.Position;
                 
-                if (Physics.Raycast(_model.Position, direction, out RaycastHit hit, _model.VisionDistance, _model.RaycastLayers) 
-                    && _player.HittedBody(hit))
+                if (!PlayerVisible && Raycast(out RaycastHit hit) && _player.HittedBody(hit))
                 {
-                    GameLogger.DrawLine(_model.Position, hit.point);
-                    GameLogger.Log(hit.collider.name);
+                    GameLogger.DrawLine(_enemy.Model.Position, hit.point);
+                    PlayerVisible = true;
+                    _enemy.UpdateAction();
                 }
+                else if (PlayerVisible)
+                {
+                    PlayerVisible = false;
+                    _enemy.UpdateAction();
+                }
+
+                bool Raycast(out RaycastHit hit) => Physics.Raycast(_enemy.Model.Position, direction, out hit,
+                    _enemy.Model.VisionDistance, _enemy.Model.RaycastLayers);
             }
         }
     }

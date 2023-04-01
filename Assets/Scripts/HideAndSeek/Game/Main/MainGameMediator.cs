@@ -1,6 +1,6 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
-using HideAndSeek.Extensions;
+using HideAndSeek.Utils;
 using Sirenix.OdinInspector;
 using System.Threading;
 using UnityEngine;

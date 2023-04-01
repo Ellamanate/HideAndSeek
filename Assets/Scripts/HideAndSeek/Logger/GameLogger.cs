@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-namespace Infrastructure
+namespace HideAndSeek
 {
     public static class GameLogger
     {

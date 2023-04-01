@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using HideAndSeek.Utils;
+using UnityEngine;
 using Zenject;
 
 namespace HideAndSeek
@@ -32,6 +33,7 @@ namespace HideAndSeek
             Container.Bind<GameSceneConfig>().FromInstance(_config).AsSingle();
             Container.BindInterfacesAndSelfTo<MainGame>().AsSingle();
             Container.BindInterfacesAndSelfTo<SceneTickables>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SceneDisposables>().AsSingle();
 
             Container.Bind<StartGame>().AsSingle().WithArguments(_sceneReferences.Mediator);
             Container.Bind<GameOver>().AsSingle().WithArguments(_sceneReferences.Mediator);
