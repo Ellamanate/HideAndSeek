@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace HideAndSeek
+﻿namespace HideAndSeek
 {
     public class PlayerModel : CharacterModel
     {

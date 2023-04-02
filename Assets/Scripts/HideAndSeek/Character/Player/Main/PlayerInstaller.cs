@@ -8,7 +8,7 @@ namespace HideAndSeek
         {
             Container.Bind(typeof(Player), typeof(ITickable)).To<Player>().AsSingle();
             Container.Bind<PlayerModel>().AsSingle();
-            Container.Bind<PlayerSpawner>().AsSingle();
+            Container.Bind<PlayerFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
         }
     }

@@ -42,7 +42,7 @@ namespace HideAndSeek
 
         private static string ToLog(params object[] message)
         {
-            return message.Aggregate(string.Empty, (current, part) => string.Join(current, part.ToString()));
+            return message.Aggregate(string.Empty, (current, part) => current + part);
         }
     }
 }

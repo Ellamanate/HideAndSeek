@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5203622605287746087}
   - component: {fileID: 5241606986450114641}
   - component: {fileID: 3283738687839654084}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TriggerSensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3469782250822920543
 GameObject:
@@ -188,6 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Movement>k__BackingField: {fileID: 752903873266585880}
+  <InteractableTrigger>k__BackingField: {fileID: 5241606986450114641}
 --- !u!114 &752903873266585880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a45bf547a83ba47bbca73d82e1855b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _raycastPoint: {fileID: 1101147614846999845}
   <NavMeshAgent>k__BackingField: {fileID: 5810343949756916086}
   <Rigidbody>k__BackingField: {fileID: 3730890715794416219}
 --- !u!54 &3730890715794416219

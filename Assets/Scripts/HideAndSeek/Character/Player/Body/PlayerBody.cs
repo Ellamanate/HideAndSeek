@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HideAndSeek
 {
-    public class PlayerBody : MonoBehaviour, IDestroyable
+    public class PlayerBody : MonoBehaviour, IDestroyable, IInteractable
     {
         public event Action OnDestroyed;
 

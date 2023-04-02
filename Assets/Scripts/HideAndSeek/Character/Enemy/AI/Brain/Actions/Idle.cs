@@ -4,16 +4,16 @@ namespace HideAndSeek.AI
 {
     public class Idle : BaseAction
     {
-        private readonly Enemy _enemy;
+        private readonly EnemyMovement _movement;
 
-        public Idle(Enemy enemy)
+        public Idle(EnemyMovement movement)
         {
-            _enemy = enemy;
+            _movement = movement;
         }
 
         public override void Execute()
         {
-
+            _movement.StopChase();
         }
 
         public class Factory : PlaceholderFactory<Idle> { }

@@ -8,7 +8,7 @@ namespace HideAndSeek
     public class MainGame : IDisposable
     {
         private readonly GameStateMachine _gameStateMachine;
-        private readonly PlayerSpawner _playerSpawner;
+        private readonly PlayerFactory _playerFactory;
         private readonly EnemySpawner _enemySpawner;
         private readonly StartGame _startGame;
         private readonly GameOver _gameOver;
@@ -19,11 +19,11 @@ namespace HideAndSeek
 
         public bool GameOver { get; private set; }
 
-        public MainGame(GameStateMachine gameStateMachine, PlayerSpawner playerSpawner, EnemySpawner enemySpawner,
+        public MainGame(GameStateMachine gameStateMachine, PlayerFactory playerFactory, EnemySpawner enemySpawner,
             StartGame startGame, GameOver endGame, GamePause pause, PauseMenu pauseMenu)
         {
             _gameStateMachine = gameStateMachine;
-            _playerSpawner = playerSpawner;
+            _playerFactory = playerFactory;
             _enemySpawner = enemySpawner;
             _startGame = startGame;
             _gameOver = endGame;
@@ -37,7 +37,7 @@ namespace HideAndSeek
 
         public void Initialize()
         {
-            _playerSpawner.Spawn();
+            _playerFactory.Spawn();
             _enemySpawner.Spawn();
             RestartGame();
         }
@@ -45,8 +45,11 @@ namespace HideAndSeek
         public void RestartGame()
         {
             GameOver = false;
+
             _token = _token.Refresh();
             _ = _startGame.Start(_token.Token);
+
+            GameLogger.Log("Game restarted");
         }
 
         public void CompleteGame()
@@ -54,6 +57,8 @@ namespace HideAndSeek
             GameOver = true;
             _token = _token.Refresh();
             _ = _gameOver.CompleteGame(_token.Token);
+
+            GameLogger.Log("Game completed");
         }
 
         public void FailGame()
@@ -61,6 +66,8 @@ namespace HideAndSeek
             GameOver = true;
             _token = _token.Refresh();
             _ = _gameOver.FailGame(_token.Token);
+
+            GameLogger.Log("Game failed");
         }
 
         public void OpenPauseMenu()

@@ -1,5 +1,4 @@
 ﻿using System;
-using Infrastructure;
 using UnityEngine;
 using Zenject;
 
@@ -40,6 +39,8 @@ namespace HideAndSeek
             }
 
             _body = body;
+
+            SetSpeed(Model.Speed);
 
             _body.OnDestroyed += DestroyPlayer;
             _body.InteractableTrigger.OnEnter += InteractableEnter;

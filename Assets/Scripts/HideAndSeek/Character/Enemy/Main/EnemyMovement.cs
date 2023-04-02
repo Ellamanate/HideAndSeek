@@ -9,19 +9,26 @@ namespace HideAndSeek
     public class EnemyMovement : IDisposable
     {
         private readonly Enemy _enemy;
+        private readonly GamePause _pause;
 
         private CancellationTokenSource _token;
         private ITransformable _target;
 
-        public EnemyMovement(Enemy enemy)
+        public EnemyMovement(Enemy enemy, GamePause pause)
         {
             _enemy = enemy;
+            _pause = pause;
             _token = new CancellationTokenSource();
+
+            _enemy.OnReseted += Reset;
+            _enemy.OnActiveChanged += Reset;
         }
 
         public void Dispose()
         {
             _token.CancelAndDispose();
+            _enemy.OnReseted -= Reset;
+            _enemy.OnActiveChanged -= Reset;
         }
 
         public void MoveTo(Vector3 destination)
@@ -32,7 +39,7 @@ namespace HideAndSeek
 
         public void ChaseTo(ITransformable target)
         {
-            if (_enemy.Available)
+            if (!_enemy.Model.Destroyed)
             {
                 _target = target;
 
@@ -47,11 +54,20 @@ namespace HideAndSeek
             _target = null;
         }
 
+        private void Reset()
+        {
+            StopChase();
+        }
+
         private async UniTask UpdateChase(CancellationToken token)
         {
             while (!token.IsCancellationRequested && _target != null)
             {
-                _enemy.MoveTo(_target.Position);
+                if (!_pause.Paused)
+                {
+                    _enemy.MoveTo(_target.Position);
+                }
+
                 await UniTask.Delay(TimeSpan.FromSeconds(_enemy.Model.RepathTime), cancellationToken: token);
             }
         }

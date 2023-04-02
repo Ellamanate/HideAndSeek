@@ -15,13 +15,15 @@ namespace HideAndSeek
             Screen = 1,
             Complete = 2,
             Pause = 3,
-            HUD = 4
+            HUD = 4,
+            Fail = 5
         }
 
         [SerializeField] private FadeAnimation _fadeAnimation;
         [SerializeField] private FadeAnimation _completeMenu;
         [SerializeField] private FadeAnimation _pauseMenu;
         [SerializeField] private FadeAnimation _hUD;
+        [SerializeField] private FadeAnimation _fail;
 
         private MainGame _mainGame;
 
@@ -50,6 +52,7 @@ namespace HideAndSeek
                 FadeType.Complete => _completeMenu,
                 FadeType.Pause => _pauseMenu,
                 FadeType.HUD => _hUD,
+                FadeType.Fail => _fail,
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }

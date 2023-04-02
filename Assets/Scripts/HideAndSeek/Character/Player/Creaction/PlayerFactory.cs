@@ -2,14 +2,14 @@
 
 namespace HideAndSeek
 {
-    public class PlayerSpawner
+    public class PlayerFactory
     {
         private readonly Player _player;
         private readonly PlayerModel _model;
         private readonly PlayerConfig _config;
         private readonly GameSceneReferences _sceneReferences;
 
-        public PlayerSpawner(Player player, PlayerModel model, PlayerConfig config, GameSceneReferences sceneReferences)
+        public PlayerFactory(Player player, PlayerModel model, PlayerConfig config, GameSceneReferences sceneReferences)
         {
             _player = player;
             _model = model;
@@ -23,9 +23,12 @@ namespace HideAndSeek
                 _sceneReferences.PlayerParent.position, 
                 _sceneReferences.PlayerParent.rotation, 
                 _sceneReferences.PlayerParent);
-            
+
+            _model.Position = _sceneReferences.PlayerParent.position;
+            _model.Rotation = _sceneReferences.PlayerParent.rotation;
+            _model.Speed = _config.Speed;
+
             _player.Initialize(body);
-            _player.SetSpeed(_config.Speed);
         }
     }
 }

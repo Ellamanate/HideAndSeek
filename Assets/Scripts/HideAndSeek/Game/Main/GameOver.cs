@@ -7,28 +7,46 @@ namespace HideAndSeek
     {
         private readonly MainGameMediator _mediator;
         private readonly PlayerInput _playerInput;
+        private readonly EnemySpawner _enemySpawner;
 
-        public GameOver(MainGameMediator mediator, PlayerInput playerInput)
+        public GameOver(MainGameMediator mediator, PlayerInput playerInput, EnemySpawner enemySpawner)
         {
             _mediator = mediator;
             _playerInput = playerInput;
+            _enemySpawner = enemySpawner;
         }
 
         public async UniTask FailGame(CancellationToken token)
         {
             _playerInput.SetActive(false);
 
+            DisableEnemys();
+
+            _ = _mediator.FadeOut(MainGameMediator.FadeType.HUD, token);
+
             await _mediator.FadeIn(MainGameMediator.FadeType.Screen, token);
+            await _mediator.FadeIn(MainGameMediator.FadeType.Fail, token);
         }
 
         public async UniTask CompleteGame(CancellationToken token)
         {
             _playerInput.SetActive(false);
 
+            DisableEnemys();
+
             _ = _mediator.FadeOut(MainGameMediator.FadeType.HUD, token);
 
             await _mediator.FadeIn(MainGameMediator.FadeType.Screen, token);
             await _mediator.FadeIn(MainGameMediator.FadeType.Complete, token);
+        }
+
+        private void DisableEnemys()
+        {
+            foreach (var enemy in _enemySpawner.Enemys)
+            {
+                enemy.SetActive(false);
+                enemy.Stop();
+            }
         }
     }
 }
