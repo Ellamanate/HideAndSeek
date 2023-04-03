@@ -48,7 +48,7 @@ namespace HideAndSeek
 
             _playerInput.SetActive(true);
 
-            await _mediator.FadeIn(MainGameMediator.FadeType.HUD, token);
+            _ = _mediator.FadeIn(MainGameMediator.FadeType.HUD, token);
         }
     }
 }

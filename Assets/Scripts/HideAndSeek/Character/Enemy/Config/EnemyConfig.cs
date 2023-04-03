@@ -1,4 +1,5 @@
-﻿using HideAndSeek.AI;
+﻿using System;
+using HideAndSeek.AI;
 using UnityEngine;
 
 namespace HideAndSeek
@@ -7,9 +8,10 @@ namespace HideAndSeek
     public class EnemyConfig : ScriptableObject
     {
         [field: SerializeField] public EnemyBody EnemyPrefab { get; private set; }
-        [field: SerializeField] public float Speed { get; private set; }
+        [field: SerializeField] public AttentivenessEnemyConfig RelaxState { get; private set; }
+        [field: SerializeField] public AttentivenessEnemyConfig SearchingState { get; private set; }
+        [field: SerializeField] public AttentivenessEnemyConfig ChaseState { get; private set; }
         [field: SerializeField] public float RepathTime { get; private set; }
-        [field: SerializeField] public float VisionDistance { get; private set; }
         [field: SerializeField] public LayerMask RaycastLayers { get; private set; }
         [field: SerializeField] public OrderActionType Actions { get; private set; }
         [field: SerializeField] public OrderCounterType Counters { get; private set; }

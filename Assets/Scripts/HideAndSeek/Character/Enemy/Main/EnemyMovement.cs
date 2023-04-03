@@ -3,20 +3,32 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using HideAndSeek.Utils;
 using UnityEngine;
+using Zenject;
 
 namespace HideAndSeek
 {
-    public class EnemyMovement : IDisposable
+    public class EnemyMovement : IDisposable, ITickable
     {
         private readonly Enemy _enemy;
+        private readonly EnemyBody _body;
         private readonly GamePause _pause;
 
         private CancellationTokenSource _token;
         private ITransformable _target;
 
-        public EnemyMovement(Enemy enemy, GamePause pause)
+        public float StoppingDistance => _body.Movement.StoppingDistance;
+        public bool Moved => _enemy.Model.Moved && !_body.Movement.IsStopped && !_body.Movement.PathPending;
+
+        private bool NeedStop => Moved && (HasPathAndCompleted || NoPathAndMove);
+        private bool HasPathAndCompleted => _body.Movement.HasPath && PathCompleted;
+        private bool NoPathAndMove => !_body.Movement.HasPath 
+            && (PathCompleted || (_body.Movement.Velocity.sqrMagnitude <= 0.01f && _body.Movement.Acceleration <= 0.01f));
+        private bool PathCompleted => _body.Movement.RemainingDistance <= StoppingDistance;
+
+        public EnemyMovement(Enemy enemy, EnemyBody body, GamePause pause)
         {
             _enemy = enemy;
+            _body = body;
             _pause = pause;
             _token = new CancellationTokenSource();
 
@@ -29,6 +41,14 @@ namespace HideAndSeek
             _token.CancelAndDispose();
             _enemy.OnReseted -= Reset;
             _enemy.OnActiveChanged -= Reset;
+        }
+        
+        public void Tick()
+        {
+            if (NeedStop)
+            {
+                _enemy.Stop();
+            }
         }
 
         public void MoveTo(Vector3 destination)

@@ -34,7 +34,7 @@ namespace HideAndSeek
         {
             if (_body != null)
             {
-                GameLogger.Log("Player already has body");
+                GameLogger.Log("Player already have body");
                 return;
             }
 

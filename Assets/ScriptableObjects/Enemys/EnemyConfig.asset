@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: EnemyConfig
   m_EditorClassIdentifier: 
   <EnemyPrefab>k__BackingField: {fileID: 317254728646525370, guid: b0700cc61014f4d4d952af6c8100d525, type: 3}
-  <Speed>k__BackingField: 1
+  <RelaxState>k__BackingField: {fileID: 11400000, guid: bbd43cfb7bd6e2d43932862a4e9f2398, type: 2}
+  <SearchingState>k__BackingField: {fileID: 11400000, guid: 70f36de0704930c4caf31da0d75bc0c9, type: 2}
+  <ChaseState>k__BackingField: {fileID: 11400000, guid: 5cd2a7a3b34e33f4ba193945163faa73, type: 2}
   <RepathTime>k__BackingField: 0.25
-  <VisionDistance>k__BackingField: 3
   <RaycastLayers>k__BackingField:
     serializedVersion: 2
     m_Bits: 385

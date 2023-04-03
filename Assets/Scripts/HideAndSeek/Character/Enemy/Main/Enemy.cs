@@ -10,6 +10,7 @@ namespace HideAndSeek
         public event Action OnReseted;
         public event Action OnDestroyed;
         public event Action OnActiveChanged;
+        public event Action OnAttentivenesChanged;
         public event Action<IInteractable> OnInteractableEnter;
         public event Action<IInteractable> OnInteractableExit;
 
@@ -56,8 +57,8 @@ namespace HideAndSeek
         {
             _actions.Initialize(Model.ActionTypes);
             _execution.Initialize(Model.CounterTypes);
+            _body.Movement.SetMaxSpeed(Model.Speed);
 
-            SetSpeed(Model.Speed);
             SetPosition(Model.Position);
             SetRotation(Model.Rotation);
             Stop();
@@ -75,6 +76,7 @@ namespace HideAndSeek
         public void Reset()
         {
             Stop();
+            UpdateAttentiveness(AttentivenessType.Relax);
 
             OnReseted?.Invoke();
         }
@@ -84,6 +86,12 @@ namespace HideAndSeek
             if (!Model.Destroyed && Model.Active != active)
             {
                 Model.Active = active;
+
+                if (!active)
+                {
+                    Stop();
+                }
+
                 OnActiveChanged?.Invoke();
             }
         }
@@ -93,12 +101,12 @@ namespace HideAndSeek
             _execution.Execute();
         }
 
-        public void SetSpeed(float speed)
+        public void SetAttentiveness(AttentivenessType attentiveness)
         {
-            if (!Model.Destroyed)
+            if (!Model.Destroyed && Model.Active && attentiveness != Model.CurrentAttentiveness)
             {
-                _body.Movement.SetSpeed(speed);
-                Model.Speed = speed;
+                UpdateAttentiveness(attentiveness);
+                OnAttentivenesChanged?.Invoke();
             }
         }
 
@@ -120,6 +128,7 @@ namespace HideAndSeek
             {
                 _body.Movement.MoveTo(destination);
                 Model.Destination = destination;
+                Model.Moved = true;
             }
         }
 
@@ -128,7 +137,15 @@ namespace HideAndSeek
             if (!Model.Destroyed)
             {
                 _body.Movement.Stop();
+                Model.Moved = false;
             }
+        }
+
+        private void UpdateAttentiveness(AttentivenessType attentiveness)
+        {
+            Model.CurrentAttentiveness = attentiveness;
+            _body.Movement.SetMaxSpeed(Model.Speed);
+            GameLogger.Log($"Attentiveness: {attentiveness}");
         }
 
         private void DestroyEnemy()

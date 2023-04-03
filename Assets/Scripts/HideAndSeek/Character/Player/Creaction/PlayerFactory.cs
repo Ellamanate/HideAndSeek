@@ -17,7 +17,7 @@ namespace HideAndSeek
             _sceneReferences = sceneReferences;
         }
 
-        public void Spawn()
+        public void Create()
         {
             var body = Object.Instantiate(_config.BodyPrefab, 
                 _sceneReferences.PlayerParent.position, 

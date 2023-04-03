@@ -2,6 +2,6 @@
 {
     public class PlayerModel : CharacterModel
     {
-
+        public float Speed;
     }
 }

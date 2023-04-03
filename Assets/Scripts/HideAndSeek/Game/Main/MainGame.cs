@@ -29,7 +29,6 @@ namespace HideAndSeek
             _gameOver = endGame;
             _pause = pause;
             _pauseMenu = pauseMenu;
-            _token = new CancellationTokenSource();
         }
 
         public void Dispose() => _token.CancelAndDispose();
@@ -37,7 +36,7 @@ namespace HideAndSeek
 
         public void Initialize()
         {
-            _playerFactory.Spawn();
+            _playerFactory.Create();
             _enemySpawner.Spawn();
             RestartGame();
         }
@@ -45,7 +44,6 @@ namespace HideAndSeek
         public void RestartGame()
         {
             GameOver = false;
-
             _token = _token.Refresh();
             _ = _startGame.Start(_token.Token);
 

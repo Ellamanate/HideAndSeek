@@ -35,6 +35,7 @@ namespace HideAndSeek
             container.BindInterfacesAndSelfTo<EnemyVision>().AsSingle().NonLazy();
             container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle().NonLazy();
             container.BindInterfacesAndSelfTo<EnemyTouch>().AsSingle().NonLazy();
+            container.BindInterfacesAndSelfTo<EnemyRelaxUpdate>().AsSingle().NonLazy();
         }
 
         private void BindBrain(DiContainer container)

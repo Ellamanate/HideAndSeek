@@ -45,7 +45,6 @@ namespace HideAndSeek
             foreach (var enemy in _enemySpawner.Enemys)
             {
                 enemy.SetActive(false);
-                enemy.Stop();
             }
         }
     }

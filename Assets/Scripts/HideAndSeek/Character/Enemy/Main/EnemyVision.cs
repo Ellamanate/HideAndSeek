@@ -1,4 +1,5 @@
 ﻿using System;
+using HideAndSeek.AI;
 using UnityEngine;
 using Zenject;
 
@@ -47,12 +48,14 @@ namespace HideAndSeek
                 if (!PlayerVisible)
                 {
                     PlayerVisible = true;
+                    _enemy.SetAttentiveness(AttentivenessType.Chase);
                     _enemy.UpdateAction();
                 }
             }
             else if (PlayerVisible)
             {
                 PlayerVisible = false;
+                _enemy.SetAttentiveness(AttentivenessType.Seaching);
                 _enemy.UpdateAction();
             }
 

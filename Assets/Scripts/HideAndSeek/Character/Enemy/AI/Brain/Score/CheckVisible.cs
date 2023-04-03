@@ -22,7 +22,7 @@ namespace HideAndSeek.AI
             else
             {
                 _actions.Disable(OrderActionType.Chase);
-                _actions.AddScoreTo(OrderActionType.Idle, 1);
+                _actions.AddScoreTo(OrderActionType.Patrol, 1);
             }
         }
 
