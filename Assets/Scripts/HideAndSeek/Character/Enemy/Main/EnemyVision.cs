@@ -19,13 +19,13 @@ namespace HideAndSeek
             _player = player;
             _pause = pause;
 
-            _enemy.OnReseted += Reset;
+            _enemy.OnInitialized += Reset;
             _enemy.OnActiveChanged += Reset;
         }
         
         public void Dispose()
         {
-            _enemy.OnReseted -= Reset;
+            _enemy.OnInitialized -= Reset;
             _enemy.OnActiveChanged -= Reset;
         }
 
@@ -39,11 +39,11 @@ namespace HideAndSeek
 
         private void Scan()
         {
-            Vector3 direction = _player.Model.Position - _enemy.Model.Position;
+            Vector3 direction = _player.RaycastPosition - _enemy.RaycastPosition;
 
             if (Raycast(out RaycastHit hit) && _player.HittedBody(hit))
             {
-                GameLogger.DrawLine(_enemy.Model.Position, hit.point);
+                GameLogger.DrawLine(_enemy.RaycastPosition, hit.point);
 
                 if (!PlayerVisible)
                 {
@@ -59,7 +59,7 @@ namespace HideAndSeek
                 _enemy.UpdateAction();
             }
 
-            bool Raycast(out RaycastHit hit) => Physics.Raycast(_enemy.Model.Position, direction, out hit,
+            bool Raycast(out RaycastHit hit) => Physics.Raycast(_enemy.RaycastPosition, direction, out hit,
                 _enemy.Model.VisionDistance, _enemy.Model.RaycastLayers);
         }
 

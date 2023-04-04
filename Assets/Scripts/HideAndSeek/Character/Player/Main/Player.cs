@@ -15,6 +15,7 @@ namespace HideAndSeek
         private PlayerBody _body;
         
         public bool Available => !Model.Destroyed && _body != null;
+        public Vector3 RaycastPosition => _body.RaycastPosition.position;
         public Vector3 Position => Model.Position;
         public Quaternion Rotation => Model.Rotation;
 

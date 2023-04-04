@@ -11,6 +11,7 @@ namespace HideAndSeek
 
         [field: SerializeField] public PlayerMovement Movement { get; private set; }
         [field: SerializeField] public InteractableTrigger InteractableTrigger { get; private set; }
+        [field: SerializeField] public Transform RaycastPosition { get; private set; }
 
         public bool HittedBody(RaycastHit hit)
         {

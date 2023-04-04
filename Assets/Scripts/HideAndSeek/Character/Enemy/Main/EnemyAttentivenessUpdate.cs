@@ -6,23 +6,23 @@ using HideAndSeek.Utils;
 
 namespace HideAndSeek
 {
-    public class EnemyRelaxUpdate : IDisposable
+    public class EnemyAttentivenessUpdate : IDisposable
     {
         private readonly Enemy _enemy;
 
         private CancellationTokenSource _token;
 
-        public EnemyRelaxUpdate(Enemy enemy)
+        public EnemyAttentivenessUpdate(Enemy enemy)
         {
             _enemy = enemy;
             _enemy.OnAttentivenesChanged += ChangeAttentiveness;
-            _enemy.OnReseted += Reset;
+            _enemy.OnInitialized += Reset;
         }
 
         public void Dispose()
         {
             _enemy.OnAttentivenesChanged -= ChangeAttentiveness;
-            _enemy.OnReseted -= Reset;
+            _enemy.OnInitialized -= Reset;
             _token.CancelAndDispose();
         }
 
@@ -42,7 +42,7 @@ namespace HideAndSeek
 
         private async UniTask Timer(AttentivenessType targetType, CancellationToken token)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(5), cancellationToken: token);
+            await UniTask.Delay(TimeSpan.FromSeconds(_enemy.Model.AttentivenesDeclineTime), cancellationToken: token);
 
             _enemy.SetAttentiveness(targetType);
         }

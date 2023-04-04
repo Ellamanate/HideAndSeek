@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
   <BodyPrefab>k__BackingField: {fileID: 4925488424332353305, guid: 3c1f5fc03fe762d4d8978ac2022141c6, type: 3}
-  <Speed>k__BackingField: 2
+  <Speed>k__BackingField: 2.5

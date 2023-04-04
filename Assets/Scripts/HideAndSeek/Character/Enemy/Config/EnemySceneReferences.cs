@@ -1,0 +1,13 @@
+﻿using System;
+using UnityEngine;
+
+namespace HideAndSeek
+{
+    [Serializable]
+    public class EnemySceneReferences
+    {
+        [field: SerializeField] public EnemyConfig Config { get; private set; }
+        [field: SerializeField] public Transform SpawnPosition { get; private set; }
+        [field: SerializeField] public Transform[] PatrolPoints { get; private set; }
+    }
+}

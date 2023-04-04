@@ -51,6 +51,21 @@ namespace HideAndSeek.AI
             }
         }
 
+        public void SetOnly(T type, float score)
+        {
+            foreach (var action in _actions)
+            {
+                if (action.Key.Equals(type))
+                {
+                    action.Value.AddScore(score);
+                }
+                else
+                {
+                    action.Value.Disable();
+                }
+            }
+        }
+
         public void ToDefault()
         {
             foreach (IAction action in _actions.Values)

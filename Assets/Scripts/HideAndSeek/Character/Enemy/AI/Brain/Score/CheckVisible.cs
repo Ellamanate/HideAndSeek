@@ -17,12 +17,11 @@ namespace HideAndSeek.AI
         {
             if (_vision.PlayerVisible)
             {
-                _actions.AddScoreTo(OrderActionType.Chase, 1);
+                _actions.SetOnly(OrderActionType.Chase, 1);
             }
             else
             {
                 _actions.Disable(OrderActionType.Chase);
-                _actions.AddScoreTo(OrderActionType.Patrol, 1);
             }
         }
 

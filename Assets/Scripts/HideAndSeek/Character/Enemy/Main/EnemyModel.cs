@@ -12,6 +12,7 @@ namespace HideAndSeek
         public Vector3 Destination;
         public LayerMask RaycastLayers;
         public float RepathTime;
+        public float AttentivenesDeclineTime;
         public bool Active;
         public bool Moved;
 
@@ -47,10 +48,12 @@ namespace HideAndSeek
             CounterTypes = config.Counters;
             RaycastLayers = config.RaycastLayers;
             RepathTime = config.RepathTime;
+            AttentivenesDeclineTime = config.AttentivenesDeclineTime;
         }
 
         public float Speed => _currentAttentivenessData.Speed;
         public float VisionDistance => _currentAttentivenessData.VisionDistance;
+        public float WakeUpTimer => _currentAttentivenessData.WakeUpTimer;
 
         public EnemyModel(EnemyModel anotherModel)
         {
@@ -69,6 +72,7 @@ namespace HideAndSeek
             Destination = anotherModel.Destination;
             RaycastLayers = anotherModel.RaycastLayers;
             RepathTime = anotherModel.RepathTime;
+            AttentivenesDeclineTime = anotherModel.AttentivenesDeclineTime;
             Active = anotherModel.Active;
             Moved = anotherModel.Moved;
         }

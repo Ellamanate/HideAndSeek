@@ -1,5 +1,4 @@
-﻿using System;
-using HideAndSeek.AI;
+﻿using HideAndSeek.AI;
 using HideAndSeek.Utils;
 using Zenject;
 
@@ -13,16 +12,17 @@ namespace HideAndSeek
             Container.Bind<EnemySpawner>().AsSingle();
 
             Container
-                .BindFactory<EnemyModel, EnemyBody, Enemy, Enemy.Factory>()
+                .BindFactory<EnemyModel, EnemyBody, EnemySceneConfig, Enemy, Enemy.Factory>()
                 .FromSubContainerResolve()
                 .ByMethod(InstallEnemy)
                 .AsSingle();
         }
 
-        private void InstallEnemy(DiContainer container, EnemyModel model, EnemyBody body)
+        private void InstallEnemy(DiContainer container, EnemyModel model, EnemyBody body, EnemySceneConfig sceneConfig)
         {
             container.Bind<EnemyModel>().FromInstance(model);
             container.Bind<EnemyBody>().FromInstance(body);
+            container.Bind<EnemySceneConfig>().FromInstance(sceneConfig);
 
             BindEnemy(container);
             BindBrain(container);
@@ -35,7 +35,9 @@ namespace HideAndSeek
             container.BindInterfacesAndSelfTo<EnemyVision>().AsSingle().NonLazy();
             container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle().NonLazy();
             container.BindInterfacesAndSelfTo<EnemyTouch>().AsSingle().NonLazy();
-            container.BindInterfacesAndSelfTo<EnemyRelaxUpdate>().AsSingle().NonLazy();
+            container.BindInterfacesAndSelfTo<EnemyAttentivenessUpdate>().AsSingle().NonLazy();
+            container.BindInterfacesAndSelfTo<EnemyWakeUp>().AsSingle().NonLazy();
+            container.BindInterfacesAndSelfTo<EnemyPatrol>().AsSingle().NonLazy();
         }
 
         private void BindBrain(DiContainer container)
@@ -59,9 +61,9 @@ namespace HideAndSeek
 
         private void BindOrderScore(DiContainer container)
         {
-            container
-                .BindFactory<CheckVisible, CheckVisible.Factory>()
-                .AsSingle();
+            container.BindFactory<CheckVisible, CheckVisible.Factory>().AsSingle();
+            container.BindFactory<CheckSleep, CheckSleep.Factory>().AsSingle();
+            container.BindFactory<CheckSearching, CheckSearching.Factory>().AsSingle();
         }
 
         private static void BindUtils(DiContainer container)

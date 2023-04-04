@@ -6,6 +6,8 @@ namespace HideAndSeek.AI
     public enum OrderCounterType
     {
         None = 0,
-        CheckVisible = 1 << 0
+        CheckVisible = 1 << 0,
+        CheckSleep = 1 << 1,
+        CheckSearching = 1 << 2
     }
 }

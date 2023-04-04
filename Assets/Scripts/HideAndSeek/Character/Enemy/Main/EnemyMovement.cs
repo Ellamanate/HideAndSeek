@@ -32,22 +32,22 @@ namespace HideAndSeek
             _pause = pause;
             _token = new CancellationTokenSource();
 
-            _enemy.OnReseted += Reset;
+            _enemy.OnInitialized += Reset;
             _enemy.OnActiveChanged += Reset;
         }
 
         public void Dispose()
         {
-            _token.CancelAndDispose();
-            _enemy.OnReseted -= Reset;
+            _enemy.OnInitialized -= Reset;
             _enemy.OnActiveChanged -= Reset;
+            _token.CancelAndDispose();
         }
         
         public void Tick()
         {
             if (NeedStop)
             {
-                _enemy.Stop();
+                _enemy.StopMovement();
             }
         }
 

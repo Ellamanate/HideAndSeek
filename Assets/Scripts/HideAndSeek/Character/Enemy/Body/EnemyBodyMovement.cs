@@ -6,8 +6,7 @@ namespace HideAndSeek
     public class EnemyBodyMovement : MonoBehaviour
     {
         [field: SerializeField] public NavMeshAgent NavMeshAgent { get; private set; }
-        [field: SerializeField] public Rigidbody Rigidbody { get; private set; }
-        
+
         public bool IsStopped => NavMeshAgent.isStopped;
         public bool PathPending => NavMeshAgent.pathPending;
         public bool HasPath => NavMeshAgent.hasPath;

@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Attentiveness>k__BackingField:
     Speed: 1.5
-    VisionDistance: 3
+    VisionDistance: 4
+    WakeUpTimer: 3.5

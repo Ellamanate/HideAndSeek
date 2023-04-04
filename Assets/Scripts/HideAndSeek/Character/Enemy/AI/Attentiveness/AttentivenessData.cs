@@ -7,5 +7,6 @@ namespace HideAndSeek.AI
     {
         public float Speed;
         public float VisionDistance;
+        public float WakeUpTimer;
     }
 }

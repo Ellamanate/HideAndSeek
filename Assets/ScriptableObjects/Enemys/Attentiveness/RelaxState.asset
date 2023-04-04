@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: RelaxState
   m_EditorClassIdentifier: 
   <Attentiveness>k__BackingField:
-    Speed: 1.5
-    VisionDistance: 2
+    Speed: 1
+    VisionDistance: 3
+    WakeUpTimer: 2

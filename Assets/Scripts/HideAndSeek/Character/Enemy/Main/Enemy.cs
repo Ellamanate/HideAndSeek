@@ -7,10 +7,12 @@ namespace HideAndSeek
 {
     public class Enemy : IDisposable, ITickable, IDestroyable, ITransformable
     {
-        public event Action OnReseted;
+        public event Action OnInitialized;
         public event Action OnDestroyed;
         public event Action OnActiveChanged;
         public event Action OnAttentivenesChanged;
+        public event Action OnStopped;
+        public event Action OnDestinationChanged;
         public event Action<IInteractable> OnInteractableEnter;
         public event Action<IInteractable> OnInteractableExit;
 
@@ -35,6 +37,7 @@ namespace HideAndSeek
             _body.InteractableTrigger.OnExit += InteractableExit;
         }
 
+        public Vector3 RaycastPosition => _body.RaycastPosition.position;
         public Vector3 Position => Model.Position;
         public Quaternion Rotation => Model.Rotation;
 
@@ -62,6 +65,8 @@ namespace HideAndSeek
             SetPosition(Model.Position);
             SetRotation(Model.Rotation);
             Stop();
+
+            OnInitialized?.Invoke();
         }
 
         public void Tick()
@@ -73,14 +78,6 @@ namespace HideAndSeek
             }
         }
 
-        public void Reset()
-        {
-            Stop();
-            UpdateAttentiveness(AttentivenessType.Relax);
-
-            OnReseted?.Invoke();
-        }
-
         public void SetActive(bool active)
         {
             if (!Model.Destroyed && Model.Active != active)
@@ -89,7 +86,7 @@ namespace HideAndSeek
 
                 if (!active)
                 {
-                    Stop();
+                    StopMovement();
                 }
 
                 OnActiveChanged?.Invoke();
@@ -129,16 +126,24 @@ namespace HideAndSeek
                 _body.Movement.MoveTo(destination);
                 Model.Destination = destination;
                 Model.Moved = true;
+                OnDestinationChanged?.Invoke();
             }
         }
 
-        public void Stop()
+        public void StopMovement()
         {
             if (!Model.Destroyed)
             {
-                _body.Movement.Stop();
-                Model.Moved = false;
+                Stop();
+                OnStopped?.Invoke();
             }
+        }
+
+        private void Stop()
+        {
+            _body.Movement.Stop();
+            Model.Moved = false;
+            GameLogger.Log("Enemy stopped");
         }
 
         private void UpdateAttentiveness(AttentivenessType attentiveness)
@@ -158,6 +163,6 @@ namespace HideAndSeek
         private void InteractableEnter(IInteractable interactable) => OnInteractableEnter?.Invoke(interactable);
         private void InteractableExit(IInteractable interactable) => OnInteractableExit?.Invoke(interactable);
 
-        public class Factory : PlaceholderFactory<EnemyModel, EnemyBody, Enemy> { }
+        public class Factory : PlaceholderFactory<EnemyModel, EnemyBody, EnemySceneConfig, Enemy> { }
     }
 }

@@ -27,7 +27,7 @@ namespace HideAndSeek
         {
             foreach (var enemyData in _references.Enemys)
             {
-                Enemy enemy = _factory.Create(enemyData.Config, _references.EnemysParent, enemyData.Position.position, enemyData.Position.rotation);
+                Enemy enemy = _factory.Create(enemyData, _references.EnemysParent);
 
                 AddEnemy(enemy);
 
@@ -43,6 +43,7 @@ namespace HideAndSeek
             {
                 keyValue.Key.Model.CopyFrom(keyValue.Value);
                 keyValue.Key.Initialize();
+                keyValue.Key.UpdateAction();
             }
         }
 

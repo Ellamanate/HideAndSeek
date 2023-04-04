@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: ChaseState
   m_EditorClassIdentifier: 
   <Attentiveness>k__BackingField:
-    Speed: 1
-    VisionDistance: 4
+    Speed: 1.5
+    VisionDistance: 5
+    WakeUpTimer: 2
