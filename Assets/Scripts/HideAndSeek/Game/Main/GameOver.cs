@@ -1,17 +1,20 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace HideAndSeek
 {
     public class GameOver
     {
         private readonly MainGameMediator _mediator;
+        private readonly Player _player;
         private readonly PlayerInput _playerInput;
         private readonly EnemySpawner _enemySpawner;
 
-        public GameOver(MainGameMediator mediator, PlayerInput playerInput, EnemySpawner enemySpawner)
+        public GameOver(MainGameMediator mediator, Player player, PlayerInput playerInput, EnemySpawner enemySpawner)
         {
             _mediator = mediator;
+            _player = player;
             _playerInput = playerInput;
             _enemySpawner = enemySpawner;
         }
@@ -19,6 +22,7 @@ namespace HideAndSeek
         public async UniTask FailGame(CancellationToken token)
         {
             _playerInput.SetActive(false);
+            _player.SetVelocity(Vector3.zero);
 
             DisableEnemys();
 
@@ -31,6 +35,7 @@ namespace HideAndSeek
         public async UniTask CompleteGame(CancellationToken token)
         {
             _playerInput.SetActive(false);
+            _player.SetVelocity(Vector3.zero);
 
             DisableEnemys();
 

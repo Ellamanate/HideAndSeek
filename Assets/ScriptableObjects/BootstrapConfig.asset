@@ -26,4 +26,4 @@ MonoBehaviour:
       Data: false
     - Name: StartScene
       Entry: 3
-      Data: 1
+      Data: 0

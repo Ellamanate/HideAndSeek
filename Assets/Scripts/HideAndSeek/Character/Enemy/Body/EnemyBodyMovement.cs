@@ -17,8 +17,19 @@ namespace HideAndSeek
 
         public void SetRotation(Quaternion rotation) => transform.rotation = rotation;
         public bool Warp(Vector3 position) => NavMeshAgent.Warp(position);
-        public void MoveTo(Vector3 destination) => NavMeshAgent.SetDestination(destination);
         public void SetMaxSpeed(float speed) => NavMeshAgent.speed = speed;
-        public void Stop() => NavMeshAgent.ResetPath();
+
+        public void MoveTo(Vector3 destination)
+        {
+            NavMeshAgent.isStopped = false;
+            NavMeshAgent.SetDestination(destination);
+        }
+
+        public void Stop()
+        {
+            NavMeshAgent.velocity = Vector3.zero;
+            NavMeshAgent.isStopped = true;
+            NavMeshAgent.ResetPath();
+        }
     }
 }

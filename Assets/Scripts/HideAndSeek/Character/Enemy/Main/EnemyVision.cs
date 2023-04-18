@@ -41,26 +41,51 @@ namespace HideAndSeek
         {
             Vector3 direction = _player.RaycastPosition - _enemy.RaycastPosition;
 
+            if (DistanceValid() && AngleValid())
+            {
+                RaycastToPlayer(direction);
+            }
+            else if (PlayerVisible)
+            {
+                SetInvisible();
+            }
+
+            bool DistanceValid() => direction.magnitude <= _enemy.Model.VisionDistance;
+            bool AngleValid() => Vector3.Angle(_enemy.Model.Forward, direction) <= _enemy.Model.VisionAngle / 2;
+        }
+
+        private void RaycastToPlayer(Vector3 direction)
+        {
             if (Raycast(out RaycastHit hit) && _player.HittedBody(hit))
             {
                 GameLogger.DrawLine(_enemy.RaycastPosition, hit.point);
 
                 if (!PlayerVisible)
                 {
-                    PlayerVisible = true;
-                    _enemy.SetAttentiveness(AttentivenessType.Chase);
-                    _enemy.UpdateAction();
+                    SetVisible();
                 }
             }
             else if (PlayerVisible)
             {
-                PlayerVisible = false;
-                _enemy.SetAttentiveness(AttentivenessType.Seaching);
-                _enemy.UpdateAction();
+                SetInvisible();
             }
 
             bool Raycast(out RaycastHit hit) => Physics.Raycast(_enemy.RaycastPosition, direction, out hit,
                 _enemy.Model.VisionDistance, _enemy.Model.RaycastLayers);
+        }
+
+        private void SetVisible()
+        {
+            PlayerVisible = true;
+            _enemy.SetAttentiveness(AttentivenessType.Chase);
+            _enemy.UpdateAction();
+        }
+
+        private void SetInvisible()
+        {
+            PlayerVisible = false;
+            _enemy.SetAttentiveness(AttentivenessType.Seaching);
+            _enemy.UpdateAction();
         }
 
         private void Reset()

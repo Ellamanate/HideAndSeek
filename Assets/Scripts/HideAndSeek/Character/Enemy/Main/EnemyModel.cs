@@ -53,7 +53,9 @@ namespace HideAndSeek
 
         public float Speed => _currentAttentivenessData.Speed;
         public float VisionDistance => _currentAttentivenessData.VisionDistance;
+        public float VisionAngle => _currentAttentivenessData.VisionAngle;
         public float WakeUpTimer => _currentAttentivenessData.WakeUpTimer;
+        public ConeData ConeData => _currentAttentivenessData.ConeData;
 
         public EnemyModel(EnemyModel anotherModel)
         {

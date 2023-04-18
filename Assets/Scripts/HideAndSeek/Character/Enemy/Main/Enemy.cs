@@ -61,6 +61,8 @@ namespace HideAndSeek
             _actions.Initialize(Model.ActionTypes);
             _execution.Initialize(Model.CounterTypes);
             _body.Movement.SetMaxSpeed(Model.Speed);
+            _body.VisionCone.SetConeData(Model.ConeData);
+            _body.VisionCone.Initialize();
 
             SetPosition(Model.Position);
             SetRotation(Model.Rotation);
@@ -150,6 +152,7 @@ namespace HideAndSeek
         {
             Model.CurrentAttentiveness = attentiveness;
             _body.Movement.SetMaxSpeed(Model.Speed);
+            _body.VisionCone.SetConeData(Model.ConeData);
             GameLogger.Log($"Attentiveness: {attentiveness}");
         }
 
