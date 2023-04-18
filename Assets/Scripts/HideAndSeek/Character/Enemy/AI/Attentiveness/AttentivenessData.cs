@@ -6,8 +6,8 @@ namespace HideAndSeek.AI
     public struct AttentivenessData
     {
         public float Speed;
-        public float VisionDistance;
         public float VisionAngle;
+        public float VisionDistance;
         public float TimeToDetect;
         public float WakeUpTimer;
         public ConeData ConeData;

@@ -8,13 +8,16 @@ namespace HideAndSeek
         private readonly PlayerModel _model;
         private readonly PlayerConfig _config;
         private readonly GameSceneReferences _sceneReferences;
+        private readonly MainCamera _mainCamera;
 
-        public PlayerFactory(Player player, PlayerModel model, PlayerConfig config, GameSceneReferences sceneReferences)
+        public PlayerFactory(Player player, PlayerModel model, PlayerConfig config, 
+            GameSceneReferences sceneReferences, MainCamera mainCamera)
         {
             _player = player;
             _model = model;
             _config = config;
             _sceneReferences = sceneReferences;
+            _mainCamera = mainCamera;
         }
 
         public void Create()
@@ -29,6 +32,7 @@ namespace HideAndSeek
             _model.Speed = _config.Speed;
 
             _player.Initialize(body);
+            _mainCamera.SetPlayer(body.transform);
         }
     }
 }
