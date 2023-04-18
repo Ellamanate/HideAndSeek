@@ -11,6 +11,8 @@ namespace HideAndSeek
         private readonly Player _player;
         private readonly GamePause _pause;
 
+        private float _detectionTimer;
+
         public bool PlayerVisible { get; private set; }
 
         public EnemyVision(Enemy enemy, Player player, GamePause pause)
@@ -27,6 +29,12 @@ namespace HideAndSeek
         {
             _enemy.OnInitialized -= Reset;
             _enemy.OnActiveChanged -= Reset;
+        }
+
+        private void Reset()
+        {
+            _detectionTimer = 0;
+            PlayerVisible = false;
         }
 
         public void Tick()
@@ -60,16 +68,20 @@ namespace HideAndSeek
             {
                 GameLogger.DrawLine(_enemy.RaycastPosition, hit.point);
 
-                if (!PlayerVisible)
+                UpdateTimer(Time.deltaTime);
+
+                if (!PlayerVisible && PlayerDetected())
                 {
                     SetVisible();
                 }
             }
             else if (PlayerVisible)
             {
+                UpdateTimer(-Time.deltaTime);
                 SetInvisible();
             }
 
+            bool PlayerDetected() => _detectionTimer + Time.deltaTime > _enemy.Model.TimeToDetect;
             bool Raycast(out RaycastHit hit) => Physics.Raycast(_enemy.RaycastPosition, direction, out hit,
                 _enemy.Model.VisionDistance, _enemy.Model.RaycastLayers);
         }
@@ -88,9 +100,9 @@ namespace HideAndSeek
             _enemy.UpdateAction();
         }
 
-        private void Reset()
+        private void UpdateTimer(float value)
         {
-            PlayerVisible = false;
+            _detectionTimer = Mathf.Clamp(_detectionTimer + value, 0, _enemy.Model.TimeToDetect);
         }
     }
 }

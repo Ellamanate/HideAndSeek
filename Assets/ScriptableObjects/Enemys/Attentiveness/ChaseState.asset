@@ -16,6 +16,7 @@ MonoBehaviour:
     Speed: 2
     VisionDistance: 5
     VisionAngle: 60
+    TimeToDetect: 0
     WakeUpTimer: 2
     ConeData:
       VisionColor: {r: 0.990566, g: 0.37638074, b: 0.3317462, a: 0.39215687}
