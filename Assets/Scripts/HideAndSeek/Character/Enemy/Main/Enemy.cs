@@ -80,6 +80,11 @@ namespace HideAndSeek
             }
         }
 
+        public void SetParent(Transform parent)
+        {
+            _body.transform.SetParent(parent);
+        }
+
         public void SetActive(bool active)
         {
             if (!Model.Destroyed && Model.Active != active)
@@ -97,7 +102,10 @@ namespace HideAndSeek
 
         public void UpdateAction()
         {
-            _execution.Execute();
+            if (!Model.Destroyed && Model.Active)
+            {
+                _execution.Execute();
+            }
         }
 
         public void SetAttentiveness(AttentivenessType attentiveness)

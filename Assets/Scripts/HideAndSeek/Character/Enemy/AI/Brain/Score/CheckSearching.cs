@@ -17,13 +17,13 @@ namespace HideAndSeek.AI
 
         public void CalculateScore()
         {
-            if (_enemy.Model.Moved && Searching() && NotPatrol())
+            if (_enemy.Model.Moved && SearchingState() && DestinationNotPatrol())
             {
                 _actions.AddScoreTo(OrderActionType.Search, 0.5f);
             }
 
-            bool Searching() => _enemy.Model.CurrentAttentiveness == AttentivenessType.Seaching;
-            bool NotPatrol() => !_patrol.IsPatrolPoint(_enemy.Model.Destination);
+            bool SearchingState() => _enemy.Model.CurrentAttentiveness == AttentivenessType.Seaching;
+            bool DestinationNotPatrol() => !_patrol.IsPatrolPoint(_enemy.Model.Destination);
         }
 
         public class Factory : PlaceholderFactory<CheckSearching> { }

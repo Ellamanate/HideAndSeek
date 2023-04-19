@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-
-namespace HideAndSeek
+﻿namespace HideAndSeek
 {
     public class EnemySceneConfig
     {
-        public Vector3[] PatrolPositions;
+        public PatrolPoint[] PatrolPositions;
     }
 }

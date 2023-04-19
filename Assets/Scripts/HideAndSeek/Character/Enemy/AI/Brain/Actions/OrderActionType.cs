@@ -9,6 +9,6 @@ namespace HideAndSeek.AI
         Idle = 1 << 0,
         Chase = 1 << 1,
         Search = 1 << 2,
-        Patrol = 1 << 3
+        Patrol = 1 << 3,
     }
 }

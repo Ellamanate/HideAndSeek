@@ -19,7 +19,7 @@ namespace HideAndSeek
 
             var sceneConfig = new EnemySceneConfig
             {
-                PatrolPositions = spawnData.PatrolPoints.Where(x => x != null).Select(x => x.position).ToArray()
+                PatrolPositions = spawnData.PatrolPoints.ToArray()
             };
 
             var enemy = _enemyFactory.Create(enemyModel, body, sceneConfig);
