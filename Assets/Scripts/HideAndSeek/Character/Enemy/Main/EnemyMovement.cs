@@ -9,57 +9,77 @@ namespace HideAndSeek
 {
     public class EnemyMovement : IDisposable, ITickable
     {
-        private readonly Enemy _enemy;
+        private readonly EnemyModel _model;
         private readonly EnemyBody _body;
+        private readonly EnemyPatrol _patrol;
+        private readonly EnemyUpdateBrain _brain;
         private readonly GamePause _pause;
 
         private CancellationTokenSource _token;
         private ITransformable _target;
 
-        public float StoppingDistance => _body.Movement.StoppingDistance;
-        public bool Moved => _enemy.Model.Moved && !_body.Movement.IsStopped && !_body.Movement.PathPending;
+        public bool Moved => _model.Moved && !_body.Movement.IsStopped && !_body.Movement.PathPending;
 
+        private float StoppingDistance => _body.Movement.StoppingDistance;
         private bool NeedStop => Moved && (HasPathAndCompleted || NoPathAndMove);
         private bool HasPathAndCompleted => _body.Movement.HasPath && PathCompleted;
         private bool NoPathAndMove => !_body.Movement.HasPath 
             && (PathCompleted || (_body.Movement.Velocity.sqrMagnitude <= 0.01f && _body.Movement.Acceleration <= 0.01f));
         private bool PathCompleted => _body.Movement.RemainingDistance <= StoppingDistance;
 
-        public EnemyMovement(Enemy enemy, EnemyBody body, GamePause pause)
+        public EnemyMovement(EnemyModel model, EnemyBody body, EnemyPatrol patrol, EnemyUpdateBrain brain, GamePause pause)
         {
-            _enemy = enemy;
+            _model = model;
             _body = body;
+            _patrol = patrol;
+            _brain = brain;
             _pause = pause;
             _token = new CancellationTokenSource();
-
-            _enemy.OnInitialized += Reset;
-            _enemy.OnActiveChanged += Reset;
         }
 
         public void Dispose()
         {
-            _enemy.OnInitialized -= Reset;
-            _enemy.OnActiveChanged -= Reset;
             _token.CancelAndDispose();
         }
         
         public void Tick()
         {
-            if (NeedStop)
+            if (!_model.Destroyed && _model.Active && NeedStop && !_pause.Paused)
             {
-                _enemy.StopMovement();
+                StopMovement();
             }
         }
 
         public void MoveTo(Vector3 destination)
         {
-            StopChase();
-            _enemy.MoveTo(destination);
+            if (!_model.Destroyed && _model.Active)
+            {
+                StopChase();
+                SetDestination(destination);
+            }
         }
 
+        public void StopMovement()
+        {
+            if (!_model.Destroyed)
+            {
+                StopChase();
+
+                _body.Movement.Stop();
+                _model.Moved = false;
+
+                if (_model.Active && !_patrol.TryApplyPosition())
+                {
+                    _brain.UpdateAction();
+                }
+
+                GameLogger.Log("Enemy stopped");
+            }
+        }
+        
         public void ChaseTo(ITransformable target)
         {
-            if (!_enemy.Model.Destroyed)
+            if (!_model.Destroyed)
             {
                 _target = target;
 
@@ -74,21 +94,23 @@ namespace HideAndSeek
             _target = null;
         }
 
-        private void Reset()
+        private void SetDestination(Vector3 destination)
         {
-            StopChase();
+            _body.Movement.MoveTo(destination);
+            _model.Destination = destination;
+            _model.Moved = true;
         }
 
         private async UniTask UpdateChase(CancellationToken token)
         {
-            while (!token.IsCancellationRequested && _target != null)
+            while (!_model.Destroyed && _model.Active && !token.IsCancellationRequested && _target != null)
             {
                 if (!_pause.Paused)
                 {
-                    _enemy.MoveTo(_target.Position);
+                    SetDestination(_target.Position);
                 }
 
-                await UniTask.Delay(TimeSpan.FromSeconds(_enemy.Model.RepathTime), cancellationToken: token);
+                await UniTask.Delay(TimeSpan.FromSeconds(_model.RepathTime), cancellationToken: token);
             }
         }
     }

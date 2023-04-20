@@ -12,6 +12,13 @@ namespace HideAndSeek
         [field: SerializeField] public Transform RaycastPosition { get; private set; }
         [field: SerializeField] public ConeOfSightRenderer VisionCone { get; private set; }
 
+        public Quaternion SightRotation => VisionCone.transform.rotation;
+
+        public void SetViewRotation(Quaternion rotation)
+        {
+            VisionCone.transform.rotation = rotation;
+        }
+
         private void OnDestroy()
         {
             OnDestroyed?.Invoke();

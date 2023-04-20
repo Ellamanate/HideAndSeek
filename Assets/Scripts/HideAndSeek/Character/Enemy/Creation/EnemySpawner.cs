@@ -6,11 +6,23 @@ namespace HideAndSeek
 {
     public class EnemySpawner
     {
+        private class EnemySpawnData
+        {
+            public readonly Enemy Enemy;
+            public readonly EnemyModel DefaultModel;
+
+            public EnemySpawnData(Enemy enemy, EnemyModel defaultModel)
+            {
+                Enemy = enemy;
+                DefaultModel = defaultModel;
+            }
+        } 
+
         private readonly EnemyFactory _factory;
         private readonly GameSceneReferences _references;
         private readonly List<Enemy> _enemys;
         private readonly ReadOnlyCollection<Enemy> _readonlyEnemys;
-        private readonly Dictionary<Enemy, EnemyModel> _spawnedEnemys;
+        private readonly Dictionary<string, EnemySpawnData> _spawnedEnemys;
 
         public EnemySpawner(EnemyFactory factory, GameSceneReferences references)
         {
@@ -18,7 +30,7 @@ namespace HideAndSeek
             _references = references;
             _enemys = new List<Enemy>();
             _readonlyEnemys = new ReadOnlyCollection<Enemy>(_enemys);
-            _spawnedEnemys = new Dictionary<Enemy, EnemyModel>();
+            _spawnedEnemys = new Dictionary<string, EnemySpawnData>();
         }
 
         public IReadOnlyCollection<Enemy> Enemys => _readonlyEnemys;
@@ -39,12 +51,24 @@ namespace HideAndSeek
 
         public void ResetEnemys()
         {
-            foreach (var keyValue in _spawnedEnemys)
+            foreach (var spawnData in _spawnedEnemys.Values)
             {
-                keyValue.Key.Model.CopyFrom(keyValue.Value);
-                keyValue.Key.Initialize();
-                keyValue.Key.UpdateAction();
+                spawnData.Enemy.Model.CopyFrom(spawnData.DefaultModel);
+                spawnData.Enemy.Initialize();
+                spawnData.Enemy.Brain.UpdateAction();
             }
+        }
+
+        public bool TryGetEnemy(string id, out Enemy enemy)
+        {
+            if (_spawnedEnemys.TryGetValue(id, out EnemySpawnData spawnData))
+            {
+                enemy = spawnData.Enemy;
+                return true;
+            }
+
+            enemy = null;
+            return false;
         }
 
         private void Destroy(Enemy enemy, Action action)
@@ -56,17 +80,17 @@ namespace HideAndSeek
 
         private void AddEnemy(Enemy enemy)
         {
-            if (!_enemys.Contains(enemy))
+            if (!_spawnedEnemys.ContainsKey(enemy.Id))
             {
                 _enemys.Add(enemy);
-                _spawnedEnemys.Add(enemy, new EnemyModel(enemy.Model));
+                _spawnedEnemys.Add(enemy.Id, new EnemySpawnData(enemy, new EnemyModel(enemy.Model)));
             }
         }
 
         private void RemoveEnemy(Enemy enemy)
         {
             _enemys.Remove(enemy);
-            _spawnedEnemys.Remove(enemy);
+            _spawnedEnemys.Remove(enemy.Id);
         }
     }
 }

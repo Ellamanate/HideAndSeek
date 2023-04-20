@@ -9,8 +9,9 @@ namespace HideAndSeek
 {
     public class EnemyPatrol : IDisposable
     {
-        private readonly Enemy _enemy;
-        private readonly EnemyMovement _movement;
+        private readonly EnemyModel _model;
+        private readonly EnemyBody _body;
+        private readonly EnemyUpdateBrain _brain;
         private readonly EnemySceneConfig _enemySceneConfig;
 
         private CancellationTokenSource _token;
@@ -18,31 +19,31 @@ namespace HideAndSeek
 
         public bool PlayingLookAround { get; private set; }
 
-        public EnemyPatrol(Enemy enemy, EnemyMovement movement, EnemySceneConfig enemySceneConfig)
+        public EnemyPatrol(EnemyModel model, EnemyBody body, EnemyUpdateBrain brain,
+            EnemySceneConfig enemySceneConfig)
         {
-            _enemy = enemy;
-            _movement = movement;
+            _model = model;
+            _body = body;
+            _brain = brain;
             _enemySceneConfig = enemySceneConfig;
-
-            _enemy.OnInitialized += Reset;
-            _enemy.OnStopped += ApplyPosition;
-            _enemy.OnDestinationChanged += CancelLookAround;
-            _enemy.OnDestroyed += CancelLookAround;
         }
 
         public void Dispose()
         {
-            _enemy.OnInitialized -= Reset;
-            _enemy.OnStopped -= ApplyPosition;
-            _enemy.OnDestinationChanged -= CancelLookAround;
-            _enemy.OnDestroyed -= CancelLookAround;
             _token.CancelAndDispose();
         }
 
-        public void Patrol()
+        public void Initialize()
+        {
+            _currentPatrolIndex = 0;
+            PlayingLookAround = false;
+            _token.TryCancel();
+        }
+
+        public Vector3 GetCurrentPatrolPosition()
         {
             var currentPatrolPoint = _enemySceneConfig.PatrolPositions[_currentPatrolIndex];
-            _movement.MoveTo(currentPatrolPoint.transform.position);
+            return currentPatrolPoint.transform.position;
         }
 
         public bool IsPatrolPoint(Vector3 position)
@@ -50,11 +51,11 @@ namespace HideAndSeek
             return _enemySceneConfig.PatrolPositions.Any(x => x.transform.position == position);
         }
 
-        private void ApplyPosition()
+        public bool TryApplyPosition()
         {
             var currentPatrolPoint = _enemySceneConfig.PatrolPositions[_currentPatrolIndex];
 
-            if (Vector3.Distance(_enemy.Model.Position, currentPatrolPoint.transform.position) < _movement.StoppingDistance)
+            if (Vector3.Distance(_model.Position, currentPatrolPoint.transform.position) < _body.Movement.StoppingDistance)
             {
                 _currentPatrolIndex++;
 
@@ -65,22 +66,19 @@ namespace HideAndSeek
                 {
                     _currentPatrolIndex = 0;
                 }
+
+                return true;
             }
+
+            return false;
         }
 
-        private void CancelLookAround()
+        public void CancelLookAround()
         {
             if (PlayingLookAround)
             {
                 _token.TryCancel();
             }
-        }
-
-        private void Reset()
-        {
-            _currentPatrolIndex = 0;
-            PlayingLookAround = false;
-            _token.TryCancel();
         }
 
         private async UniTask LookAround(PatrolPoint point, CancellationToken token)
@@ -89,10 +87,10 @@ namespace HideAndSeek
             {
                 PlayingLookAround = true;
 
-                await point.PlayAnimation(_enemy, token);
+                await point.PlayAnimation(_model.Id, token);
 
                 PlayingLookAround = false;
-                _enemy.UpdateAction();
+                _brain.UpdateAction();
             }
             finally
             {

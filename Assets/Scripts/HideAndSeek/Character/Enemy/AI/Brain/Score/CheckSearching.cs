@@ -19,7 +19,7 @@ namespace HideAndSeek.AI
         {
             if (_enemy.Model.Moved && SearchingState() && DestinationNotPatrol())
             {
-                _actions.AddScoreTo(OrderActionType.Search, 0.5f);
+                _actions.AddScoreTo(OrderActionType.Patrol, 0.5f);
             }
 
             bool SearchingState() => _enemy.Model.CurrentAttentiveness == AttentivenessType.Seaching;

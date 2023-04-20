@@ -1,13 +1,14 @@
-﻿using System;
-using HideAndSeek.AI;
+﻿using HideAndSeek.AI;
 using UnityEngine;
 using Zenject;
 
 namespace HideAndSeek
 {
-    public class EnemyVision : ITickable, IDisposable
+    public class EnemyVision : ITickable
     {
-        private readonly Enemy _enemy;
+        private readonly EnemyModel _model;
+        private readonly EnemyUpdateBody _updateBody;
+        private readonly EnemyUpdateBrain _brain;
         private readonly Player _player;
         private readonly GamePause _pause;
 
@@ -15,23 +16,17 @@ namespace HideAndSeek
 
         public bool PlayerVisible { get; private set; }
 
-        public EnemyVision(Enemy enemy, Player player, GamePause pause)
+        public EnemyVision(EnemyModel model, EnemyUpdateBody updateBody, EnemyUpdateBrain brain,
+            Player player, GamePause pause)
         {
-            _enemy = enemy;
+            _model = model;
+            _updateBody = updateBody;
+            _brain = brain;
             _player = player;
             _pause = pause;
-
-            _enemy.OnInitialized += Reset;
-            _enemy.OnActiveChanged += Reset;
-        }
-        
-        public void Dispose()
-        {
-            _enemy.OnInitialized -= Reset;
-            _enemy.OnActiveChanged -= Reset;
         }
 
-        private void Reset()
+        public void Initialize()
         {
             _detectionTimer = 0;
             PlayerVisible = false;
@@ -39,7 +34,7 @@ namespace HideAndSeek
 
         public void Tick()
         {
-            if (!_enemy.Model.Destroyed && _enemy.Model.Active && _player.Available && !_pause.Paused)
+            if (!_model.Destroyed && _model.Active && _player.Available && !_pause.Paused)
             {
                 Scan();
             }
@@ -47,7 +42,7 @@ namespace HideAndSeek
 
         private void Scan()
         {
-            Vector3 direction = _player.RaycastPosition - _enemy.RaycastPosition;
+            Vector3 direction = _player.RaycastPosition - _updateBody.RaycastPosition;
 
             if (DistanceValid() && AngleValid())
             {
@@ -58,15 +53,15 @@ namespace HideAndSeek
                 SetInvisible();
             }
 
-            bool DistanceValid() => direction.magnitude <= _enemy.Model.VisionDistance;
-            bool AngleValid() => Vector3.Angle(_enemy.Model.Forward, direction) <= _enemy.Model.VisionAngle / 2;
+            bool DistanceValid() => direction.magnitude <= _model.VisionDistance;
+            bool AngleValid() => Vector3.Angle(_model.SightForward, direction) <= _model.VisionAngle / 2;
         }
 
         private void RaycastToPlayer(Vector3 direction)
         {
             if (Raycast(out RaycastHit hit) && _player.HittedBody(hit))
             {
-                GameLogger.DrawLine(_enemy.RaycastPosition, hit.point);
+                GameLogger.DrawLine(_updateBody.RaycastPosition, hit.point);
 
                 UpdateTimer(Time.deltaTime);
 
@@ -81,28 +76,28 @@ namespace HideAndSeek
                 SetInvisible();
             }
 
-            bool PlayerDetected() => _detectionTimer + Time.deltaTime > _enemy.Model.TimeToDetect;
-            bool Raycast(out RaycastHit hit) => Physics.Raycast(_enemy.RaycastPosition, direction, out hit,
-                _enemy.Model.VisionDistance, _enemy.Model.RaycastLayers);
+            bool PlayerDetected() => _detectionTimer + Time.deltaTime > _model.TimeToDetect;
+            bool Raycast(out RaycastHit hit) => Physics.Raycast(_updateBody.RaycastPosition, direction, out hit,
+                _model.VisionDistance, _model.RaycastLayers);
         }
 
         private void SetVisible()
         {
             PlayerVisible = true;
-            _enemy.SetAttentiveness(AttentivenessType.Chase);
-            _enemy.UpdateAction();
+            _brain.SetAttentiveness(AttentivenessType.Chase);
+            _brain.UpdateAction();
         }
 
         private void SetInvisible()
         {
             PlayerVisible = false;
-            _enemy.SetAttentiveness(AttentivenessType.Seaching);
-            _enemy.UpdateAction();
+            _brain.SetAttentiveness(AttentivenessType.Seaching);
+            _brain.UpdateAction();
         }
 
         private void UpdateTimer(float value)
         {
-            _detectionTimer = Mathf.Clamp(_detectionTimer + value, 0, _enemy.Model.TimeToDetect);
+            _detectionTimer = Mathf.Clamp(_detectionTimer + value, 0, _model.TimeToDetect);
         }
     }
 }

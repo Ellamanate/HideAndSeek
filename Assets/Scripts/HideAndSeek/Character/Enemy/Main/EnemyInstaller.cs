@@ -31,12 +31,13 @@ namespace HideAndSeek
 
         private void BindEnemy(DiContainer container)
         {;
-            container.Bind(typeof(Enemy), typeof(ITickable)).To<Enemy>().AsSingle();
-            container.BindInterfacesAndSelfTo<EnemyVision>().AsSingle().NonLazy();
-            container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle().NonLazy();
-            container.BindInterfacesAndSelfTo<EnemyTouch>().AsSingle().NonLazy();
-            container.BindInterfacesAndSelfTo<EnemyAttentivenessUpdate>().AsSingle().NonLazy();
-            container.BindInterfacesAndSelfTo<EnemyPatrol>().AsSingle().NonLazy();
+            container.Bind<Enemy>().AsSingle();
+            container.BindInterfacesAndSelfTo<EnemyVision>().AsSingle();
+            container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle();
+            container.BindInterfacesAndSelfTo<EnemyInteract>().AsSingle();
+            container.BindInterfacesAndSelfTo<EnemyUpdateBrain>().AsSingle();
+            container.BindInterfacesAndSelfTo<EnemyUpdateBody>().AsSingle();
+            container.BindInterfacesAndSelfTo<EnemyPatrol>().AsSingle();
         }
 
         private void BindBrain(DiContainer container)

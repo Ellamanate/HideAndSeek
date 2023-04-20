@@ -6,7 +6,9 @@ namespace HideAndSeek
     public class EnemyFactory
     {
         private readonly Enemy.Factory _enemyFactory;
-        
+
+        private int _spawnIndex;
+
         public EnemyFactory(Enemy.Factory enemyFactory)
         {
             _enemyFactory = enemyFactory;
@@ -14,7 +16,7 @@ namespace HideAndSeek
 
         public Enemy Create(EnemySceneReferences spawnData, Transform parent)
         {
-            var enemyModel = new EnemyModel(spawnData.Config, spawnData.SpawnPosition.position, spawnData.SpawnPosition.rotation);
+            var enemyModel = new EnemyModel(_spawnIndex.ToString(), spawnData.Config, spawnData.SpawnPosition.position, spawnData.SpawnPosition.rotation);
             var body = Object.Instantiate(spawnData.Config.EnemyPrefab, parent);
 
             var sceneConfig = new EnemySceneConfig
@@ -22,9 +24,9 @@ namespace HideAndSeek
                 PatrolPositions = spawnData.PatrolPoints.ToArray()
             };
 
-            var enemy = _enemyFactory.Create(enemyModel, body, sceneConfig);
+            _spawnIndex++;
 
-            return enemy;
+            return _enemyFactory.Create(enemyModel, body, sceneConfig);
         }
     }
 }
