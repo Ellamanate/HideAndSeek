@@ -33,7 +33,7 @@ namespace HideAndSeek
             _token.CancelAndDispose();
         }
 
-        public void Initialize()
+        public void Reinitialize()
         {
             _currentPatrolIndex = 0;
             PlayingLookAround = false;
@@ -51,26 +51,24 @@ namespace HideAndSeek
             return _enemySceneConfig.PatrolPositions.Any(x => x.transform.position == position);
         }
 
-        public bool TryApplyPosition()
+        public bool StandsAtPatrolPoint()
         {
             var currentPatrolPoint = _enemySceneConfig.PatrolPositions[_currentPatrolIndex];
+            return Vector3.Distance(_model.Position, currentPatrolPoint.transform.position) < _body.Movement.StoppingDistance * 2;
+        }
 
-            if (Vector3.Distance(_model.Position, currentPatrolPoint.transform.position) < _body.Movement.StoppingDistance)
+        public void SetNexPatrolPoint()
+        {
+            var currentPatrolPoint = _enemySceneConfig.PatrolPositions[_currentPatrolIndex];
+            _currentPatrolIndex++;
+
+            _token = _token.Refresh();
+            _ = LookAround(currentPatrolPoint, _token.Token);
+
+            if (_currentPatrolIndex >= _enemySceneConfig.PatrolPositions.Length)
             {
-                _currentPatrolIndex++;
-
-                _token = _token.Refresh();
-                _ = LookAround(currentPatrolPoint, _token.Token);
-
-                if (_currentPatrolIndex >= _enemySceneConfig.PatrolPositions.Length)
-                {
-                    _currentPatrolIndex = 0;
-                }
-
-                return true;
+                _currentPatrolIndex = 0;
             }
-
-            return false;
         }
 
         public void CancelLookAround()

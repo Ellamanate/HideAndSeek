@@ -43,29 +43,26 @@ namespace HideAndSeek
 
         public void RestartGame()
         {
+            GameLogger.Log("Restart game");
             GameOver = false;
             _token = _token.Refresh();
             _ = _startGame.Start(_token.Token);
-
-            GameLogger.Log("Game restarted");
         }
 
         public void CompleteGame()
         {
+            GameLogger.Log("Complete game");
             GameOver = true;
             _token = _token.Refresh();
             _ = _gameOver.CompleteGame(_token.Token);
-
-            GameLogger.Log("Game completed");
         }
 
         public void FailGame()
         {
+            GameLogger.Log("Fail game");
             GameOver = true;
             _token = _token.Refresh();
             _ = _gameOver.FailGame(_token.Token);
-
-            GameLogger.Log("Game failed");
         }
 
         public void OpenPauseMenu()

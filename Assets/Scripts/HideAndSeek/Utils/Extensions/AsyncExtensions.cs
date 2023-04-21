@@ -1,9 +1,18 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace HideAndSeek.Utils
 {
     public static class AsyncExtensions
     {
+        public static void CheckCanceled(this CancellationToken token)
+        {
+            if (token.IsCancellationRequested)
+            {
+                throw new OperationCanceledException();
+            }
+        }
+
         public static CancellationTokenSource Refresh(this CancellationTokenSource token)
         {
             if (token != null)

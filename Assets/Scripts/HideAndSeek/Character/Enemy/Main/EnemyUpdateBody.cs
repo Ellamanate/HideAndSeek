@@ -26,7 +26,7 @@ namespace HideAndSeek
         public Vector3 Position => Model.Position;
         public Quaternion Rotation => Model.Rotation;
 
-        public void Initialize()
+        public void Reinitialize()
         {
             _body.Movement.SetMaxSpeed(Model.Speed);
             _body.VisionCone.SetConeData(Model.ConeData);

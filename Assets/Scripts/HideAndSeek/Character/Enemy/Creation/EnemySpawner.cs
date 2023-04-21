@@ -54,7 +54,7 @@ namespace HideAndSeek
             foreach (var spawnData in _spawnedEnemys.Values)
             {
                 spawnData.Enemy.Model.CopyFrom(spawnData.DefaultModel);
-                spawnData.Enemy.Initialize();
+                spawnData.Enemy.Reinitialize();
                 spawnData.Enemy.Brain.UpdateAction();
             }
         }

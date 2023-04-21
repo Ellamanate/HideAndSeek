@@ -28,7 +28,7 @@ namespace HideAndSeek
             _token.CancelAndDispose();
         }
 
-        public void Initialize()
+        public void Reinitialize()
         {
             _actions.Initialize(_model.ActionTypes);
             _execution.Initialize(_model.CounterTypes);

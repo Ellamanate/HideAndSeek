@@ -26,7 +26,7 @@ namespace HideAndSeek
             _pause = pause;
         }
 
-        public void Initialize()
+        public void Reinitialize()
         {
             _detectionTimer = 0;
             PlayerVisible = false;

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Attentiveness>k__BackingField:
     Speed: 1.5
-    VisionDistance: 4
     VisionAngle: 60
+    VisionDistance: 4
     TimeToDetect: 0.5
-    WakeUpTimer: 3.5
+    SightRotationSpeed: 180
     ConeData:
       VisionColor: {r: 1, g: 0.8132782, b: 0.495283, a: 0.39215687}
       NonVisionColor: {r: 0, g: 0, b: 0, a: 0}

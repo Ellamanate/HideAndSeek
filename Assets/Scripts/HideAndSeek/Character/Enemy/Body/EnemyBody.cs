@@ -11,6 +11,8 @@ namespace HideAndSeek
         [field: SerializeField] public InteractableTrigger InteractableTrigger { get; private set; }
         [field: SerializeField] public Transform RaycastPosition { get; private set; }
         [field: SerializeField] public ConeOfSightRenderer VisionCone { get; private set; }
+        [field: SerializeField] public float MaxSightRotationSpeed { get; private set; }
+        [field: SerializeField] public float MinSightRotationSpeed { get; private set; }
 
         public Quaternion SightRotation => VisionCone.transform.rotation;
 

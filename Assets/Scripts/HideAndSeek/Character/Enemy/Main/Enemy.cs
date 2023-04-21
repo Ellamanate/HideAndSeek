@@ -13,12 +13,13 @@ namespace HideAndSeek
         public readonly EnemyUpdateBrain Brain;
         public readonly EnemyPatrol Patrol;
         public readonly EnemyVision Vision;
+        public readonly EnemySightMovement SightMovement;
 
         private readonly EnemyBody _body;
         
         public Enemy(EnemyModel model, EnemyBody body, EnemyUpdateBody updateBody, 
             EnemyMovement movement, EnemyUpdateBrain brain, EnemyPatrol patrol,
-            EnemyVision vision)
+            EnemyVision vision, EnemySightMovement sightMovement)
         {
             Model = model;
             _body = body;
@@ -27,6 +28,7 @@ namespace HideAndSeek
             Brain = brain;
             Patrol = patrol;
             Vision = vision;
+            SightMovement = sightMovement;
 
             _body.OnDestroyed += DestroyEnemy;
         }
@@ -47,13 +49,14 @@ namespace HideAndSeek
             }
         }
 
-        public void Initialize()
+        public void Reinitialize()
         {
             Model.Active = true;
-            UpdateBody.Initialize();
-            Brain.Initialize();
-            Patrol.Initialize();
-            Vision.Initialize();
+            Brain.Reinitialize();
+            UpdateBody.Reinitialize();
+            Patrol.Reinitialize();
+            Vision.Reinitialize();
+            SightMovement.Reinitialize();
             Movement.StopMovement();
         }
 

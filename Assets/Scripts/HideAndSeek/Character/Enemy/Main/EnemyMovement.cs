@@ -68,8 +68,9 @@ namespace HideAndSeek
                 _body.Movement.Stop();
                 _model.Moved = false;
 
-                if (_model.Active && !_patrol.TryApplyPosition())
+                if (_model.Active && _patrol.StandsAtPatrolPoint())
                 {
+                    _patrol.SetNexPatrolPoint();
                     _brain.UpdateAction();
                 }
 

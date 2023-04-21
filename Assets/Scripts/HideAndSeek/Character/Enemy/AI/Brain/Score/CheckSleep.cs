@@ -17,6 +17,7 @@ namespace HideAndSeek.AI
 
         public void CalculateScore()
         {
+            //GameLogger.Log($"Moved: {_enemy.Model.Moved} Attent: {_enemy.Model.CurrentAttentiveness} LookAround: {_patrol.PlayingLookAround}");
             if (!_enemy.Model.Moved && _enemy.Model.CurrentAttentiveness != AttentivenessType.Chase && !_patrol.PlayingLookAround)
             {
                 _actions.AddScoreTo(OrderActionType.Patrol, 1);

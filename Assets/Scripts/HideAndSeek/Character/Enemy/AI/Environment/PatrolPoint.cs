@@ -8,17 +8,35 @@ using Zenject;
 
 namespace HideAndSeek
 {
-    [RequireComponent(typeof(Animation))]
+    [Serializable]
+    public struct SightAnimation
+    {
+        public Transform LookAt;
+        public AnimationData Animation;
+
+        public Ease Ease => Animation.Ease;
+        public bool SpeedBased => Animation.SpeedBased;
+        public float Speed => Animation.Speed;
+        public float Duration => Animation.Duration;
+        public float Wait => Animation.Wait;
+    }
+
+    [Serializable]
+    public struct AnimationData
+    {
+        public Ease Ease;
+        public bool SpeedBased;
+        [ShowIf(nameof(SpeedBased))] public float Speed;
+        [HideIf(nameof(SpeedBased))] public float Duration;
+        public float Wait;
+    }
+    
     public class PatrolPoint : MonoBehaviour
     {
         [SerializeField] private bool _animating = true;
-        [SerializeField, ShowIf(nameof(_animating))] private Animation _animation;
+        [SerializeField, ShowIf(nameof(_animating))] private SightAnimation[] _animation;
+        [SerializeField, ShowIf(nameof(_animating))] private AnimationData _returnAnimation;
         [SerializeField, HideIf(nameof(_animating))] private float _waitTime;
-        [SerializeField] private Transform _rotationPoint;
-        [SerializeField, Tooltip("Скорость в углах в секунду, с которой враг должен вращаться чтобы встать лицом к точеке")] 
-        private float _speedRotationToDefault = 90;
-        [SerializeField, Tooltip("Враг поворачивается к точке не быстрее чем это значение секунд")]
-        private float _minTimeRotationToDefault = 0.5f;
 
         private EnemySpawner _spawner;
 
@@ -30,39 +48,43 @@ namespace HideAndSeek
 
         public async UniTask PlayAnimation(string enemyId, CancellationToken token)
         {
-            if (_spawner.TryGetEnemy(enemyId, out Enemy enemy))
+            if (_animating && _spawner.TryGetEnemy(enemyId, out Enemy enemy))
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(2), cancellationToken: token);
-            }
+                try
+                {
+                    enemy.SightMovement.SetUpdate(false);
 
-            /*Tween tween;
+                    foreach (var animation in _animation)
+                    {
+                        await enemy.SightMovement.Rotate(
+                            animation.LookAt,
+                            animation.Ease,
+                            animation.SpeedBased
+                                ? animation.Speed
+                                : animation.Duration,
+                            token, animation.SpeedBased);
 
-            if (Quaternion.Angle(enemy.Rotation, transform.rotation) > _speedRotationToDefault)
-            {
-                tween = DOTween
-                    .To(() => enemy.Rotation, enemy.SetRotation, transform.eulerAngles, _speedRotationToDefault)
-                    .SetSpeedBased(true);
-            }
-            else
-            {
-                tween = DOTween.To(() => enemy.Rotation, enemy.SetRotation, transform.eulerAngles,
-                    _minTimeRotationToDefault);
-            }
+                        await UniTask.Delay(TimeSpan.FromSeconds(animation.Wait), cancellationToken: token);
+                    }
 
-            tween.SetEase(Ease.Linear);
+                    await enemy.SightMovement.Rotate(enemy.Model.Rotation,
+                        _returnAnimation.Ease,
+                        _returnAnimation.SpeedBased
+                            ? _returnAnimation.Speed
+                            : _returnAnimation.Duration,
+                        token, true);
 
-            await tween.AsyncWaitForKill(token);
-            
-            if (_animating && _animation.clip != null)
-            {
-                _animation.Play();
-
-                await UniTask.Delay(TimeSpan.FromSeconds(_animation.clip.length), cancellationToken: token);
+                    await UniTask.Delay(TimeSpan.FromSeconds(_returnAnimation.Wait), cancellationToken: token);
+                }
+                finally
+                {
+                    enemy.SightMovement.SetUpdate(false);
+                }
             }
             else
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(_waitTime), cancellationToken: token);
-            }*/
+            }
         }
     }
 }

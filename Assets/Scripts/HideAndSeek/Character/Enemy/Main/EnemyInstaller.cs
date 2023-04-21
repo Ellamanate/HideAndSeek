@@ -33,6 +33,7 @@ namespace HideAndSeek
         {;
             container.Bind<Enemy>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyVision>().AsSingle();
+            container.BindInterfacesAndSelfTo<EnemySightMovement>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyInteract>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyUpdateBrain>().AsSingle();
@@ -71,8 +72,11 @@ namespace HideAndSeek
             container.Bind<SubContainerTickables>().AsSingle();
             container.Bind<SubContainerDisposables>().AsSingle();
 
+            var subTickables = container.Resolve<SubContainerTickables>();
             var sceneTickables = container.Resolve<SceneTickables>();
-            sceneTickables.AddTickable(container.Resolve<SubContainerTickables>());
+            sceneTickables.AddTickable(subTickables);
+            sceneTickables.AddFixedTickable(subTickables);
+            sceneTickables.AddLateTickable(subTickables);
 
             var sceneDisposables = container.Resolve<SceneDisposables>();
             sceneDisposables.AddDisposable(container.Resolve<SubContainerDisposables>());

@@ -26,6 +26,7 @@ namespace HideAndSeek
         public OrderCounterType CounterTypes;
         public Vector3 Destination;
         public Quaternion SightRotation;
+        public Quaternion SightTargetRotation;
         public LayerMask RaycastLayers;
         public float RepathTime;
         public float AttentivenesDeclineTime;
@@ -92,6 +93,7 @@ namespace HideAndSeek
             CurrentAttentiveness = anotherModel.CurrentAttentiveness;
             Destination = anotherModel.Destination;
             SightRotation = anotherModel.SightRotation;
+            SightTargetRotation = anotherModel.SightTargetRotation;
             RaycastLayers = anotherModel.RaycastLayers;
             RepathTime = anotherModel.RepathTime;
             AttentivenesDeclineTime = anotherModel.AttentivenesDeclineTime;
