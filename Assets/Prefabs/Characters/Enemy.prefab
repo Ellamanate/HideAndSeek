@@ -142,8 +142,8 @@ MonoBehaviour:
   <InteractableTrigger>k__BackingField: {fileID: 5241606986450114641}
   <RaycastPosition>k__BackingField: {fileID: 1101147614846999845}
   <VisionCone>k__BackingField: {fileID: 6965990470416315373}
-  <MaxSightRotationSpeed>k__BackingField: 0.1
-  <MinSightRotationSpeed>k__BackingField: 180
+  <MaxSightRotationSpeed>k__BackingField: 180
+  <MinSightSpeedCorrectio>k__BackingField: 0.075
 --- !u!114 &752903873266585880
 MonoBehaviour:
   m_ObjectHideFlags: 0

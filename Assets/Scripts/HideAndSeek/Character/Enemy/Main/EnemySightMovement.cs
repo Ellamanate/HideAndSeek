@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using HideAndSeek.Utils;
@@ -15,7 +14,7 @@ namespace HideAndSeek
         private readonly EnemyBody _body;
         private readonly GamePause _pause;
 
-        private Transform _target;
+        private ITransformable _target;
         private Tween _tween;
         private CancellationTokenSource _token;
         private float _speedCorrection;
@@ -35,9 +34,10 @@ namespace HideAndSeek
         public void Reinitialize()
         {
             _speedCorrection = 1;
-            _model.SightTargetRotation = Quaternion.identity;
-            _model.SightRotation = Quaternion.identity;
-            _body.SetViewRotation(Quaternion.identity);
+            var zeroRotation = Quaternion.LookRotation(_body.transform.forward, Vector3.up);
+            _model.SightTargetRotation = zeroRotation;
+            _model.SightRotation = zeroRotation;
+            _body.SetViewRotation(zeroRotation);
             _token.TryCancel();
             SetUpdate(true);
         }
@@ -68,7 +68,7 @@ namespace HideAndSeek
             _update = update;
         }
 
-        public void LookAt(Transform target)
+        public void SetLookAtTransformableTarget(ITransformable target)
         {
             _target = target;
 
@@ -78,9 +78,14 @@ namespace HideAndSeek
             }
         }
 
+        public void SetLookAtTarget(Transform target)
+        {
+            SetLookAtTransformableTarget(new TransformableAdapter(target));
+        }
+
         public async UniTask Rotate(Transform lookAt, Ease ease, float duration, CancellationToken token, bool speedBased = false)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(GetLookAtRotation(lookAt), Vector3.up);
+            Quaternion targetRotation = Quaternion.LookRotation(GetLookAtRotation(lookAt.position), Vector3.up);
             await Rotate(targetRotation, ease, duration, token, speedBased);
         }
 
@@ -119,15 +124,15 @@ namespace HideAndSeek
             if (targetAngle < _body.MaxSightRotationSpeed)
             {
                 _speedCorrection = Mathf.Pow(targetAngle / _body.MaxSightRotationSpeed, 2);
-                _speedCorrection = Mathf.Clamp(_speedCorrection, _body.MinSightRotationSpeed, _body.MaxSightRotationSpeed);
+                _speedCorrection = Mathf.Clamp(_speedCorrection, _body.MinSightSpeedCorrectio, _body.MaxSightRotationSpeed);
             }
         }
 
-        private void SetLookAtRotation(Transform target)
+        private void SetLookAtRotation(ITransformable target)
         {
             if (_target != null)
             {
-                var direction = GetLookAtRotation(target);
+                var direction = GetLookAtRotation(target.Position);
                 _model.SightTargetRotation = Quaternion.LookRotation(direction, Vector3.up);
             }
             else
@@ -138,9 +143,9 @@ namespace HideAndSeek
             CalculateSpeedCorrection();
         }
 
-        private Vector3 GetLookAtRotation(Transform target)
+        private Vector3 GetLookAtRotation(Vector3 targetPosition)
         {
-            return (target.position - _body.transform.position).ChangeY(0);
+            return (targetPosition - _body.transform.position).ChangeY(0);
         }
 
         private async UniTask Rotate(Ease ease, float duration, CancellationToken token)

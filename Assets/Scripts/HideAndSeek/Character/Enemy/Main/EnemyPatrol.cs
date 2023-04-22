@@ -57,13 +57,13 @@ namespace HideAndSeek
             return Vector3.Distance(_model.Position, currentPatrolPoint.transform.position) < _body.Movement.StoppingDistance * 2;
         }
 
-        public void SetNexPatrolPoint()
+        public void ApplyPatrolPoint()
         {
-            var currentPatrolPoint = _enemySceneConfig.PatrolPositions[_currentPatrolIndex];
+            var currentPoint = _enemySceneConfig.PatrolPositions[_currentPatrolIndex];
             _currentPatrolIndex++;
 
             _token = _token.Refresh();
-            _ = LookAround(currentPatrolPoint, _token.Token);
+            _ = LookAround(currentPoint, _token.Token);
 
             if (_currentPatrolIndex >= _enemySceneConfig.PatrolPositions.Length)
             {

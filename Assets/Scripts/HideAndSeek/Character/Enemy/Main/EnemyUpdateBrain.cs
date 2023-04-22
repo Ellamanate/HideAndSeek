@@ -51,6 +51,11 @@ namespace HideAndSeek
             }
         }
 
+        public void CacelRelaxTransition()
+        {
+            _token.TryCancel();
+        }
+
         private void UpdateAttentiveness(AttentivenessType attentiveness)
         {
             _model.CurrentAttentiveness = attentiveness;

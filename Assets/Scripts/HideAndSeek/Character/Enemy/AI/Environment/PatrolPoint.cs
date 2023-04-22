@@ -67,7 +67,8 @@ namespace HideAndSeek
                         await UniTask.Delay(TimeSpan.FromSeconds(animation.Wait), cancellationToken: token);
                     }
 
-                    await enemy.SightMovement.Rotate(enemy.Model.Rotation,
+                    await enemy.SightMovement.Rotate(
+                        enemy.Model.Rotation,
                         _returnAnimation.Ease,
                         _returnAnimation.SpeedBased
                             ? _returnAnimation.Speed
@@ -78,7 +79,7 @@ namespace HideAndSeek
                 }
                 finally
                 {
-                    enemy.SightMovement.SetUpdate(false);
+                    enemy.SightMovement.SetUpdate(true);
                 }
             }
             else

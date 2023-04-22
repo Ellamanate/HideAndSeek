@@ -13,6 +13,7 @@ namespace HideAndSeek
         private readonly EnemyBody _body;
         private readonly EnemyPatrol _patrol;
         private readonly EnemyUpdateBrain _brain;
+        private readonly EnemySightMovement _sight;
         private readonly GamePause _pause;
 
         private CancellationTokenSource _token;
@@ -27,12 +28,14 @@ namespace HideAndSeek
             && (PathCompleted || (_body.Movement.Velocity.sqrMagnitude <= 0.01f && _body.Movement.Acceleration <= 0.01f));
         private bool PathCompleted => _body.Movement.RemainingDistance <= StoppingDistance;
 
-        public EnemyMovement(EnemyModel model, EnemyBody body, EnemyPatrol patrol, EnemyUpdateBrain brain, GamePause pause)
+        public EnemyMovement(EnemyModel model, EnemyBody body, EnemyPatrol patrol, EnemyUpdateBrain brain, 
+            EnemySightMovement sight, GamePause pause)
         {
             _model = model;
             _body = body;
             _patrol = patrol;
             _brain = brain;
+            _sight = sight;
             _pause = pause;
             _token = new CancellationTokenSource();
         }
@@ -67,14 +70,19 @@ namespace HideAndSeek
 
                 _body.Movement.Stop();
                 _model.Moved = false;
-
-                if (_model.Active && _patrol.StandsAtPatrolPoint())
-                {
-                    _patrol.SetNexPatrolPoint();
-                    _brain.UpdateAction();
-                }
-
                 GameLogger.Log("Enemy stopped");
+
+                if (_model.Active)
+                {
+                    if (_patrol.StandsAtPatrolPoint())
+                    {
+                        _patrol.ApplyPatrolPoint();
+                    }
+                    else
+                    {
+                        _brain.UpdateAction();
+                    }
+                }
             }
         }
         
@@ -82,6 +90,9 @@ namespace HideAndSeek
         {
             if (!_model.Destroyed)
             {
+                _sight.SetLookAtTransformableTarget(_target);
+                _patrol.CancelLookAround();
+                _brain.CacelRelaxTransition();
                 _target = target;
 
                 _token = _token.Refresh();
@@ -91,12 +102,14 @@ namespace HideAndSeek
 
         public void StopChase()
         {
+            _sight.SetLookAtTransformableTarget(null);
             _token.TryCancel();
             _target = null;
         }
 
         private void SetDestination(Vector3 destination)
         {
+            _patrol.CancelLookAround();
             _body.Movement.MoveTo(destination);
             _model.Destination = destination;
             _model.Moved = true;

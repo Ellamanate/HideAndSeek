@@ -12,7 +12,7 @@ namespace HideAndSeek
         [field: SerializeField] public Transform RaycastPosition { get; private set; }
         [field: SerializeField] public ConeOfSightRenderer VisionCone { get; private set; }
         [field: SerializeField] public float MaxSightRotationSpeed { get; private set; }
-        [field: SerializeField] public float MinSightRotationSpeed { get; private set; }
+        [field: SerializeField] public float MinSightSpeedCorrectio { get; private set; }
 
         public Quaternion SightRotation => VisionCone.transform.rotation;
 
