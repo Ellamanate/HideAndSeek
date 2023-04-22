@@ -36,7 +36,7 @@ namespace HideAndSeek
         [SerializeField] private bool _animating = true;
         [SerializeField, ShowIf(nameof(_animating))] private SightAnimation[] _animation;
         [SerializeField, ShowIf(nameof(_animating))] private AnimationData _returnAnimation;
-        [SerializeField, HideIf(nameof(_animating))] private float _waitTime;
+        [SerializeField, HideIf(nameof(_animating)), Tooltip("Время ожидания")] private float _waitTime;
 
         private EnemySpawner _spawner;
 

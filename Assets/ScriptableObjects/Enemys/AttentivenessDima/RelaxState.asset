@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e41c1e2d183b1b243b25dc905dfa8da6, type: 3}
+  m_Name: RelaxState
+  m_EditorClassIdentifier: 
+  <Attentiveness>k__BackingField:
+    Speed: 1
+    VisionAngle: 60
+    VisionDistance: 12.5
+    TimeToDetect: 1
+    ConeData:
+      VisionColor: {r: 1, g: 1, b: 1, a: 0.39215687}
+      NonVisionColor: {r: 0, g: 0, b: 0, a: 0}
+      Distance: 12.5
+      Angle: 60

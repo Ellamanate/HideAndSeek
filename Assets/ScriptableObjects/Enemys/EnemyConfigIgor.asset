@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 950d01abe9346274380dff8b5f749ab0, type: 3}
-  m_Name: EnemyConfig
+  m_Name: EnemyConfigIgor
   m_EditorClassIdentifier: 
   <EnemyPrefab>k__BackingField: {fileID: 317254728646525370, guid: b0700cc61014f4d4d952af6c8100d525, type: 3}
-  <RelaxState>k__BackingField: {fileID: 11400000, guid: bbd43cfb7bd6e2d43932862a4e9f2398, type: 2}
-  <SearchingState>k__BackingField: {fileID: 11400000, guid: 70f36de0704930c4caf31da0d75bc0c9, type: 2}
-  <ChaseState>k__BackingField: {fileID: 11400000, guid: 5cd2a7a3b34e33f4ba193945163faa73, type: 2}
+  <RelaxState>k__BackingField: {fileID: 11400000, guid: 0253926c4479c61479c6705b9300eb58, type: 2}
+  <SearchingState>k__BackingField: {fileID: 11400000, guid: f565bf6afb96a0c4490e60f7d5ab9da0, type: 2}
+  <ChaseState>k__BackingField: {fileID: 11400000, guid: 3ae41024d7c62ad4a9b60a9459ff9146, type: 2}
   <RepathTime>k__BackingField: 0.25
   <AttentivenesDeclineTime>k__BackingField: 10
   <RaycastLayers>k__BackingField:
