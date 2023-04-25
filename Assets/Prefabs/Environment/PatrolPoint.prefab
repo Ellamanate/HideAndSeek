@@ -45,5 +45,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animating: 0
   _animation: []
-  _returnRotationSpeed: 180
+  _returnAnimation:
+    Ease: 0
+    SpeedBased: 0
+    Speed: 0
+    Duration: 0
+    Wait: 0
   _waitTime: 2
+  timeToDefaultRotation: 1

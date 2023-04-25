@@ -38,6 +38,9 @@ namespace HideAndSeek
         [SerializeField, ShowIf(nameof(_animating))] private AnimationData _returnAnimation;
         [SerializeField, HideIf(nameof(_animating)), Tooltip("Время ожидания")] private float _waitTime;
 
+        [SerializeField, Tooltip("Время за которое враг развернется по направлению точки, когда встанет на неё")] 
+        private float timeToDefaultRotation = 1f;
+
         private EnemySpawner _spawner;
 
         [Inject]
@@ -53,6 +56,10 @@ namespace HideAndSeek
                 try
                 {
                     enemy.SightMovement.SetUpdate(false);
+
+                    await DOTween.To(() => enemy.UpdateBody.Rotation, enemy.UpdateBody.SetRotation,
+                        transform.rotation.eulerAngles, timeToDefaultRotation)
+                        .AsyncWaitForKill(token);
 
                     foreach (var animation in _animation)
                     {
