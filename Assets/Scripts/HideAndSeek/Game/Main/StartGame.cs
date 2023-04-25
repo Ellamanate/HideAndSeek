@@ -8,16 +8,16 @@ namespace HideAndSeek
     {
         private readonly MainGameMediator _mediator;
         private readonly PlayerInput _playerInput;
-        private readonly Player _player;
+        private readonly PlayerUpdateBody _playerBody;
         private readonly GameSceneReferences _sceneReferences;
         private readonly EnemySpawner _enemySpawner;
 
-        public StartGame(MainGameMediator mediator, PlayerInput playerInput, Player player,
+        public StartGame(MainGameMediator mediator, PlayerInput playerInput, PlayerUpdateBody playerBody,
             GameSceneReferences sceneReferences, EnemySpawner enemySpawner)
         {
             _mediator = mediator;
             _playerInput = playerInput;
-            _player = player;
+            _playerBody = playerBody;
             _sceneReferences = sceneReferences;
             _enemySpawner = enemySpawner;
         }
@@ -39,9 +39,9 @@ namespace HideAndSeek
             _mediator.SetAlpha(MainGameMediator.FadeType.Fail, 0);
             _mediator.SetBlockingRaycasts(MainGameMediator.FadeType.Fail, false);
 
-            _player.SetVelocity(Vector3.zero);
-            _player.SetPosition(_sceneReferences.PlayerParent.position);
-            _player.SetRotation(_sceneReferences.PlayerParent.rotation);
+            _playerBody.SetVelocity(Vector3.zero);
+            _playerBody.SetPosition(_sceneReferences.PlayerParent.position);
+            _playerBody.SetRotation(_sceneReferences.PlayerParent.rotation);
             _enemySpawner.ResetEnemys();
 
             await _mediator.FadeOut(MainGameMediator.FadeType.Screen, token);

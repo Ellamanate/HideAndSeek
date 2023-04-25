@@ -17,7 +17,7 @@ namespace HideAndSeek.AI
         {
             if (_player.Available)
             {
-                _movement.ChaseTo(_player);
+                _movement.ChaseTo(_player.UpdateBody);
             }
         }
 

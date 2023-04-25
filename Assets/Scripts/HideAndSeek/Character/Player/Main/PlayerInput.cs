@@ -5,22 +5,24 @@ namespace HideAndSeek
 {
     public class PlayerInput : IFixedTickable
     {
-        private readonly Player _player;
+        private readonly PlayerModel _model;
+        private readonly PlayerUpdateBody _updateBody;
         private readonly InputSystem _inputSystem;
 
         public bool Active { get; private set; }
 
-        public PlayerInput(Player player, InputSystem inputSystem)
+        public PlayerInput(PlayerModel model, PlayerUpdateBody updateBody, InputSystem inputSystem)
         {
-            _player = player;
+            _model = model;
+            _updateBody = updateBody;
             _inputSystem = inputSystem;
         }
 
         public void FixedTick()
         {
-            if (Active && _player.Available)
+            if (Active && _updateBody.Available)
             {
-                _player.SetVelocity(CalculateMovementDirection(_inputSystem.MovementUp,
+                _updateBody.SetVelocity(CalculateMovementDirection(_inputSystem.MovementUp,
                     _inputSystem.MovementSide));
             }
         }
@@ -32,11 +34,11 @@ namespace HideAndSeek
 
         private Vector3 CalculateMovementDirection(float up, float side)
         {
-            var direction = ProjectOnFloor(_player.Model.Right) * side + ProjectOnFloor(_player.Model.Forward) * up;
+            var direction = ProjectOnFloor(_model.Right) * side + ProjectOnFloor(_model.Forward) * up;
 
             return direction.magnitude > 1 ? direction.normalized : direction;
 
-            Vector3 ProjectOnFloor(Vector3 direction) => Vector3.ProjectOnPlane(direction, _player.Model.Up).normalized;
+            Vector3 ProjectOnFloor(Vector3 direction) => Vector3.ProjectOnPlane(direction, _model.Up).normalized;
         }
     }
 }

@@ -26,17 +26,19 @@ namespace HideAndSeek
         [SerializeField] private FadeAnimation _fail;
 
         private MainGame _mainGame;
+        private GameMenu _gameMenu;
 
         [Inject]
-        private void Construct(MainGame mainGame)
+        private void Construct(MainGame mainGame, GameMenu gameMenu)
         {
             _mainGame = mainGame;
+            _gameMenu = gameMenu;
         }
 
         [Button] public void Exit() => _mainGame.Exit();
         [Button] public void Restart() => _mainGame.RestartGame();
-        [Button] public void OpenPauseMenu() => _mainGame.OpenPauseMenu();
-        [Button] public void ClosePauseMenu() => _mainGame.ClosePauseMenu();
+        [Button] public void OpenPauseMenu() => _gameMenu.OpenPauseMenu();
+        [Button] public void ClosePauseMenu() => _gameMenu.ClosePauseMenu();
 
         public void SetAlpha(FadeType type, float alpha) => GetFader(type).SetAlpha(alpha);
         public void SetBlockingRaycasts(FadeType type, bool blocksRaycasts) => GetFader(type).SetBlockingRaycasts(blocksRaycasts);

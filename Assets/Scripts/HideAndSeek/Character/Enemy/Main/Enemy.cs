@@ -38,6 +38,11 @@ namespace HideAndSeek
         public void Dispose()
         {
             _body.OnDestroyed -= DestroyEnemy;
+
+            Movement.Dispose();
+            Brain.Dispose();
+            Patrol.Dispose();
+            SightMovement.Dispose();
         }
 
         public void Destroy()

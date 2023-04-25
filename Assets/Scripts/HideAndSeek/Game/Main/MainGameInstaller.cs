@@ -19,8 +19,8 @@ namespace HideAndSeek
 
         public void Initialize()
         {
-            MainGame game = Container.Resolve<MainGame>();
-            game.Initialize();
+            GameInitializer initializer = Container.Resolve<GameInitializer>();
+            initializer.Initialize();
         }
 
         private void BindData()
@@ -31,16 +31,17 @@ namespace HideAndSeek
         private void BindMainGame()
         {
             Container.Bind<GameSceneConfig>().FromInstance(_config).AsSingle();
-            Container.BindInterfacesAndSelfTo<MainGame>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<SetGameState>().AsSingle();
             Container.BindInterfacesAndSelfTo<SceneTickables>().AsSingle();
             Container.BindInterfacesAndSelfTo<SceneDisposables>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameMenu>().AsSingle().WithArguments(_sceneReferences.MainMediator);
 
-            Container.Bind<StartGame>().AsSingle().WithArguments(_sceneReferences.Mediator);
-            Container.Bind<GameOver>().AsSingle().WithArguments(_sceneReferences.Mediator);
-            Container.Bind<PauseMenu>().AsSingle().WithArguments(_sceneReferences.Mediator);
+            Container.Bind<GameInitializer>().AsSingle();
+            Container.Bind<MainGame>().AsSingle();
+            Container.Bind<StartGame>().AsSingle().WithArguments(_sceneReferences.MainMediator);
+            Container.Bind<GameOver>().AsSingle().WithArguments(_sceneReferences.MainMediator);
             Container.Bind<GamePause>().AsSingle();
-
-            Container.Bind<DetectEndGame>().AsSingle().NonLazy();
         }
     }
 }

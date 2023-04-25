@@ -3,8 +3,8 @@
 namespace HideAndSeek
 {
     [RequireComponent(typeof(Collider))]
-    public class ExitInteraction : MonoBehaviour, IInteractable
+    public class Shelter : MonoBehaviour, IInteractable
     {
-        
+
     }
 }

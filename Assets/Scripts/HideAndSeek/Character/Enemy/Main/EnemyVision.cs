@@ -42,7 +42,7 @@ namespace HideAndSeek
 
         private void Scan()
         {
-            Vector3 direction = _player.RaycastPosition - _updateBody.RaycastPosition;
+            Vector3 direction = _player.UpdateBody.RaycastPosition - _updateBody.RaycastPosition;
 
             if (DistanceValid() && AngleValid())
             {
@@ -59,7 +59,7 @@ namespace HideAndSeek
 
         private void RaycastToPlayer(Vector3 direction)
         {
-            if (Raycast(out RaycastHit hit) && _player.HittedBody(hit))
+            if (Raycast(out RaycastHit hit) && _player.UpdateBody.HittedBody(hit))
             {
                 GameLogger.DrawLine(_updateBody.RaycastPosition, hit.point);
 
