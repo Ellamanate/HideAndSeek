@@ -11,10 +11,12 @@
 
         public void Interact(IInteractable interactable)
         {
-            if (interactable is PlayerBody)
-            {
-                _mainGame.FailGame();
-            }
+
+        }
+
+        public void TouchPlayer(PlayerBody body)
+        {
+            _mainGame.FailGame();
         }
     }
 }

@@ -16,6 +16,8 @@ namespace HideAndSeek
             Container.Bind<PlayerModel>().AsSingle();
             Container.Bind<PlayerFactory>().AsSingle();
             Container.Bind<PlayerInteract>().AsSingle();
+            Container.Bind<PlayerVisibility>().AsSingle();
+            Container.Bind<HidePlayer>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerUpdateBody>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
         }

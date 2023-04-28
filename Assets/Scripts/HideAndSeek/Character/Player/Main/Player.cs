@@ -9,16 +9,18 @@ namespace HideAndSeek
         public readonly PlayerModel Model;
         public readonly PlayerUpdateBody UpdateBody;
         public readonly PlayerInteract Interact;
+        public readonly PlayerVisibility PlayerVisibility;
 
         private PlayerBody _body;
         
         public bool Available => !Model.Destroyed && _body != null;
 
-        public Player(PlayerModel model, PlayerUpdateBody updateBody, PlayerInteract interact)
+        public Player(PlayerModel model, PlayerUpdateBody updateBody, PlayerInteract interact, PlayerVisibility playerVisibility)
         {
             Model = model;
             UpdateBody = updateBody;
             Interact = interact;
+            PlayerVisibility = playerVisibility;
         }
 
         public void Dispose()
@@ -38,6 +40,7 @@ namespace HideAndSeek
 
             _body = body;
 
+            PlayerVisibility.Initialize(_body);
             UpdateBody.Initialize(_body);
             UpdateBody.SetSpeed(Model.Speed);
 
@@ -63,12 +66,12 @@ namespace HideAndSeek
 
         private void InteractableEnter(IInteractable interactable)
         {
-            Interact.Interact(interactable);
+            Interact.AddInteractable(interactable);
         }
 
         private void InteractableExit(IInteractable interactable)
         {
-
+            Interact.RemoveInteractable(interactable);
         }
     }
 }

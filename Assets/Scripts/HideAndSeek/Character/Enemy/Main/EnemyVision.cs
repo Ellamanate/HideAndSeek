@@ -36,7 +36,14 @@ namespace HideAndSeek
         {
             if (!_model.Destroyed && _model.Active && _player.Available && !_pause.Paused)
             {
-                Scan();
+                if (_player.Model.Visible)
+                {
+                    Scan();
+                }
+                else if (PlayerVisible)
+                {
+                    SetInvisible();
+                }
             }
         }
 

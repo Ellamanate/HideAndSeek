@@ -160,6 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85f428051605360468b5c2ad5fd4bc42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 6134319065876601561}
   _body: {fileID: 4925488424332353287}
   <Movement>k__BackingField: {fileID: 4925488424332353304}
   <InteractableTrigger>k__BackingField: {fileID: 4549195543641515277}

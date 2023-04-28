@@ -3,12 +3,13 @@ using UnityEngine;
 
 namespace HideAndSeek
 {
-    public class EnemyBody : MonoBehaviour, IDestroyable, IInteractable
+    public class EnemyBody : MonoBehaviour, IDestroyable
     {
         public event Action OnDestroyed;
         
         [field: SerializeField] public EnemyBodyMovement Movement { get; private set; }
         [field: SerializeField] public InteractableTrigger InteractableTrigger { get; private set; }
+        [field: SerializeField] public PlayerTrigger PlayerTrigger { get; private set; }
         [field: SerializeField] public Transform RaycastPosition { get; private set; }
         [field: SerializeField] public ConeOfSightRenderer VisionCone { get; private set; }
         [field: SerializeField] public float MaxSightRotationSpeed { get; private set; }

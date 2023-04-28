@@ -20,6 +20,7 @@ namespace HideAndSeek
 
             _body.InteractableTrigger.OnEnter += InteractableEnter;
             _body.InteractableTrigger.OnExit += InteractableExit;
+            _body.PlayerTrigger.OnEnter += TouchPlayer;
         }
 
         public Vector3 RaycastPosition => _body.RaycastPosition.position;
@@ -40,6 +41,7 @@ namespace HideAndSeek
         {
             _body.InteractableTrigger.OnEnter -= InteractableEnter;
             _body.InteractableTrigger.OnExit -= InteractableExit;
+            _body.PlayerTrigger.OnEnter -= TouchPlayer;
         }
 
         public void Tick()
@@ -86,6 +88,11 @@ namespace HideAndSeek
         private void InteractableExit(IInteractable interactable)
         {
             
+        }
+
+        private void TouchPlayer(PlayerBody body)
+        {
+            _interact.TouchPlayer(body);
         }
     }
 }
