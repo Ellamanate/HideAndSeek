@@ -111,7 +111,10 @@ namespace HideAndSeek
             }
             finally
             {
-                SetLookAtRotation(_target);
+                if (!_model.Destroyed)
+                {
+                    SetLookAtRotation(_target);
+                }
 
                 _animation = false;
             }
