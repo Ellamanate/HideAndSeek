@@ -38,7 +38,7 @@ namespace HideAndSeek
         [SerializeField, ShowIf(nameof(_animating))] private AnimationData _returnAnimation;
         [SerializeField, HideIf(nameof(_animating)), Tooltip("Время ожидания")] private float _waitTime;
 
-        [SerializeField, Tooltip("Время за которое враг развернется по направлению точки, когда встанет на неё")] 
+        [SerializeField, Min(0.1f), Tooltip("Время за которое враг развернется по направлению точки, когда встанет на неё")] 
         private float timeToDefaultRotation = 1f;
 
         private EnemySpawner _spawner;
@@ -80,7 +80,7 @@ namespace HideAndSeek
                         _returnAnimation.SpeedBased
                             ? _returnAnimation.Speed
                             : _returnAnimation.Duration,
-                        token, true);
+                        token, _returnAnimation.SpeedBased);
 
                     await UniTask.Delay(TimeSpan.FromSeconds(_returnAnimation.Wait), cancellationToken: token);
                 }
