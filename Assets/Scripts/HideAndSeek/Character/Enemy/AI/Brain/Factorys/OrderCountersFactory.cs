@@ -8,13 +8,15 @@ namespace HideAndSeek.AI
         private readonly CheckVisible.Factory _visibleFactory;
         private readonly CheckSleep.Factory _sleepFactory;
         private readonly CheckSearching.Factory _searchingFactory;
+        private readonly CheckInteraction.Factory _interactFactory;
 
         public OrderCountersFactory(CheckVisible.Factory visibleFactory, CheckSleep.Factory sleepFactory,
-            CheckSearching.Factory searchingFactory)
+            CheckSearching.Factory searchingFactory, CheckInteraction.Factory interactFactory)
         {
             _visibleFactory = visibleFactory;
             _sleepFactory = sleepFactory;
             _searchingFactory = searchingFactory;
+            _interactFactory = interactFactory;
         }
 
         public List<IScoreCounter> Create(OrderCounterType controllerTypes)
@@ -24,6 +26,7 @@ namespace HideAndSeek.AI
             Add(OrderCounterType.CheckVisible, _visibleFactory);
             Add(OrderCounterType.CheckSleep, _sleepFactory);
             Add(OrderCounterType.CheckSearching, _searchingFactory);
+            Add(OrderCounterType.CheckInteract, _interactFactory);
 
             return counters;
 

@@ -1,11 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace HideAndSeek.Utils
 {
     public static class Extensions
     {
+        public static T GetNearest<T>(this IEnumerable<T> objects, Func<T, Vector3> getPosition, Vector3 position)
+        {
+            if (objects.Count() == 1) return objects.First();
+
+            T nearest = default;
+            float minDistance = Mathf.Infinity;
+
+            foreach (T obj in objects)
+            {
+                float distance = Vector3.Distance(position, getPosition.Invoke(obj));
+
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearest = obj;
+                }
+            }
+
+            return nearest;
+        }
+
         public static T MaxBy<T, U>(this IEnumerable<T> items, Func<T, U> selector)
         {
             if (!items.Any())

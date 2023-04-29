@@ -64,12 +64,12 @@ namespace HideAndSeek
             OnDestroyed?.Invoke();
         }
 
-        private void InteractableEnter(IInteractable interactable)
+        private void InteractableEnter(IInteractableForPlayer interactable)
         {
-            Interact.AddInteractable(interactable);
+            Interact.AddInteractable(this, interactable);
         }
 
-        private void InteractableExit(IInteractable interactable)
+        private void InteractableExit(IInteractableForPlayer interactable)
         {
             Interact.RemoveInteractable(interactable);
         }

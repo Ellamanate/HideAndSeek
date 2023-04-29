@@ -30,8 +30,10 @@ namespace HideAndSeek
         public LayerMask RaycastLayers;
         public float RepathTime;
         public float AttentivenesDeclineTime;
+        public float MaxDistanceToInteractable;
         public bool Active;
         public bool Moved;
+        public bool PlayerDetectedInShelter;
         public string Id;
 
         private AttentivenessData _currentAttentivenessData;
@@ -68,6 +70,7 @@ namespace HideAndSeek
             RaycastLayers = config.RaycastLayers;
             RepathTime = config.RepathTime;
             AttentivenesDeclineTime = config.AttentivenesDeclineTime;
+            MaxDistanceToInteractable = config.MaxDistanceToInteractable;
         }
 
         public EnemyModel(EnemyModel anotherModel)
@@ -97,8 +100,10 @@ namespace HideAndSeek
             RaycastLayers = anotherModel.RaycastLayers;
             RepathTime = anotherModel.RepathTime;
             AttentivenesDeclineTime = anotherModel.AttentivenesDeclineTime;
+            MaxDistanceToInteractable = anotherModel.MaxDistanceToInteractable;
             Active = anotherModel.Active;
             Moved = anotherModel.Moved;
+            PlayerDetectedInShelter = anotherModel.PlayerDetectedInShelter;
             Id = anotherModel.Id;
         }
     }

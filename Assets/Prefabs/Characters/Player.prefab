@@ -163,7 +163,7 @@ MonoBehaviour:
   _renderer: {fileID: 6134319065876601561}
   _body: {fileID: 4925488424332353287}
   <Movement>k__BackingField: {fileID: 4925488424332353304}
-  <InteractableTrigger>k__BackingField: {fileID: 4549195543641515277}
+  <InteractableTrigger>k__BackingField: {fileID: 150416251046673059}
   <RaycastPosition>k__BackingField: {fileID: 1430035862395275832}
 --- !u!114 &4925488424332353304
 MonoBehaviour:
@@ -217,7 +217,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4587738407714953083}
-  - component: {fileID: 4549195543641515277}
+  - component: {fileID: 150416251046673059}
   - component: {fileID: 6489192311278906776}
   m_Layer: 6
   m_Name: InteractionSensor
@@ -240,7 +240,7 @@ Transform:
   m_Father: {fileID: 4925488424332353308}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4549195543641515277
+--- !u!114 &150416251046673059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6254875232644093402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ff0f34be1a03654fa4cd6746004a59b, type: 3}
+  m_Script: {fileID: 11500000, guid: 67d57b98c3bf2984b9abe2c45635b725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!135 &6489192311278906776

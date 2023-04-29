@@ -6,7 +6,7 @@ namespace HideAndSeek
 {
     public class PlayerInput : IDisposable, IFixedTickable
     {
-        private readonly PlayerModel _model;
+        private readonly Player _player;
         private readonly PlayerUpdateBody _updateBody;
         private readonly PlayerInteract _interact;
         private readonly HidePlayer _hidePlayer;
@@ -14,9 +14,9 @@ namespace HideAndSeek
 
         public bool Active { get; private set; }
 
-        public PlayerInput(PlayerModel model, PlayerUpdateBody updateBody, PlayerInteract interact, HidePlayer hidePlayer, InputSystem inputSystem)
+        public PlayerInput(Player player, PlayerUpdateBody updateBody, PlayerInteract interact, HidePlayer hidePlayer, InputSystem inputSystem)
         {
-            _model = model;
+            _player = player;
             _updateBody = updateBody;
             _interact = interact;
             _hidePlayer = hidePlayer;
@@ -32,7 +32,7 @@ namespace HideAndSeek
 
         public void FixedTick()
         {
-            if (Active && _updateBody.Available && _model.Visible)
+            if (Active && _updateBody.Available && _player.Model.Visible)
             {
                 _updateBody.SetVelocity(CalculateMovementDirection(_inputSystem.MovementUp,
                     _inputSystem.MovementSide));
@@ -46,22 +46,22 @@ namespace HideAndSeek
 
         private void Interact()
         {
-            if (!_model.Visible)
+            if (!_player.Model.Visible)
             {
                 _hidePlayer.Show();
                 return;
             }
 
-            _interact.Interact();
+            _interact.Interact(_player);
         }
 
         private Vector3 CalculateMovementDirection(float up, float side)
         {
-            var direction = ProjectOnFloor(_model.Right) * side + ProjectOnFloor(_model.Forward) * up;
+            var direction = ProjectOnFloor(_player.Model.Right) * side + ProjectOnFloor(_player.Model.Forward) * up;
 
             return direction.magnitude > 1 ? direction.normalized : direction;
 
-            Vector3 ProjectOnFloor(Vector3 direction) => Vector3.ProjectOnPlane(direction, _model.Up).normalized;
+            Vector3 ProjectOnFloor(Vector3 direction) => Vector3.ProjectOnPlane(direction, _player.Model.Up).normalized;
         }
     }
 }

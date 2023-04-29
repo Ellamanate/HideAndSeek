@@ -4,9 +4,11 @@ using Zenject;
 namespace HideAndSeek
 {
     [RequireComponent(typeof(Collider))]
-    public class ExitInteraction : MonoBehaviour, IInteractable
+    public class ExitInteraction : MonoBehaviour, IInteractableForPlayer
     {
         [field: SerializeField] public bool TouchTrigger { get; private set; } = true;
+
+        public bool CanPlayerInteract => true;
 
         private MainGame _game;
 
@@ -16,7 +18,7 @@ namespace HideAndSeek
             _game = game;
         }
 
-        public void Interact()
+        public void Interact(Player player)
         {
             _game.CompleteGame();
         }

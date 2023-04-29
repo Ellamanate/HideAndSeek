@@ -38,6 +38,7 @@ namespace HideAndSeek
             Container.BindInterfacesAndSelfTo<GameMenu>().AsSingle().WithArguments(_sceneReferences.MainMediator);
 
             Container.Bind<GameInitializer>().AsSingle();
+            Container.Bind<SceneInteractions>().AsSingle();
             Container.Bind<MainGame>().AsSingle();
             Container.Bind<StartGame>().AsSingle().WithArguments(_sceneReferences.MainMediator);
             Container.Bind<GameOver>().AsSingle().WithArguments(_sceneReferences.MainMediator);

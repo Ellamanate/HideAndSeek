@@ -8,7 +8,7 @@ namespace HideAndSeek
         public event Action OnDestroyed;
         
         [field: SerializeField] public EnemyBodyMovement Movement { get; private set; }
-        [field: SerializeField] public InteractableTrigger InteractableTrigger { get; private set; }
+        [field: SerializeField] public InteractableEnemyTrigger InteractableTrigger { get; private set; }
         [field: SerializeField] public PlayerTrigger PlayerTrigger { get; private set; }
         [field: SerializeField] public Transform RaycastPosition { get; private set; }
         [field: SerializeField] public ConeOfSightRenderer VisionCone { get; private set; }

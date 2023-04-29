@@ -9,14 +9,18 @@ namespace HideAndSeek.AI
         private readonly Chase.Factory _chaseFactory;
         private readonly Search.Factory _searchFactory;
         private readonly Patrol.Factory _patrolFactory;
+        private readonly Interact.Factory _interactFactory;
+        private readonly MoveToInteraction.Factory _moveToInteractionFactory;
 
         public OrderActionsFactory(Idle.Factory idleFactory, Chase.Factory chaseFactory, Search.Factory searchFactory,
-            Patrol.Factory patrolFactory)
+            Patrol.Factory patrolFactory, Interact.Factory interactFactory, MoveToInteraction.Factory moveToInteractionFactory)
         {
             _idleFactory = idleFactory;
             _chaseFactory = chaseFactory;
             _searchFactory = searchFactory;
             _patrolFactory = patrolFactory;
+            _interactFactory = interactFactory;
+            _moveToInteractionFactory = moveToInteractionFactory;
         }
 
         public Dictionary<OrderActionType, IAction> Create(OrderActionType types)
@@ -27,6 +31,8 @@ namespace HideAndSeek.AI
             Add(OrderActionType.Chase, _chaseFactory);
             Add(OrderActionType.Search, _searchFactory);
             Add(OrderActionType.Patrol, _patrolFactory);
+            Add(OrderActionType.Interact, _interactFactory);
+            Add(OrderActionType.MoveToInteraction, _moveToInteractionFactory);
 
             return actions;
 

@@ -6,12 +6,12 @@ namespace HideAndSeek
     {
         private readonly PlayerHUD _hud;
 
-        private List<IInteractable> _interactables;
+        private List<IInteractableForPlayer> _interactables;
 
         public PlayerInteract(PlayerHUD hud)
         {
             _hud = hud;
-            _interactables = new List<IInteractable>();
+            _interactables = new List<IInteractableForPlayer>();
         }
 
         public void Clear()
@@ -19,19 +19,19 @@ namespace HideAndSeek
             _interactables.Clear();
         }
 
-        public void Interact()
+        public void Interact(Player player)
         {
             if (_interactables.Count > 0)
             {
-                _interactables[0].Interact();
+                _interactables[0].Interact(player);
             }
         }
 
-        public void AddInteractable(IInteractable interactable)
+        public void AddInteractable(Player player, IInteractableForPlayer interactable)
         {
             if (interactable.TouchTrigger)
             {
-                interactable.Interact();
+                interactable.Interact(player);
             }
             else
             {
@@ -44,7 +44,7 @@ namespace HideAndSeek
             }
         }
 
-        public void RemoveInteractable(IInteractable interactable)
+        public void RemoveInteractable(IInteractableForPlayer interactable)
         {
             _interactables.Remove(interactable);
 

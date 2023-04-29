@@ -39,9 +39,15 @@ namespace HideAndSeek
                 if (_player.Model.Visible)
                 {
                     Scan();
+
+                    if (_model.PlayerDetectedInShelter)
+                    {
+                        _model.PlayerDetectedInShelter = false;
+                    }
                 }
                 else if (PlayerVisible)
                 {
+                    _model.PlayerDetectedInShelter = true;
                     SetInvisible();
                 }
             }

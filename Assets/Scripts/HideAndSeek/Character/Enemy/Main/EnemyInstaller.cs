@@ -58,6 +58,8 @@ namespace HideAndSeek
             container.BindFactory<Chase, Chase.Factory>().AsSingle();
             container.BindFactory<Search, Search.Factory>().AsSingle();
             container.BindFactory<Patrol, Patrol.Factory>().AsSingle();
+            container.BindFactory<Interact, Interact.Factory>().AsSingle();
+            container.BindFactory<MoveToInteraction, MoveToInteraction.Factory>().AsSingle();
         }
 
         private void BindOrderScore(DiContainer container)
@@ -65,6 +67,7 @@ namespace HideAndSeek
             container.BindFactory<CheckVisible, CheckVisible.Factory>().AsSingle();
             container.BindFactory<CheckSleep, CheckSleep.Factory>().AsSingle();
             container.BindFactory<CheckSearching, CheckSearching.Factory>().AsSingle();
+            container.BindFactory<CheckInteraction, CheckInteraction.Factory>().AsSingle();
         }
 
         private static void BindUtils(DiContainer container)
