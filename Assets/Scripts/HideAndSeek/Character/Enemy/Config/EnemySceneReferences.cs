@@ -9,5 +9,6 @@ namespace HideAndSeek
         [field: SerializeField] public EnemyConfig Config { get; private set; }
         [field: SerializeField] public Transform SpawnPosition { get; private set; }
         [field: SerializeField] public PatrolPoint[] PatrolPoints { get; private set; }
+        [field: SerializeField] public EnemyPatrolPointsSet PatrolPointsSet { get; private set; }
     }
 }

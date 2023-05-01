@@ -75,7 +75,8 @@ namespace HideAndSeek
                 {
                     if (_patrol.StandsAtPatrolPoint())
                     {
-                        _patrol.ApplyPatrolPoint();
+                        _patrol.PlayPointAnimation();
+                        _patrol.SetNextPoint();
                     }
                     else
                     {

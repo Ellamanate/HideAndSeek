@@ -5,15 +5,15 @@ namespace HideAndSeek
 {
     public class EnemyInteract
     {
-        private readonly MainGame _mainGame;
+        private readonly FailGame _failGame;
         private readonly HidePlayer _hidePlayer;
         private readonly EnemyUpdateBrain _enemyUpdateBrain;
 
         private List<IInteractableForEnemy> _interactables;
 
-        public EnemyInteract(MainGame mainGame, HidePlayer hidePlayer, EnemyUpdateBrain enemyUpdateBrain)
+        public EnemyInteract(FailGame failGame, HidePlayer hidePlayer, EnemyUpdateBrain enemyUpdateBrain)
         {
-            _mainGame = mainGame;
+            _failGame = failGame;
             _hidePlayer = hidePlayer;
             _enemyUpdateBrain = enemyUpdateBrain;
             _interactables = new List<IInteractableForEnemy>();
@@ -73,7 +73,7 @@ namespace HideAndSeek
 
         public void TouchPlayer(PlayerBody body)
         {
-            _mainGame.FailGame();
+            _failGame.SetFail();
         }
     }
 }

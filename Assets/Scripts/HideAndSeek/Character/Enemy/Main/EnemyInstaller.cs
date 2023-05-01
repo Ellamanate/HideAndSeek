@@ -12,17 +12,17 @@ namespace HideAndSeek
             Container.Bind<EnemySpawner>().AsSingle();
 
             Container
-                .BindFactory<EnemyModel, EnemyBody, EnemySceneConfig, Enemy, Enemy.Factory>()
+                .BindFactory<EnemyModel, EnemyBody, EnemyPatrolPointsSet, Enemy, Enemy.Factory>()
                 .FromSubContainerResolve()
                 .ByMethod(InstallEnemy)
                 .AsSingle();
         }
 
-        private void InstallEnemy(DiContainer container, EnemyModel model, EnemyBody body, EnemySceneConfig sceneConfig)
+        private void InstallEnemy(DiContainer container, EnemyModel model, EnemyBody body, EnemyPatrolPointsSet patrolSet)
         {
             container.Bind<EnemyModel>().FromInstance(model);
             container.Bind<EnemyBody>().FromInstance(body);
-            container.Bind<EnemySceneConfig>().FromInstance(sceneConfig);
+            container.Bind<EnemyPatrolPointsSet>().FromInstance(patrolSet);
 
             BindEnemy(container);
             BindBrain(container);
@@ -32,10 +32,10 @@ namespace HideAndSeek
         private void BindEnemy(DiContainer container)
         {;
             container.Bind<Enemy>().AsSingle();
+            container.Bind<EnemyInteract>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyVision>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemySightMovement>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle();
-            container.BindInterfacesAndSelfTo<EnemyInteract>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyUpdateBrain>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyUpdateBody>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyPatrol>().AsSingle();

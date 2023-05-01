@@ -17,10 +17,6 @@ namespace HideAndSeek.AI
 
         public void CalculateScore()
         {
-            //GameLogger.LogError($"PlayerDetectedInShelter: {_enemy.Model.PlayerDetectedInShelter} " +
-            //    $"Contains: {_enemy.Interact.Contains(_hidePlayer.CurrentShelter)} " +
-            //   $"CanInteract: {_enemy.Interact.CanInteract()}");
-
             if (_enemy.Model.PlayerDetectedInShelter && _enemy.Interact.Contains(_hidePlayer.CurrentShelter))
             {
                 _actions.SetOnly(OrderActionType.Interact, 1);

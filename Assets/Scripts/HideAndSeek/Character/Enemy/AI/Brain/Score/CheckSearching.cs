@@ -20,7 +20,9 @@ namespace HideAndSeek.AI
 
         public void CalculateScore()
         {
-            if (_enemy.Model.Moved && SearchingState() && DestinationNotPatrol())
+            bool searchingState = SearchingState();
+
+            if (_enemy.Model.Moved && searchingState && DestinationNotPatrol())
             {
                 _actions.AddScoreTo(OrderActionType.Search, 0.75f);
             }
@@ -29,7 +31,7 @@ namespace HideAndSeek.AI
             {
                 _actions.AddScoreTo(OrderActionType.MoveToInteraction, 1);
             }
-            else if (_sceneInteractions.TryGetPriorityInteractionNear(_enemy, out var interactable))
+            else if (searchingState && _sceneInteractions.TryGetPriorityInteractionNear(_enemy, out var interactable))
             {
                 _actions.AddScoreTo(OrderActionType.MoveToInteraction, 0.5f);
             }

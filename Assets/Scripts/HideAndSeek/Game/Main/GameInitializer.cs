@@ -17,7 +17,7 @@
         {
             _playerFactory.Create();
             _enemySpawner.Spawn();
-            _game.RestartGame();
+            _game.StartGame();
         }
     }
 }

@@ -7,25 +7,22 @@ namespace HideAndSeek
     public class StartGame
     {
         private readonly MainGameMediator _mediator;
-        private readonly PlayerHUD _hud;
         private readonly PlayerInput _playerInput;
         private readonly PlayerUpdateBody _playerBody;
-        private readonly PlayerInteract _interact;
-        private readonly HidePlayer _hidePlayer;
-        private readonly GameSceneReferences _sceneReferences;
         private readonly EnemySpawner _enemySpawner;
+        private readonly PlayerHUD _hud;
+        private readonly GameSceneReferences _sceneReferences;
 
-        public StartGame(MainGameMediator mediator, PlayerHUD hud, PlayerInput playerInput, PlayerUpdateBody playerBody,
-            PlayerInteract interact, HidePlayer hidePlayer, GameSceneReferences sceneReferences, EnemySpawner enemySpawner)
+        public StartGame(MainGameMediator mediator, PlayerInput playerInput, PlayerUpdateBody playerBody,
+            EnemySpawner enemySpawner, PlayerHUD hud, GameSceneReferences sceneReferences)
         {
             _mediator = mediator;
-            _hud = hud;
             _playerInput = playerInput;
             _playerBody = playerBody;
-            _interact = interact;
-            _hidePlayer = hidePlayer;
-            _sceneReferences = sceneReferences;
             _enemySpawner = enemySpawner;
+            _enemySpawner = enemySpawner;
+            _hud = hud;
+            _sceneReferences = sceneReferences;
         }
         
         public async UniTask Start(CancellationToken token)
@@ -46,12 +43,15 @@ namespace HideAndSeek
             _mediator.SetBlockingRaycasts(MainGameMediator.FadeType.Fail, false);
 
             _hud.Reinitialize();
-            _interact.Clear();
-            _hidePlayer.Show();
             _playerBody.SetVelocity(Vector3.zero);
             _playerBody.SetPosition(_sceneReferences.PlayerParent.position);
             _playerBody.SetRotation(_sceneReferences.PlayerParent.rotation);
-            _enemySpawner.ResetEnemys();
+
+            foreach (var enemy in _enemySpawner.Enemys)
+            {
+                enemy.Reinitialize();
+                enemy.Brain.UpdateAction();
+            }
 
             await _mediator.FadeOut(MainGameMediator.FadeType.Screen, token);
 

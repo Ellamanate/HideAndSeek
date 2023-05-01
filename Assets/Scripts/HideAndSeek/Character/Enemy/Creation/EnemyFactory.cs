@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HideAndSeek
 {
@@ -19,14 +18,9 @@ namespace HideAndSeek
             var enemyModel = new EnemyModel(_spawnIndex.ToString(), spawnData.Config, spawnData.SpawnPosition.position, spawnData.SpawnPosition.rotation);
             var body = Object.Instantiate(spawnData.Config.EnemyPrefab, parent);
 
-            var sceneConfig = new EnemySceneConfig
-            {
-                PatrolPositions = spawnData.PatrolPoints.ToArray()
-            };
-
             _spawnIndex++;
 
-            return _enemyFactory.Create(enemyModel, body, sceneConfig);
+            return _enemyFactory.Create(enemyModel, body, spawnData.PatrolPointsSet);
         }
     }
 }

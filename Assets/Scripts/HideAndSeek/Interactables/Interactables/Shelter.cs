@@ -4,7 +4,7 @@ using Zenject;
 namespace HideAndSeek
 {
     [RequireComponent(typeof(Collider))]
-    public class Shelter : MonoBehaviour, IInteractableForPlayer, IInteractableForEnemy
+    public class Shelter : MonoBehaviour, IInteractableForPlayer, IInteractableForEnemy, IResettable
     {
         [SerializeField] private Transform EnemyInteractPoint;
 
@@ -13,13 +13,13 @@ namespace HideAndSeek
         public bool CanPlayerInteract { get; private set; } = true;
         public bool CanEnemyInteract { get; private set; } = true;
 
-        private MainGame _mainGame;
+        private FailGame _failGame;
         private HidePlayer _hidePlayer;
 
         [Inject]
-        private void Construct(MainGame mainGame, HidePlayer hidePlayer)
+        private void Construct(FailGame failGame, HidePlayer hidePlayer)
         {
-            _mainGame = mainGame;
+            _failGame = failGame;
             _hidePlayer = hidePlayer;
         }
 
@@ -37,8 +37,14 @@ namespace HideAndSeek
 
             if (_hidePlayer.CurrentShelter == this)
             {
-                _mainGame.FailGame();
+                _failGame.SetFail();
             }
+        }
+
+        public void ToDefault()
+        {
+            CanPlayerInteract = true;
+            CanEnemyInteract = true;
         }
     }
 }

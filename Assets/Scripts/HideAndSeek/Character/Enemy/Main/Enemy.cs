@@ -109,6 +109,6 @@ namespace HideAndSeek
             Interact.TouchPlayer(body);
         }
 
-        public class Factory : PlaceholderFactory<EnemyModel, EnemyBody, EnemySceneConfig, Enemy> { }
+        public class Factory : PlaceholderFactory<EnemyModel, EnemyBody, EnemyPatrolPointsSet, Enemy> { }
     }
 }

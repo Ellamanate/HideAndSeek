@@ -21,9 +21,9 @@ namespace HideAndSeek
 
         public void Dispose() => _token.CancelAndDispose();
 
-        public void RestartGame()
+        public void StartGame()
         {
-            GameLogger.Log("Restart game");
+            GameLogger.Log("Start game");
             GameOver = false;
             _token = _token.Refresh();
             _ = _startGame.Start(_token.Token);

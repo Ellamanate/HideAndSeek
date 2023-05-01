@@ -40,9 +40,12 @@ namespace HideAndSeek
             Container.Bind<GameInitializer>().AsSingle();
             Container.Bind<SceneInteractions>().AsSingle();
             Container.Bind<MainGame>().AsSingle();
+            Container.Bind<RestartGame>().AsSingle();
+            Container.Bind<FailGame>().AsSingle();
             Container.Bind<StartGame>().AsSingle().WithArguments(_sceneReferences.MainMediator);
             Container.Bind<GameOver>().AsSingle().WithArguments(_sceneReferences.MainMediator);
             Container.Bind<GamePause>().AsSingle();
+            Container.Bind<ChangePatrolPoints>().AsSingle();
         }
     }
 }

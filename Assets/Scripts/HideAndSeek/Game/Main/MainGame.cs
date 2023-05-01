@@ -15,19 +15,14 @@ namespace HideAndSeek
 
         public void Exit() => _gameStateMachine.MoveToState<MenuState>();
         
-        public void RestartGame()
+        public void StartGame()
         {
-            _gameState.RestartGame();
+            _gameState.StartGame();
         }
 
         public void CompleteGame()
         {
             _gameState.CompleteGame();
-        }
-
-        public void FailGame()
-        {
-            _gameState.FailGame();
         }
     }
 }
