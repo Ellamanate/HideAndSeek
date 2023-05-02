@@ -1,27 +1,26 @@
 ﻿using System;
-using UnityEngine;
-using Zenject;
 
 namespace HideAndSeek
 {
-    public class Player : IDisposable, ITickable, IDestroyable, ITransformable
+    public class Player : IDisposable, IDestroyable
     {
-        public event Action<IInteractable> OnInteractableEnter;
-        public event Action<IInteractable> OnInteractableExit;
         public event Action OnDestroyed;
 
         public readonly PlayerModel Model;
+        public readonly PlayerUpdateBody UpdateBody;
+        public readonly PlayerInteract Interact;
+        public readonly PlayerVisibility PlayerVisibility;
 
         private PlayerBody _body;
         
         public bool Available => !Model.Destroyed && _body != null;
-        public Vector3 RaycastPosition => _body.RaycastPosition.position;
-        public Vector3 Position => Model.Position;
-        public Quaternion Rotation => Model.Rotation;
 
-        public Player(PlayerModel model)
+        public Player(PlayerModel model, PlayerUpdateBody updateBody, PlayerInteract interact, PlayerVisibility playerVisibility)
         {
             Model = model;
+            UpdateBody = updateBody;
+            Interact = interact;
+            PlayerVisibility = playerVisibility;
         }
 
         public void Dispose()
@@ -41,7 +40,9 @@ namespace HideAndSeek
 
             _body = body;
 
-            SetSpeed(Model.Speed);
+            PlayerVisibility.Initialize(_body);
+            UpdateBody.Initialize(_body);
+            UpdateBody.SetSpeed(Model.Speed);
 
             _body.OnDestroyed += DestroyPlayer;
             _body.InteractableTrigger.OnEnter += InteractableEnter;
@@ -56,55 +57,6 @@ namespace HideAndSeek
             }
         }
 
-        public void Tick()
-        {
-            if (Available)
-            {
-                Model.Position = _body.transform.position;
-                Model.Rotation = _body.transform.rotation;
-            }
-        }
-
-        public bool HittedBody(RaycastHit hit)
-        {
-            return Available && _body.HittedBody(hit);
-        }
-
-        public void SetVelocity(Vector3 velocity)
-        {
-            if (Available)
-            {
-                _body.Movement.SetVelocity(velocity);
-            }
-        }
-
-        public void SetSpeed(float speed)
-        {
-            if (Available)
-            {
-                _body.Movement.SetSpeed(speed);
-                Model.Speed = speed;
-            }
-        }
-
-        public void SetPosition(Vector3 position)
-        {
-            if (Available)
-            {
-                _body.Movement.SetPosition(position);
-                Model.Position = position;
-            }
-        }
-
-        public void SetRotation(Quaternion rotation)
-        {
-            if (Available)
-            {
-                _body.Movement.SetRotation(rotation);
-                Model.Rotation = rotation;
-            }
-        }
-
         private void DestroyPlayer()
         {
             Model.Destroyed = true;
@@ -112,7 +64,14 @@ namespace HideAndSeek
             OnDestroyed?.Invoke();
         }
 
-        private void InteractableEnter(IInteractable interactable) => OnInteractableEnter?.Invoke(interactable);
-        private void InteractableExit(IInteractable interactable) => OnInteractableExit?.Invoke(interactable);
+        private void InteractableEnter(IInteractableForPlayer interactable)
+        {
+            Interact.AddInteractable(this, interactable);
+        }
+
+        private void InteractableExit(IInteractableForPlayer interactable)
+        {
+            Interact.RemoveInteractable(interactable);
+        }
     }
 }

@@ -36,13 +36,26 @@ namespace HideAndSeek
         {
             if (!_model.Destroyed && _model.Active && _player.Available && !_pause.Paused)
             {
-                Scan();
+                if (_player.Model.Visible)
+                {
+                    Scan();
+
+                    if (_model.PlayerDetectedInShelter)
+                    {
+                        _model.PlayerDetectedInShelter = false;
+                    }
+                }
+                else if (PlayerVisible)
+                {
+                    _model.PlayerDetectedInShelter = true;
+                    SetInvisible();
+                }
             }
         }
 
         private void Scan()
         {
-            Vector3 direction = _player.RaycastPosition - _updateBody.RaycastPosition;
+            Vector3 direction = _player.UpdateBody.RaycastPosition - _updateBody.RaycastPosition;
 
             if (DistanceValid() && AngleValid())
             {
@@ -59,7 +72,7 @@ namespace HideAndSeek
 
         private void RaycastToPlayer(Vector3 direction)
         {
-            if (Raycast(out RaycastHit hit) && _player.HittedBody(hit))
+            if (Raycast(out RaycastHit hit) && _player.UpdateBody.HittedBody(hit))
             {
                 GameLogger.DrawLine(_updateBody.RaycastPosition, hit.point);
 

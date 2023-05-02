@@ -12,9 +12,13 @@ namespace HideAndSeek
 
         private void BindPlayer()
         {
-            Container.Bind(typeof(Player), typeof(ITickable)).To<Player>().AsSingle();
+            Container.Bind<Player>().AsSingle();
             Container.Bind<PlayerModel>().AsSingle();
             Container.Bind<PlayerFactory>().AsSingle();
+            Container.Bind<PlayerInteract>().AsSingle();
+            Container.Bind<PlayerVisibility>().AsSingle();
+            Container.Bind<HidePlayer>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerUpdateBody>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
         }
 

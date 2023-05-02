@@ -19,9 +19,8 @@ namespace HideAndSeek
         private CancellationTokenSource _token;
         private ITransformable _target;
 
-        public bool Moved => _model.Moved && !_body.Movement.IsStopped && !_body.Movement.PathPending;
-
         private float StoppingDistance => _body.Movement.StoppingDistance;
+        private bool Moved => _model.Moved && !_body.Movement.IsStopped && !_body.Movement.PathPending;
         private bool NeedStop => Moved && (HasPathAndCompleted || NoPathAndMove);
         private bool HasPathAndCompleted => _body.Movement.HasPath && PathCompleted;
         private bool NoPathAndMove => !_body.Movement.HasPath 
@@ -76,7 +75,8 @@ namespace HideAndSeek
                 {
                     if (_patrol.StandsAtPatrolPoint())
                     {
-                        _patrol.ApplyPatrolPoint();
+                        _patrol.PlayPointAnimation();
+                        _patrol.SetNextPoint();
                     }
                     else
                     {

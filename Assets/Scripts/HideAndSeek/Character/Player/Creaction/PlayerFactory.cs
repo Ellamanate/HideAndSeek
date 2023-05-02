@@ -30,6 +30,7 @@ namespace HideAndSeek
             _model.Position = _sceneReferences.PlayerParent.position;
             _model.Rotation = _sceneReferences.PlayerParent.rotation;
             _model.Speed = _config.Speed;
+            _model.Visible = true;
 
             _player.Initialize(body);
             _mainCamera.SetPlayer(body.transform);

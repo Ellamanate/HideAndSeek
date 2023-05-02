@@ -8,18 +8,13 @@ namespace HideAndSeek
         public readonly EnemyModel Model;
 
         private readonly EnemyBody _body;
-        private readonly EnemyInteract _interact;
         private readonly GamePause _pause;
 
-        public EnemyUpdateBody(EnemyModel model, EnemyBody body, EnemyInteract interact, GamePause pause)
+        public EnemyUpdateBody(EnemyModel model, EnemyBody body, GamePause pause)
         {
             Model = model;
             _body = body;
-            _interact = interact;
             _pause = pause;
-
-            _body.InteractableTrigger.OnEnter += InteractableEnter;
-            _body.InteractableTrigger.OnExit += InteractableExit;
         }
 
         public Vector3 RaycastPosition => _body.RaycastPosition.position;
@@ -34,12 +29,6 @@ namespace HideAndSeek
 
             SetPosition(Model.Position);
             SetRotation(Model.Rotation);
-        }
-
-        public void Dispose()
-        {
-            _body.InteractableTrigger.OnEnter -= InteractableEnter;
-            _body.InteractableTrigger.OnExit -= InteractableExit;
         }
 
         public void Tick()
@@ -76,16 +65,6 @@ namespace HideAndSeek
             {
                 _body.SetViewRotation(rotation);
             }
-        }
-
-        private void InteractableEnter(IInteractable interactable)
-        {
-            _interact.Interact(interactable);
-        }
-
-        private void InteractableExit(IInteractable interactable)
-        {
-            
         }
     }
 }
