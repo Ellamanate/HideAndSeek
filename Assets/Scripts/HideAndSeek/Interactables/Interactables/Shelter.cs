@@ -4,14 +4,14 @@ using Zenject;
 namespace HideAndSeek
 {
     [RequireComponent(typeof(Collider))]
-    public class Shelter : MonoBehaviour, IInteractableForPlayer, IInteractableForEnemy, IResettable
+    public class Shelter : MonoBehaviour, IInteractable<Player>, IInteractable<Enemy>, IPositionedInteraction, ILimitingReuseTime, IResettable
     {
-        [SerializeField] private Transform EnemyInteractPoint;
+        [SerializeField] private Transform _enemyInteractPoint;
+        [SerializeField] private LimitInteract _defaultInteractLimits;
+        [SerializeField] private TimeReuseRule _timeRule;
 
+        public LimitInteract LimitInteract { get; private set; }
         [field: SerializeField] public bool TouchTrigger { get; private set; }
-
-        public bool CanPlayerInteract { get; private set; } = true;
-        public bool CanEnemyInteract { get; private set; } = true;
 
         private FailGame _failGame;
         private HidePlayer _hidePlayer;
@@ -21,10 +21,12 @@ namespace HideAndSeek
         {
             _failGame = failGame;
             _hidePlayer = hidePlayer;
+            ToDefault();
         }
 
         public Vector3 Position => transform.position;
-        public Vector3 InteractionPosition => EnemyInteractPoint.position;
+        public Vector3 InteractionPosition => _enemyInteractPoint.position;
+        public TimeReuseRule TimeReuseRule => _timeRule;
 
         public void Interact(Player player)
         {
@@ -33,8 +35,6 @@ namespace HideAndSeek
 
         public void Interact(Enemy interactor)
         {
-            CanEnemyInteract = false;
-
             if (_hidePlayer.CurrentShelter == this)
             {
                 _failGame.SetFail();
@@ -43,8 +43,11 @@ namespace HideAndSeek
 
         public void ToDefault()
         {
-            CanPlayerInteract = true;
-            CanEnemyInteract = true;
+            LimitInteract = new LimitInteract
+            {
+                CanPlayerInteract = _defaultInteractLimits.CanPlayerInteract,
+                CanEnemyInteract = _defaultInteractLimits.CanEnemyInteract
+            };
         }
     }
 }

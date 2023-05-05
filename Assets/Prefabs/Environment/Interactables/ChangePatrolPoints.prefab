@@ -46,6 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetQueue: 1
+  _limitRule:
+    InteractorType: 0
+    Unlimit: 0
+    Limit: 1
+  _defaultInteractLimits:
+    CanPlayerInteract: 1
+    CanEnemyInteract: 0
 --- !u!114 &7316817635829777134
 MonoBehaviour:
   m_ObjectHideFlags: 0

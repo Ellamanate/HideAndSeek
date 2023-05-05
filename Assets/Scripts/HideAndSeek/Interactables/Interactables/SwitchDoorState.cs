@@ -3,29 +3,31 @@ using Zenject;
 
 namespace HideAndSeek
 {
-    public class ChangePatrolZone : MonoBehaviour, IInteractable<Player>, IReuseRestriction, IResettable
+    [RequireComponent(typeof(Collider))]
+    public class SwitchDoorState : MonoBehaviour, IInteractable<Player>, IResettable
     {
-        [SerializeField] private PatrolQueue _targetQueue;
-        [SerializeField] private LimitReuseRule _limitRule;
+        [SerializeField] private Door _door;
         [SerializeField] private LimitInteract _defaultInteractLimits;
 
         public LimitInteract LimitInteract { get; private set; }
-
-        private ChangePatrolPoints _changePatrol;
-
-        public LimitReuseRule LimitReuseRule => _limitRule;
-        public bool TouchTrigger => true;
+        public bool TouchTrigger => false;
 
         [Inject]
-        private void Construct(ChangePatrolPoints changePatrol)
+        private void Construct()
         {
-            _changePatrol = changePatrol;
             ToDefault();
         }
 
         public void Interact(Player player)
         {
-            _changePatrol.SetQueue(_targetQueue);
+            if (_door.Opened)
+            {
+                _ = _door.Close();
+            }
+            else
+            {
+                _ = _door.Open();
+            }
         }
 
         public void ToDefault()

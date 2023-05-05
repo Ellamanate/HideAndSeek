@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace HideAndSeek
 {
@@ -6,12 +7,12 @@ namespace HideAndSeek
     {
         private readonly PlayerHUD _hud;
 
-        private List<IInteractableForPlayer> _interactables;
+        private List<IInteractable<Player>> _interactables;
 
         public PlayerInteract(PlayerHUD hud)
         {
             _hud = hud;
-            _interactables = new List<IInteractableForPlayer>();
+            _interactables = new List<IInteractable<Player>>();
         }
 
         public void Clear()
@@ -23,11 +24,12 @@ namespace HideAndSeek
         {
             if (_interactables.Count > 0)
             {
-                _interactables[0].Interact(player);
+                var interaction = GetValidInteraction();
+                interaction?.Interact(player);
             }
         }
 
-        public void AddInteractable(Player player, IInteractableForPlayer interactable)
+        public void AddInteractable(Player player, IInteractable<Player> interactable)
         {
             if (interactable.TouchTrigger)
             {
@@ -44,7 +46,7 @@ namespace HideAndSeek
             }
         }
 
-        public void RemoveInteractable(IInteractableForPlayer interactable)
+        public void RemoveInteractable(IInteractable<Player> interactable)
         {
             _interactables.Remove(interactable);
 
@@ -52,6 +54,11 @@ namespace HideAndSeek
             {
                 _hud.HideInteractionIcon();
             }
+        }
+
+        private IInteractable<Player> GetValidInteraction()
+        {
+            return _interactables.FirstOrDefault(x => x.LimitInteract.CanPlayerInteract);
         }
     }
 }
