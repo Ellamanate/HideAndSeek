@@ -1,60 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace HideAndSeek
 {
-    public class EnemyInteract : IDisposable
+    public class EnemyInteract : BaseInteract<Enemy>
     {
         private readonly FailGame _failGame;
         private readonly HidePlayer _hidePlayer;
         private readonly EnemyUpdateBrain _enemyUpdateBrain;
-
-        private LockInteractions<Enemy> _lockInteractions;
-        private List<IInteractable<Enemy>> _interactables;
 
         public EnemyInteract(FailGame failGame, HidePlayer hidePlayer, EnemyUpdateBrain enemyUpdateBrain)
         {
             _failGame = failGame;
             _hidePlayer = hidePlayer;
             _enemyUpdateBrain = enemyUpdateBrain;
-            _lockInteractions = new LockInteractions<Enemy>();
-            _interactables = new List<IInteractable<Enemy>>();
         }
 
-        public void Dispose()
+        protected override InteractorType CurrentInteractorType => InteractorType.Enemy;
+
+        public override bool CheckInteractionAvailable(IInteractable<Enemy> interactable)
         {
-            _lockInteractions.Dispose();
+            return interactable.LimitInteract.CanEnemyInteract;
         }
 
-        public void Clear()
+        public override void Interact(Enemy enemy)
         {
-            _interactables.Clear();
-            _lockInteractions.Clear();
-        }
-
-        public bool Contains(IInteractable<Enemy> interactable)
-        {
-            return _interactables.Contains(interactable);
-        }
-
-        public bool CanInteract()
-        {
-            return _interactables.Count > 0 && GetValidInteraction() != null;
-        }
-
-        public bool IsInteractableValid(IInteractable<Enemy> interactable)
-        {
-            return interactable.LimitInteract.CanEnemyInteract && !_lockInteractions.IsLocked(interactable);
-        }
-
-        public void Interact(Enemy enemy)
-        {
-            if (_interactables.Count > 0)
+            if (Interactables.Count > 0)
             {
                 if (enemy.Model.PlayerDetectedInShelter)
                 {
-                    var playersShelter = _interactables.FirstOrDefault(x => Equals(x, _hidePlayer.CurrentShelter));
+                    var playersShelter = Interactables.FirstOrDefault(x => Equals(x, _hidePlayer.CurrentShelter));
 
                     if (playersShelter != null)
                     {
@@ -68,49 +42,9 @@ namespace HideAndSeek
             }
         }
 
-        public void AddInteractable(Enemy enemy, IInteractable<Enemy> interactable)
-        {
-            if (interactable.TouchTrigger)
-            {
-                InteractAndLock(enemy, interactable);
-            }
-            else if (!_interactables.Contains(interactable))
-            {
-                _interactables.Add(interactable);
-            }
-        }
-
-        public void RemoveInteractable(IInteractable<Enemy> interactable)
-        {
-            _interactables.Remove(interactable);
-        }
-
         public void TouchPlayer(PlayerBody body)
         {
             _failGame.SetFail();
-        }
-
-        private void InteractAndLock(Enemy enemy, IInteractable<Enemy> interactable)
-        {
-            if (interactable != null)
-            {
-                interactable.Interact(enemy);
-
-                if (interactable is ILimitingReuseTime limitingReuseTime)
-                {
-                    var rule = limitingReuseTime.TimeReuseRule;
-
-                    if (rule.InteractorType.HasFlag(InteractorType.Enemy))
-                    {
-                        _lockInteractions.LockInteractionByTime(interactable, rule.TimeToReuse);
-                    }
-                }
-            }
-        }
-
-        private IInteractable<Enemy> GetValidInteraction()
-        {
-            return _interactables.FirstOrDefault(IsInteractableValid);
         }
     }
 }

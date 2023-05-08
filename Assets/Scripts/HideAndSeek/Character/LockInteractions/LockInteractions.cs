@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using HideAndSeek.Utils;
+﻿using HideAndSeek.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,60 +8,75 @@ namespace HideAndSeek
     public class LockInteractions<T> : IDisposable
     {
         private CancellationTokenSource _token;
-        private List<IInteractable<T>> _locked;
-        private Dictionary<IInteractable<T>, TimeLock> _lockedByTime;
+        private Dictionary<IInteractable<T>, InteractionLocker> _interactables;
+        private bool _disposed;
 
         public LockInteractions()
         {
             _token = new CancellationTokenSource();
-            _locked = new List<IInteractable<T>>();
-            _lockedByTime = new Dictionary<IInteractable<T>, TimeLock>();
+            _interactables = new Dictionary<IInteractable<T>, InteractionLocker>();
         }
 
         public bool IsLocked(IInteractable<T> interactable)
         {
-            return _locked.Contains(interactable);
+            return _interactables.TryGetValue(interactable, out var locker) && locker.Locked;
         }
 
         public void LockInteractionByTime(IInteractable<T> interactable, float time)
         {
-            if (_lockedByTime.TryGetValue(interactable, out var timeLock))
+            if (_disposed) return;
+
+            if (_interactables.TryGetValue(interactable, out var locker))
             {
-                _ = TimeUnlock(interactable, timeLock, time, _token.Token);
+                _ = locker.LockByTime(time, _token.Token);
             }
             else
             {
-                timeLock = new TimeLock();
-                _lockedByTime[interactable] = timeLock;
-                _locked.Add(interactable);
-                _ = TimeUnlock(interactable, timeLock, time, _token.Token);
+                locker = new InteractionLocker();
+                _ = locker.LockByTime(time, _token.Token);
+
+                _interactables[interactable] = locker;
+            }
+        }
+
+        public void LockByRepetitions(IInteractable<T> interactable, int maxRepetitions)
+        {
+            if (_disposed) return;
+
+            if (_interactables.TryGetValue(interactable, out var locker))
+            {
+                locker.LockByRepetitions(maxRepetitions);
+            }
+            else
+            {
+                locker = new InteractionLocker();
+                locker.LockByRepetitions(maxRepetitions);
+
+                _interactables[interactable] = locker;
             }
         }
 
         public void Clear()
         {
-            foreach (var timeLock in _lockedByTime.Values)
+            if (_disposed) return;
+
+            foreach (var locker in _interactables.Values)
             {
-                timeLock.Dispose();
+                locker.Dispose();
             }
 
-            _lockedByTime.Clear();
-            _locked.Clear();
+            _interactables.Clear();
         }
 
         public void Dispose()
         {
-            _token.CancelAndDispose();
-            Clear();
-        }
+            if (!_disposed)
+            {
+                _token.CancelAndDispose();
+                Clear();
+            }
 
-        private async UniTask TimeUnlock(IInteractable<T> interactable, TimeLock timeLock, float time, CancellationToken token)
-        {
-            await timeLock.WaitUnlock(time, token);
-
-            timeLock.Dispose();
-            _lockedByTime.Remove(interactable);
-            _locked.Remove(interactable);
+            _disposed = true;
         }
     }
 }

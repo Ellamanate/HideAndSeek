@@ -1,64 +1,40 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace HideAndSeek
+﻿namespace HideAndSeek
 {
-    public class PlayerInteract
+    public class PlayerInteract : BaseInteract<Player>
     {
         private readonly PlayerHUD _hud;
-
-        private List<IInteractable<Player>> _interactables;
 
         public PlayerInteract(PlayerHUD hud)
         {
             _hud = hud;
-            _interactables = new List<IInteractable<Player>>();
         }
 
-        public void Clear()
+        protected override InteractorType CurrentInteractorType => InteractorType.Player;
+
+        public override bool CheckInteractionAvailable(IInteractable<Player> interactable)
         {
-            _interactables.Clear();
+            return interactable.LimitInteract.CanPlayerInteract;
         }
 
-        public void Interact(Player player)
+        public override void Interact(Player player)
         {
-            if (_interactables.Count > 0)
+            if (Interactables.Count > 0)
             {
-                var interaction = GetValidInteraction();
-                interaction?.Interact(player);
+                InteractAndLock(player, GetValidInteraction());
             }
         }
 
-        public void AddInteractable(Player player, IInteractable<Player> interactable)
+        protected override void OnInteractableAdded()
         {
-            if (interactable.TouchTrigger)
-            {
-                interactable.Interact(player);
-            }
-            else
-            {
-                if (!_interactables.Contains(interactable))
-                {
-                    _interactables.Add(interactable);
-                }
-
-                _hud.ShowInteractionIcon();
-            }
+            _hud.ShowInteractionIcon();
         }
 
-        public void RemoveInteractable(IInteractable<Player> interactable)
+        protected override void OnInteractableRemoved()
         {
-            _interactables.Remove(interactable);
-
-            if (_interactables.Count == 0)
+            if (Interactables.Count == 0)
             {
                 _hud.HideInteractionIcon();
             }
-        }
-
-        private IInteractable<Player> GetValidInteraction()
-        {
-            return _interactables.FirstOrDefault(x => x.LimitInteract.CanPlayerInteract);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace HideAndSeek
     {
         [SerializeField] private Transform _enemyInteractPoint;
         [SerializeField] private LimitInteract _defaultInteractLimits;
-        [SerializeField] private TimeReuseRule _timeRule;
+        [SerializeField] private ReuseTimeRule _timeRule;
 
         public LimitInteract LimitInteract { get; private set; }
         [field: SerializeField] public bool TouchTrigger { get; private set; }
@@ -26,7 +26,7 @@ namespace HideAndSeek
 
         public Vector3 Position => transform.position;
         public Vector3 InteractionPosition => _enemyInteractPoint.position;
-        public TimeReuseRule TimeReuseRule => _timeRule;
+        public ReuseTimeRule ReuseTimeRule => _timeRule;
 
         public void Interact(Player player)
         {

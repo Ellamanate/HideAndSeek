@@ -4,7 +4,7 @@ using UnityEngine;
 namespace HideAndSeek
 {
     [System.Serializable]
-    public struct LimitReuseRule
+    public struct ReuseActionRule
     {
         public InteractorType InteractorType;
         public bool Unlimit;

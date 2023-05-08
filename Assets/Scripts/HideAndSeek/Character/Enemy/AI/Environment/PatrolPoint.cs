@@ -8,29 +8,6 @@ using Zenject;
 
 namespace HideAndSeek
 {
-    [Serializable]
-    public struct SightAnimation
-    {
-        public Transform LookAt;
-        public AnimationData Animation;
-
-        public Ease Ease => Animation.Ease;
-        public bool SpeedBased => Animation.SpeedBased;
-        public float Speed => Animation.Speed;
-        public float Duration => Animation.Duration;
-        public float Wait => Animation.Wait;
-    }
-
-    [Serializable]
-    public struct AnimationData
-    {
-        public Ease Ease;
-        public bool SpeedBased;
-        [ShowIf(nameof(SpeedBased))] public float Speed;
-        [HideIf(nameof(SpeedBased))] public float Duration;
-        public float Wait;
-    }
-    
     public class PatrolPoint : MonoBehaviour
     {
         [SerializeField] private bool _animating = true;

@@ -2,6 +2,6 @@
 {
     public interface ILimitingReuseTime
     {
-        public TimeReuseRule TimeReuseRule { get; }
+        public ReuseTimeRule ReuseTimeRule { get; }
     }
 }
