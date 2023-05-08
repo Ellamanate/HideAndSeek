@@ -98,7 +98,7 @@ namespace HideAndSeek
 
                     if (!rule.Unlimit && rule.InteractorType.HasFlag(CurrentInteractorType))
                     {
-                        _lockInteractions.LockInteractionByTime(interactable, rule.Limit);
+                        _lockInteractions.LockByRepetitions(interactable, rule.Limit);
                     }
                 }
             }

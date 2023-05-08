@@ -21,6 +21,6 @@ MonoBehaviour:
   <MaxDistanceToInteractable>k__BackingField: 5
   <RaycastLayers>k__BackingField:
     serializedVersion: 2
-    m_Bits: 897
+    m_Bits: 2945
   <Actions>k__BackingField: 63
   <Counters>k__BackingField: 15

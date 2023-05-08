@@ -72,11 +72,10 @@ namespace HideAndSeek
         {
             if (!_disposed)
             {
+                _disposed = true;
                 _token.CancelAndDispose();
                 Clear();
             }
-
-            _disposed = true;
         }
     }
 }
