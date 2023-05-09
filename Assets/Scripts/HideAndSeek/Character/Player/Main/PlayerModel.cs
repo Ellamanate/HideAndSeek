@@ -4,5 +4,7 @@
     {
         public bool Visible;
         public float Speed;
+        public float RaycastDistance;
+        public int RaycastLayers;
     }
 }

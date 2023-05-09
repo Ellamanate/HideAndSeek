@@ -1,15 +1,18 @@
 ﻿using System.Linq;
+using UnityEngine;
 
 namespace HideAndSeek
 {
     public class EnemyInteract : BaseInteract<Enemy>
     {
+        private readonly EnemyModel _model;
         private readonly FailGame _failGame;
         private readonly HidePlayer _hidePlayer;
         private readonly EnemyUpdateBrain _enemyUpdateBrain;
 
-        public EnemyInteract(FailGame failGame, HidePlayer hidePlayer, EnemyUpdateBrain enemyUpdateBrain)
+        public EnemyInteract(EnemyModel model, FailGame failGame, HidePlayer hidePlayer, EnemyUpdateBrain enemyUpdateBrain)
         {
+            _model = model;
             _failGame = failGame;
             _hidePlayer = hidePlayer;
             _enemyUpdateBrain = enemyUpdateBrain;
@@ -19,7 +22,10 @@ namespace HideAndSeek
 
         public override bool CheckInteractionAvailable(IInteractable<Enemy> interactable)
         {
-            return interactable.LimitInteract.CanEnemyInteract;
+            return interactable.LimitInteract.CanEnemyInteract 
+                && Physics.Raycast(_model.Position, _model.Position - interactable.Position, out var hitInfo,
+                    _model.VisionDistance, _model.RaycastLayers)
+                && interactable.Hitted(hitInfo);
         }
 
         public override void Interact(Enemy enemy)

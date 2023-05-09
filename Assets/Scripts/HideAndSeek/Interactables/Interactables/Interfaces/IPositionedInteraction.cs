@@ -6,5 +6,6 @@ namespace HideAndSeek
     {
         public Vector3 Position { get; }
         public Vector3 InteractionPosition { get; }
+        public bool Hitted(RaycastHit hit);
     }
 }

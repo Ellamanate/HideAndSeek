@@ -7,5 +7,7 @@ namespace HideAndSeek
     {
         [field: SerializeField] public PlayerBody BodyPrefab { get; private set; }
         [field: SerializeField] public float Speed { get; private set; }
+        [field: SerializeField] public float RaycastDistance { get; private set; }
+        [field: SerializeField] public LayerMask RaycastLayers { get; private set; }
     }
 }

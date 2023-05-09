@@ -3,7 +3,7 @@ using Zenject;
 
 namespace HideAndSeek
 {
-    public class ChangePatrolZone : MonoBehaviour, IInteractable<Player>, ILimitingReuseAction, IResettable
+    public class ChangePatrolZone : BaseInteraction, IInteractable<Player>, ILimitingReuseAction, IResettable
     {
         [SerializeField] private PatrolQueue _targetQueue;
         [SerializeField] private ReuseActionRule _limitRule;

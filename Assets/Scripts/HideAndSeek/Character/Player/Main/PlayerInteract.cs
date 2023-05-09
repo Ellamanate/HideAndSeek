@@ -22,7 +22,10 @@ namespace HideAndSeek
 
         public override bool CheckInteractionAvailable(IInteractable<Player> interactable)
         {
-            return interactable.LimitInteract.CanPlayerInteract;
+            return interactable.LimitInteract.CanPlayerInteract
+                && Physics.Raycast(_model.Position, interactable.Position - _model.Position, 
+                    out var hitInfo, _model.RaycastDistance, _model.RaycastLayers)
+                && interactable.Hitted(hitInfo);
         }
 
         public override void Interact(Player player)

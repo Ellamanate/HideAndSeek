@@ -3,8 +3,7 @@ using Zenject;
 
 namespace HideAndSeek
 {
-    [RequireComponent(typeof(Collider))]
-    public class ExitInteraction : MonoBehaviour, IInteractable<Player>
+    public class ExitInteraction : BaseInteraction, IInteractable<Player>
     {
         [field: SerializeField] public bool TouchTrigger { get; private set; } = true;
 

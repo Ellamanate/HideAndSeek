@@ -5,8 +5,7 @@ using Zenject;
 
 namespace HideAndSeek
 {
-    [RequireComponent(typeof(Collider))]
-    public class SwitchDoorState : MonoBehaviour, IInteractable<Player>, ILimitingReuseAction, IResettable
+    public class SwitchDoorState : BaseInteraction, IInteractable<Player>, ILimitingReuseAction, IResettable
     {
         [SerializeField] private Door _door;
         [SerializeField] private LimitInteract _defaultInteractLimits;
