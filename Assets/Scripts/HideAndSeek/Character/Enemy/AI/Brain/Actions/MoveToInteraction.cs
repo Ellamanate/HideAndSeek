@@ -17,7 +17,7 @@ namespace HideAndSeek.AI
         {
             if (_sceneInteractions.TryGetPriorityInteractionNear(_enemy, out var interactable))
             {
-                _enemy.Movement.MoveTo((interactable as IPositionedInteraction).InteractionPosition);
+                _enemy.Movement.MoveTo(interactable.InteractionPosition);
             }
         }
 

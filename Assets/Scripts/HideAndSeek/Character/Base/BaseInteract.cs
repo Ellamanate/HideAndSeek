@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using HideAndSeek.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace HideAndSeek
 {
@@ -9,11 +12,13 @@ namespace HideAndSeek
         protected List<IInteractable<T>> Interactables;
 
         private LockInteractions<T> _lockInteractions;
+        private CancellationTokenSource _token;
 
         public BaseInteract()
         {
             _lockInteractions = new LockInteractions<T>();
             Interactables = new List<IInteractable<T>>();
+            _token = new CancellationTokenSource();
         }
 
         protected abstract InteractorType CurrentInteractorType { get; }
@@ -36,6 +41,7 @@ namespace HideAndSeek
         public void Dispose()
         {
             _lockInteractions.Dispose();
+            _token.CancelAndDispose();
 
             OnDisposed();
         }
@@ -44,6 +50,7 @@ namespace HideAndSeek
         {
             Interactables.Clear();
             _lockInteractions.Clear();
+            _token = _token.Refresh();
         }
 
         public void AddInteractable(T agent, IInteractable<T> interactable)
@@ -70,6 +77,7 @@ namespace HideAndSeek
 
         protected virtual void OnInteractableAdded() { }
         protected virtual void OnInteractableRemoved() { }
+        protected virtual void OnLockTimeEnded() { }
         protected virtual void OnDisposed() { }
 
         protected IInteractable<T> GetValidInteraction()
@@ -89,7 +97,7 @@ namespace HideAndSeek
 
                     if (rule.InteractorType.HasFlag(CurrentInteractorType))
                     {
-                        _lockInteractions.LockInteractionByTime(interactable, rule.TimeToReuse);
+                        _ = LockByTime(interactable, rule.TimeToReuse);
                     }
                 }
                 else if (interactable is ILimitingReuseAction limitingReuseAction)
@@ -102,6 +110,13 @@ namespace HideAndSeek
                     }
                 }
             }
+        }
+
+        private async UniTask LockByTime(IInteractable<T> interactable, float time)
+        {
+            await _lockInteractions.LockInteractionByTime(interactable, time, _token.Token);
+
+            OnLockTimeEnded();
         }
     }
 }

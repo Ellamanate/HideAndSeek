@@ -21,6 +21,11 @@ namespace HideAndSeek
             _token.CancelAndDispose();
         }
 
+        public void Clear()
+        {
+            _token.TryCancel();
+        }
+
         private async UniTask Timer(float time, CancellationToken token)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(time), cancellationToken: token);

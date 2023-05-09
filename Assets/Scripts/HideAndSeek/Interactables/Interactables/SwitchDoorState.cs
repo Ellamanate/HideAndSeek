@@ -12,12 +12,14 @@ namespace HideAndSeek
         [SerializeField] private LimitInteract _defaultInteractLimits;
         [SerializeField] private ReuseActionRule _reuseActionRule;
 
-        private CancellationTokenSource _token;
+        private CancellationTokenSource _token = new CancellationTokenSource();
 
         public LimitInteract LimitInteract { get; private set; }
         public bool TouchTrigger => false;
 
         public ReuseActionRule ReuseActionRule => _reuseActionRule;
+        public Vector3 Position => transform.position;
+        public Vector3 InteractionPosition => transform.position;
 
         [Inject]
         private void Construct()
@@ -34,12 +36,10 @@ namespace HideAndSeek
         {
             if (_door.Opened)
             {
-                _token = _token.Refresh();
                 _ = _door.Close(_token.Token);
             }
             else
             {
-                _token = _token.Refresh();
                 _ = _door.Open(_token.Token);
             }
         }

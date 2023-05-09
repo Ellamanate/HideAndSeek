@@ -14,6 +14,8 @@ namespace HideAndSeek
         private ChangePatrolPoints _changePatrol;
 
         public ReuseActionRule ReuseActionRule => _limitRule;
+        public Vector3 Position => transform.position;
+        public Vector3 InteractionPosition => transform.position;
         public bool TouchTrigger => true;
 
         [Inject]

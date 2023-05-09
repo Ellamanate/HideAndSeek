@@ -23,10 +23,10 @@ namespace HideAndSeek
 
         private bool InNearEnemyValid(Enemy enemy, IInteractable<Enemy> interactable)
         {
-            return CanInteract() && interactable is IPositionedInteraction positioned && InteractionNear();
+            return CanInteract() && InteractionNear();
 
             bool CanInteract() => enemy.Interact.IsInteractableValid(interactable);
-            bool InteractionNear() => Vector3.Distance(enemy.Model.Position, positioned.Position) <= enemy.Model.MaxDistanceToInteractable;
+            bool InteractionNear() => Vector3.Distance(enemy.Model.Position, interactable.Position) <= enemy.Model.MaxDistanceToInteractable;
         }
     }
 }

@@ -4,7 +4,7 @@ using Zenject;
 namespace HideAndSeek
 {
     [RequireComponent(typeof(Collider))]
-    public class Shelter : MonoBehaviour, IInteractable<Player>, IInteractable<Enemy>, IPositionedInteraction, ILimitingReuseTime, IResettable
+    public class Shelter : MonoBehaviour, IInteractable<Player>, IInteractable<Enemy>, ILimitingReuseTime, IResettable
     {
         [SerializeField] private Transform _enemyInteractPoint;
         [SerializeField] private LimitInteract _defaultInteractLimits;

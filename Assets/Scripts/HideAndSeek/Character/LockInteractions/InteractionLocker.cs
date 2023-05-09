@@ -21,6 +21,13 @@ namespace HideAndSeek
             ActionsLocked = false;
         }
 
+        public void Clear()
+        {
+            _timeLock?.Clear();
+            TimeLocked = false;
+            ActionsLocked = false;
+        }
+
         public void LockByRepetitions(int maxRepetitions)
         {
             if (_repetitionsLock == null)

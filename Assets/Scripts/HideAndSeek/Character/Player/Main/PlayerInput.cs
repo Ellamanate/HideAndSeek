@@ -9,17 +9,15 @@ namespace HideAndSeek
         private readonly Player _player;
         private readonly PlayerUpdateBody _updateBody;
         private readonly PlayerInteract _interact;
-        private readonly HidePlayer _hidePlayer;
         private readonly InputSystem _inputSystem;
 
         public bool Active { get; private set; }
 
-        public PlayerInput(Player player, PlayerUpdateBody updateBody, PlayerInteract interact, HidePlayer hidePlayer, InputSystem inputSystem)
+        public PlayerInput(Player player, PlayerUpdateBody updateBody, PlayerInteract interact, InputSystem inputSystem)
         {
             _player = player;
             _updateBody = updateBody;
             _interact = interact;
-            _hidePlayer = hidePlayer;
             _inputSystem = inputSystem;
 
             _inputSystem.OnInteract += Interact;
@@ -46,12 +44,6 @@ namespace HideAndSeek
 
         private void Interact()
         {
-            if (!_player.Model.Visible)
-            {
-                _hidePlayer.Show();
-                return;
-            }
-
             _interact.Interact(_player);
         }
 

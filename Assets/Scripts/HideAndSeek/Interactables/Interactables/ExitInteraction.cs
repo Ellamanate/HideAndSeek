@@ -12,6 +12,9 @@ namespace HideAndSeek
 
         private MainGame _game;
 
+        public Vector3 Position => transform.position;
+        public Vector3 InteractionPosition => transform.position;
+
         [Inject]
         private void Construct(MainGame game)
         {

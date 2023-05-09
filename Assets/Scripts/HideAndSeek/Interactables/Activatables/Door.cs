@@ -38,7 +38,7 @@ namespace HideAndSeek
             _token = _token.Refresh();
             _token.AddTo(token);
 
-            await UniTask.WaitUntilCanceled(token);
+            await UniTask.WaitUntilCanceled(_token.Token);
         }
 
         public async UniTask Close(CancellationToken token = default)
@@ -49,7 +49,7 @@ namespace HideAndSeek
             _token = _token.Refresh();
             _token.AddTo(token);
 
-            await UniTask.WaitUntilCanceled(token);
+            await UniTask.WaitUntilCanceled(_token.Token);
         }
 
         public void ToDefault()
