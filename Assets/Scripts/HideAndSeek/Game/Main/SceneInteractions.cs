@@ -12,7 +12,7 @@ namespace HideAndSeek
             _interactionsForEnemy = interactionsForEnemy;
         }
 
-        public bool TryGetPriorityInteractionNear(Enemy enemy, out IInteractable<Enemy> interactable)
+        public bool TryGetInteractionNear(Enemy enemy, out IInteractable<Enemy> interactable)
         {
             interactable = _interactionsForEnemy
                 .Where(x => InNearEnemyValid(enemy, x))
@@ -26,7 +26,8 @@ namespace HideAndSeek
             return CanInteract() && InteractionNear();
 
             bool CanInteract() => enemy.Interact.IsInteractableValid(interactable);
-            bool InteractionNear() => Vector3.Distance(enemy.Model.Position, interactable.Position) <= enemy.Model.MaxDistanceToInteractable;
+            bool InteractionNear() => GetDistanceToInteraction() <= enemy.Model.MaxDistanceToInteractable;
+            float GetDistanceToInteraction() => Vector3.Distance(enemy.Model.Position, interactable.InteractionPosition);
         }
     }
 }

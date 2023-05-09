@@ -39,6 +39,8 @@ namespace HideAndSeek
             container.BindInterfacesAndSelfTo<EnemyUpdateBrain>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyUpdateBody>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyPatrol>().AsSingle();
+            container.Bind<DefaultPatrol>().AsSingle();
+            container.Bind<SearchingPatrol>().AsSingle();
         }
 
         private void BindBrain(DiContainer container)

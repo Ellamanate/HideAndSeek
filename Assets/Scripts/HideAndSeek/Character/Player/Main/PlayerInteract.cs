@@ -6,14 +6,16 @@ namespace HideAndSeek
     public class PlayerInteract : BaseInteract<Player>
     {
         private readonly PlayerModel _model;
+        private readonly PlayerUpdateBody _updateBody;
         private readonly PlayerHUD _hud;
         private readonly HidePlayer _hidePlayer;
 
         private IInteractable<Player> _currentInteractable;
 
-        public PlayerInteract(PlayerModel model, PlayerHUD hud, HidePlayer hidePlayer)
+        public PlayerInteract(PlayerModel model, PlayerUpdateBody updateBody, PlayerHUD hud, HidePlayer hidePlayer)
         {
             _model = model;
+            _updateBody = updateBody;
             _hud = hud;
             _hidePlayer = hidePlayer;
         }
@@ -23,7 +25,7 @@ namespace HideAndSeek
         public override bool CheckInteractionAvailable(IInteractable<Player> interactable)
         {
             return interactable.LimitInteract.CanPlayerInteract
-                && Physics.Raycast(_model.Position, interactable.Position - _model.Position, 
+                && Physics.Raycast(_updateBody.RaycastPosition, interactable.Position - _updateBody.RaycastPosition, 
                     out var hitInfo, _model.RaycastDistance, _model.RaycastLayers)
                 && interactable.Hitted(hitInfo);
         }

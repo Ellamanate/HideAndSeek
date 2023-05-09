@@ -73,15 +73,7 @@ namespace HideAndSeek
 
                 if (_model.Active)
                 {
-                    if (_patrol.StandsAtPatrolPoint())
-                    {
-                        _patrol.PlayPointAnimation();
-                        _patrol.SetNextPoint();
-                    }
-                    else
-                    {
-                        _brain.UpdateAction();
-                    }
+                    _patrol.MoveToNextPoint();
                 }
             }
         }

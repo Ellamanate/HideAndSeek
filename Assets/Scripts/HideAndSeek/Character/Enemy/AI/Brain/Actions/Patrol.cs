@@ -16,6 +16,7 @@ namespace HideAndSeek.AI
 
         public override void Execute()
         {
+            _patrol.SetDefaultState();
             Vector3 patrolPointPosition = _patrol.GetCurrentPatrolPosition();
             _movement.MoveTo(patrolPointPosition);
         }

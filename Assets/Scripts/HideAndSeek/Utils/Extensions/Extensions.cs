@@ -63,9 +63,9 @@ namespace HideAndSeek.Utils
         /// Get random number excluded some.
         /// Excluded values should be sorted in ascending order
         /// </summary>
-        public static int RandomExceptValues(int min, int max, int[] excluded)
+        public static int RandomExceptValues(int min, int max, params int[] excluded)
         {
-            int result = UnityEngine.Random.Range(min, max + 1);
+            int result = UnityEngine.Random.Range(min, max);
 
             for (int i = 0; i < excluded.Length; i++)
             {
@@ -93,6 +93,16 @@ namespace HideAndSeek.Utils
             }
 
             return result;
+        }
+
+        public static T GetRandom<T>(this IEnumerable<T> array)
+        {
+            if (array.Count() == 0)
+            {
+                throw new ArgumentException("Array must be longer than one element");
+            }
+
+            return array.ElementAt(UnityEngine.Random.Range(0, array.Count()));
         }
 
         public static T GetRandom<T>(this T[] array)
