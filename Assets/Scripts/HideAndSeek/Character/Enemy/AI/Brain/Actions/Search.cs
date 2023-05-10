@@ -18,7 +18,7 @@ namespace HideAndSeek.AI
 
         public override void Execute()
         {
-            _movement.StopChase();
+            _movement.StopChase(_model.StopChaseDelay);
             _patrol.SetSearchingState();
 
             if (!_model.Moved)

@@ -31,6 +31,8 @@ namespace HideAndSeek
         public float RepathTime;
         public float AttentivenesDeclineTime;
         public float MaxDistanceToInteractable;
+        public float StopChaseDelay;
+        public float CatchShelterChance;
         public bool Active;
         public bool Moved;
         public bool PlayerDetectedInShelter;
@@ -71,6 +73,8 @@ namespace HideAndSeek
             RepathTime = config.RepathTime;
             AttentivenesDeclineTime = config.AttentivenesDeclineTime;
             MaxDistanceToInteractable = config.MaxDistanceToInteractable;
+            StopChaseDelay = config.StopChaseDelay;
+            CatchShelterChance = config.CatchShelterChance;
         }
 
         public EnemyModel(EnemyModel anotherModel)
@@ -101,6 +105,8 @@ namespace HideAndSeek
             RepathTime = anotherModel.RepathTime;
             AttentivenesDeclineTime = anotherModel.AttentivenesDeclineTime;
             MaxDistanceToInteractable = anotherModel.MaxDistanceToInteractable;
+            StopChaseDelay = anotherModel.StopChaseDelay;
+            CatchShelterChance = anotherModel.CatchShelterChance;
             Active = anotherModel.Active;
             Moved = anotherModel.Moved;
             PlayerDetectedInShelter = anotherModel.PlayerDetectedInShelter;

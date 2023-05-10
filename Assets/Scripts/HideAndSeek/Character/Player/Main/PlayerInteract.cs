@@ -34,6 +34,9 @@ namespace HideAndSeek
         {
             if (_hidePlayer.HasShelter)
             {
+                player.UpdateBody.SetPosition(_hidePlayer.CurrentShelter.InteractionPosition);
+                player.UpdateBody.SetVelocity(Vector3.zero);
+
                 _hidePlayer.Show();
                 UpdateCurrentInteraction();
             }

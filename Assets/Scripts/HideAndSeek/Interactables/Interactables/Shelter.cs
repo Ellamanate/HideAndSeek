@@ -32,9 +32,9 @@ namespace HideAndSeek
             _hidePlayer.Hide(this);
         }
 
-        public void Interact(Enemy interactor)
+        public void Interact(Enemy enemy)
         {
-            if (_hidePlayer.CurrentShelter == this)
+            if (_hidePlayer.CurrentShelter == this && _hidePlayer.CanCatchInCurrentShelter(enemy))
             {
                 _failGame.SetFail();
             }

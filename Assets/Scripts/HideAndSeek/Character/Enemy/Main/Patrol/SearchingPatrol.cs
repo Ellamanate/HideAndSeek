@@ -24,7 +24,7 @@ namespace HideAndSeek
 
         public override void SetNextPoint()
         {
-            CurrentPatrolIndex = Extensions.RandomExceptValues(0, PatrolPoints.Length - 1, CurrentPatrolIndex);
+            CurrentPatrolIndex = Utilities.RandomExceptValues(0, PatrolPoints.Length - 1, CurrentPatrolIndex);
         }
     }
 }

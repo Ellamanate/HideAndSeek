@@ -59,42 +59,6 @@ namespace HideAndSeek.Utils
             return newMin + step * newLength;
         }
 
-        /// <summary>
-        /// Get random number excluded some.
-        /// Excluded values should be sorted in ascending order
-        /// </summary>
-        public static int RandomExceptValues(int min, int max, params int[] excluded)
-        {
-            int result = UnityEngine.Random.Range(min, max);
-
-            for (int i = 0; i < excluded.Length; i++)
-            {
-                if (result < excluded[i]) return result;
-
-                result++;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Get random number excluded some.
-        /// Excluded values should be sorted in ascending order
-        /// </summary>
-        public static int RandomExceptValues(int min, int max, List<int> excluded)
-        {
-            int result = UnityEngine.Random.Range(min, max - excluded.Count);
-
-            for (int i = 0; i < excluded.Count; i++)
-            {
-                if (result < excluded[i]) return result;
-
-                result++;
-            }
-
-            return result;
-        }
-
         public static T GetRandom<T>(this IEnumerable<T> array)
         {
             if (array.Count() == 0)

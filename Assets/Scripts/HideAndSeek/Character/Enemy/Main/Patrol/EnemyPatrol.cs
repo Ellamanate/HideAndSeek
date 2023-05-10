@@ -62,12 +62,8 @@ namespace HideAndSeek
 
         public void SetSearchingState()
         {
-            if (_currentPatrol != _searchingPatrol)
-            {
-                _searchingPatrol.DropPatrolPoints();
-                _searchingPatrol.SetNearestSearchingPoint();
-            }
-
+            _searchingPatrol.DropPatrolPoints();
+            _searchingPatrol.SetNearestSearchingPoint();
             _currentPatrol = _searchingPatrol;
         }
 
