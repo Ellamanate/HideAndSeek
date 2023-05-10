@@ -12,6 +12,7 @@ namespace HideAndSeek
         private readonly EnemyUpdateBrain _brain;
         private readonly DefaultPatrol _defaultPatrol;
         private readonly SearchingPatrol _searchingPatrol;
+        private readonly GlobalSearching _globalSearching;
 
         private BasePatrol _currentPatrol;
         private CancellationTokenSource _token;
@@ -22,12 +23,13 @@ namespace HideAndSeek
         public bool SearchingState => _currentPatrol == _searchingPatrol;
 
         public EnemyPatrol(EnemyModel model, EnemyUpdateBrain brain, DefaultPatrol defaultPattrol, 
-            SearchingPatrol searchingPatrol)
+            SearchingPatrol searchingPatrol, GlobalSearching globalSearching)
         {
             _model = model;
             _brain = brain;
             _defaultPatrol = defaultPattrol;
             _searchingPatrol = searchingPatrol;
+            _globalSearching = globalSearching;
             _currentPatrol = defaultPattrol;
         }
 
@@ -58,13 +60,26 @@ namespace HideAndSeek
         public void SetDefaultState()
         {
             _currentPatrol = _defaultPatrol;
+
+            if (_searchingPatrol.CurrentPoint != null 
+                && _globalSearching.TryGetPoint(_searchingPatrol.CurrentPoint, out var enemyPatrol) 
+                && enemyPatrol == this)
+            {
+                _globalSearching.ClearPoint(_searchingPatrol.CurrentPoint);
+            }
         }
 
         public void SetSearchingState()
         {
-            _searchingPatrol.DropPatrolPoints();
-            _searchingPatrol.SetNearestSearchingPoint();
-            _currentPatrol = _searchingPatrol;
+            var nearestPoint = _searchingPatrol.GetNearestSearchingPoint();
+
+            if (!_globalSearching.TryGetPoint(nearestPoint, out var enemyPatrol) || enemyPatrol == this)
+            {
+                _globalSearching.TakePoint(this, nearestPoint);
+                _searchingPatrol.DropPatrolPoints();
+                _searchingPatrol.SetNearestSearchingPoint(nearestPoint);
+                _currentPatrol = _searchingPatrol;
+            }
         }
 
         public void MoveToNextPoint()

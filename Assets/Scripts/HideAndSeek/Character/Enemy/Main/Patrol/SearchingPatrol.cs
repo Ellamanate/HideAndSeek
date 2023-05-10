@@ -16,9 +16,14 @@ namespace HideAndSeek
             _searchingPoints = searchingPoints;
         }
 
-        public void SetNearestSearchingPoint()
+        public SearchingPoint GetNearestSearchingPoint()
         {
-            CurrentPoint = _searchingPoints.GetNearest(x => x.Position, _playerModel.Position);
+            return _searchingPoints.GetNearest(x => x.Position, _playerModel.Position);
+        }
+
+        public void SetNearestSearchingPoint(SearchingPoint point)
+        {
+            CurrentPoint = point;
             PatrolPoints = CurrentPoint.GetPatrolPoints();
         }
 

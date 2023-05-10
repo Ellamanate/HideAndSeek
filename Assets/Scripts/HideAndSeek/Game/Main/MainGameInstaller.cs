@@ -46,6 +46,7 @@ namespace HideAndSeek
             Container.Bind<GameOver>().AsSingle().WithArguments(_sceneReferences.MainMediator);
             Container.Bind<GamePause>().AsSingle();
             Container.Bind<ChangePatrolPoints>().AsSingle();
+            Container.Bind<GlobalSearching>().AsSingle();
         }
     }
 }
