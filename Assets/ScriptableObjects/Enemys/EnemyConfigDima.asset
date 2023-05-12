@@ -19,8 +19,10 @@ MonoBehaviour:
   <RepathTime>k__BackingField: 0.25
   <AttentivenesDeclineTime>k__BackingField: 10
   <MaxDistanceToInteractable>k__BackingField: 5
+  <StopChaseDelay>k__BackingField: 1.5
+  <CatchShelterChance>k__BackingField: 10
   <RaycastLayers>k__BackingField:
     serializedVersion: 2
-    m_Bits: 897
+    m_Bits: 2945
   <Actions>k__BackingField: 63
   <Counters>k__BackingField: 15
