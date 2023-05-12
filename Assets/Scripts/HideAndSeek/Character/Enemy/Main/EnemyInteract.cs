@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using Cysharp.Threading.Tasks;
+using HideAndSeek.Utils;
+using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 namespace HideAndSeek
@@ -11,6 +14,8 @@ namespace HideAndSeek
         private readonly EnemyUpdateBody _updateBody;
         private readonly EnemyUpdateBrain _enemyUpdateBrain;
 
+        private CancellationTokenSource _token;
+
         public EnemyInteract(EnemyModel model, FailGame failGame, HidePlayer hidePlayer, 
             EnemyUpdateBody updateBody, EnemyUpdateBrain enemyUpdateBrain)
         {
@@ -19,6 +24,11 @@ namespace HideAndSeek
             _hidePlayer = hidePlayer;
             _updateBody = updateBody;
             _enemyUpdateBrain = enemyUpdateBrain;
+        }
+
+        protected override void OnDisposed()
+        {
+            _token.CancelAndDispose();
         }
 
         protected override InteractorType CurrentInteractorType => InteractorType.Enemy;
@@ -46,14 +56,34 @@ namespace HideAndSeek
                     }
                 }
 
-                InteractAndLock(enemy, GetValidInteraction());
-                _enemyUpdateBrain.UpdateAction();
+                var interaction = GetValidInteraction();
+
+                if (interaction is IAnimatableInteraction<Enemy> animatable)
+                {
+                    _token = _token.Refresh();
+                    _ = InteractAnimation(animatable, interaction, enemy, _token.Token);
+                }
+                else
+                {
+                    _token.TryCancel();
+                    InteractAndLock(enemy, interaction);
+                    _enemyUpdateBrain.UpdateAction();
+                }
             }
         }
 
         public void TouchPlayer(PlayerBody body)
         {
             _failGame.SetFail();
+        }
+
+        private async UniTask InteractAnimation(IAnimatableInteraction<Enemy> animatable,
+            IInteractable<Enemy> interaction, Enemy enemy, CancellationToken token)
+        {
+            await animatable.PlayInteractionAnimation(enemy, token);
+
+            InteractAndLock(enemy, interaction);
+            _enemyUpdateBrain.UpdateAction();
         }
     }
 }

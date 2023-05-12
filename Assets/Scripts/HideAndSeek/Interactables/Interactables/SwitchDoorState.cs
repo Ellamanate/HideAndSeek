@@ -1,16 +1,21 @@
-﻿using HideAndSeek.Utils;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using HideAndSeek.Utils;
 using System.Threading;
 using UnityEngine;
 using Zenject;
 
 namespace HideAndSeek
 {
-    public class SwitchDoorState : BaseInteraction, IInteractable<Player>, ILimitingReuseAction, IResettable
+    public class SwitchDoorState : BaseInteraction, IInteractable<Player>, ILimitingReuseAction, 
+        IResettable, IAnimatableInteraction<Player>
     {
         [SerializeField] private Door _door;
         [SerializeField] private LimitInteract _defaultInteractLimits;
+        [SerializeField] private float _interactionTime = 2;
         [SerializeField] private ReuseActionRule _reuseActionRule;
 
+        private ProgressUIService _progressUIService;
         private CancellationTokenSource _token = new CancellationTokenSource();
 
         public LimitInteract LimitInteract { get; private set; }
@@ -21,8 +26,9 @@ namespace HideAndSeek
         public Vector3 InteractionPosition => transform.position;
 
         [Inject]
-        private void Construct()
+        private void Construct(ProgressUIService progressUIService)
         {
+            _progressUIService = progressUIService;
             ToDefault();
         }
 
@@ -50,6 +56,30 @@ namespace HideAndSeek
                 CanPlayerInteract = _defaultInteractLimits.CanPlayerInteract,
                 CanEnemyInteract = _defaultInteractLimits.CanEnemyInteract
             };
+        }
+
+        public async UniTask PlayInteractionAnimation(Player player, CancellationToken token)
+        {
+            var progress = _progressUIService.AddProgressTo(ProgressUIType.Circle, player.UpdateBody.Transform, player.Model.UIOffset);
+            float progressValue = 0;
+
+            var tween = DOTween.To(() => progressValue, SetProgress, 1, _interactionTime);
+            tween.SetEase(Ease.Linear);
+
+            try
+            {
+                await tween.AsyncWaitForKill(token);
+            }
+            finally
+            {
+                _progressUIService.RemoveProgress(progress);
+            }
+
+            void SetProgress(float currentProgressValue)
+            {
+                progressValue = currentProgressValue;
+                progress.SetProgress(currentProgressValue);
+            }
         }
     }
 }

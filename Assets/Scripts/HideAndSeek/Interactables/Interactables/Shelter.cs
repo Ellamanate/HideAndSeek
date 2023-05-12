@@ -1,11 +1,16 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using System;
+using System.Threading;
+using UnityEngine;
 using Zenject;
 
 namespace HideAndSeek
 {
-    public class Shelter : BaseInteraction, IInteractable<Player>, IInteractable<Enemy>, ILimitingReuseTime, IResettable
+    public class Shelter : BaseInteraction, IInteractable<Player>, IInteractable<Enemy>, 
+        ILimitingReuseTime, IResettable, IAnimatableInteraction<Enemy>
     {
         [SerializeField] private Transform _enemyInteractPoint;
+        [SerializeField] private float _enemyInteractionTime = 3;
         [SerializeField] private LimitInteract _defaultInteractLimits;
         [SerializeField] private ReuseTimeRule _timeRule;
 
@@ -47,6 +52,11 @@ namespace HideAndSeek
                 CanPlayerInteract = _defaultInteractLimits.CanPlayerInteract,
                 CanEnemyInteract = _defaultInteractLimits.CanEnemyInteract
             };
+        }
+
+        public async UniTask PlayInteractionAnimation(Enemy interactor, CancellationToken token)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(_enemyInteractionTime), cancellationToken: token);
         }
     }
 }

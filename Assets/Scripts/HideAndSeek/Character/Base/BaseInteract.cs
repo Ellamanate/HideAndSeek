@@ -90,24 +90,28 @@ namespace HideAndSeek
             if (interactable != null)
             {
                 interactable.Interact(agent);
+                LockInteraction(interactable);
+            }
+        }
 
-                if (interactable is ILimitingReuseTime limitingReuseTime)
+        private void LockInteraction(IInteractable<T> interactable)
+        {
+            if (interactable is ILimitingReuseTime limitingReuseTime)
+            {
+                var rule = limitingReuseTime.ReuseTimeRule;
+
+                if (rule.InteractorType.HasFlag(CurrentInteractorType))
                 {
-                    var rule = limitingReuseTime.ReuseTimeRule;
-
-                    if (rule.InteractorType.HasFlag(CurrentInteractorType))
-                    {
-                        _ = LockByTime(interactable, rule.TimeToReuse);
-                    }
+                    _ = LockByTime(interactable, rule.TimeToReuse);
                 }
-                else if (interactable is ILimitingReuseAction limitingReuseAction)
-                {
-                    var rule = limitingReuseAction.ReuseActionRule;
+            }
+            else if (interactable is ILimitingReuseAction limitingReuseAction)
+            {
+                var rule = limitingReuseAction.ReuseActionRule;
 
-                    if (!rule.Unlimit && rule.InteractorType.HasFlag(CurrentInteractorType))
-                    {
-                        _lockInteractions.LockByRepetitions(interactable, rule.Limit);
-                    }
+                if (!rule.Unlimit && rule.InteractorType.HasFlag(CurrentInteractorType))
+                {
+                    _lockInteractions.LockByRepetitions(interactable, rule.Limit);
                 }
             }
         }

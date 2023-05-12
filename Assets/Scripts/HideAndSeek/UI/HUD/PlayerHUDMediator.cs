@@ -24,7 +24,7 @@ namespace HideAndSeek
 
         public void SetInteractionHintTarget(IPositionedInteraction interactable)
         {
-            _interactionHint.SetPositionAt(interactable);
+            _interactionHint.SetPosition(interactable.Position);
         }
 
         public void SetInteractEnable(float alpha, bool blocksRaycasts)

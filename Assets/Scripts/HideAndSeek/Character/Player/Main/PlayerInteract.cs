@@ -10,7 +10,7 @@ namespace HideAndSeek
         private readonly PlayerHUD _hud;
         private readonly HidePlayer _hidePlayer;
 
-        private IInteractable<Player> _currentInteractable;
+        public IInteractable<Player> CurrentInteractable { get; private set; }
 
         public PlayerInteract(PlayerModel model, PlayerUpdateBody updateBody, PlayerHUD hud, HidePlayer hidePlayer)
         {
@@ -40,16 +40,16 @@ namespace HideAndSeek
                 _hidePlayer.Show();
                 UpdateCurrentInteraction();
             }
-            else if (_currentInteractable != null)
+            else if (CurrentInteractable != null)
             {
-                if (_currentInteractable is Shelter)
+                if (CurrentInteractable is Shelter)
                 {
-                    InteractAndLock(player, _currentInteractable);
-                    _hud.ShowInteraction(_currentInteractable);
+                    InteractAndLock(player, CurrentInteractable);
+                    _hud.ShowInteraction(CurrentInteractable);
                 }
                 else
                 {
-                    InteractAndLock(player, _currentInteractable);
+                    InteractAndLock(player, CurrentInteractable);
                     UpdateCurrentInteraction();
                 }
             }
@@ -70,7 +70,7 @@ namespace HideAndSeek
         {
             if (Interactables.Count == 0)
             {
-                _currentInteractable = null;
+                CurrentInteractable = null;
                 _hud.HideInteraction();
             }
             else
@@ -86,16 +86,16 @@ namespace HideAndSeek
 
         private void SetCurrentInteraction()
         {
-            _currentInteractable = Interactables
+            CurrentInteractable = Interactables
                 .OrderBy(x => Vector3.Distance(x.Position, _model.Position))
                 .FirstOrDefault(IsInteractableValid);
         }
 
         private void UpdateIcon()
         {
-            if (_currentInteractable != null)
+            if (CurrentInteractable != null)
             {
-                _hud.ShowInteraction(_currentInteractable);
+                _hud.ShowInteraction(CurrentInteractable);
             }
             else
             {
