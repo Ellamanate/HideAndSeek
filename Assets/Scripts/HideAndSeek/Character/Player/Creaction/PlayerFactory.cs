@@ -29,7 +29,10 @@ namespace HideAndSeek
 
             _model.Position = _sceneReferences.PlayerParent.position;
             _model.Rotation = _sceneReferences.PlayerParent.rotation;
+            _model.UIOffset = _config.UIOffset;
             _model.Speed = _config.Speed;
+            _model.RaycastDistance = _config.RaycastDistance;
+            _model.RaycastLayers = _config.RaycastLayers;
             _model.Visible = true;
 
             _player.Initialize(body);

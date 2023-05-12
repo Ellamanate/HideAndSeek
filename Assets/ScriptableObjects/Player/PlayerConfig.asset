@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BodyPrefab>k__BackingField: {fileID: 4925488424332353305, guid: 3c1f5fc03fe762d4d8978ac2022141c6, type: 3}
   <Speed>k__BackingField: 2.5
+  <RaycastDistance>k__BackingField: 10
+  <UIOffset>k__BackingField: {x: 0, y: 1.5, z: 0}
+  <RaycastLayers>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 2817

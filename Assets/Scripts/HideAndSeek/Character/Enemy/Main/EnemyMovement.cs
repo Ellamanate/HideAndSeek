@@ -16,7 +16,8 @@ namespace HideAndSeek
         private readonly EnemySightMovement _sight;
         private readonly GamePause _pause;
 
-        private CancellationTokenSource _token;
+        private CancellationTokenSource _chaseToken;
+        private CancellationTokenSource _stopChaseToken;
         private ITransformable _target;
 
         private float StoppingDistance => _body.Movement.StoppingDistance;
@@ -36,12 +37,14 @@ namespace HideAndSeek
             _brain = brain;
             _sight = sight;
             _pause = pause;
-            _token = new CancellationTokenSource();
+            _chaseToken = new CancellationTokenSource();
+            _stopChaseToken = new CancellationTokenSource();
         }
 
         public void Dispose()
         {
-            _token.CancelAndDispose();
+            _chaseToken.CancelAndDispose();
+            _stopChaseToken.CancelAndDispose();
         }
         
         public void Tick()
@@ -73,15 +76,7 @@ namespace HideAndSeek
 
                 if (_model.Active)
                 {
-                    if (_patrol.StandsAtPatrolPoint())
-                    {
-                        _patrol.PlayPointAnimation();
-                        _patrol.SetNextPoint();
-                    }
-                    else
-                    {
-                        _brain.UpdateAction();
-                    }
+                    _patrol.MoveToNextPoint();
                 }
             }
         }
@@ -90,20 +85,34 @@ namespace HideAndSeek
         {
             if (!_model.Destroyed)
             {
-                _sight.SetLookAtTransformableTarget(_target);
+                _sight.SetLookAtTransformableTarget(target);
                 _patrol.CancelLookAround();
                 _brain.CacelRelaxTransition();
                 _target = target;
 
-                _token = _token.Refresh();
-                _ = UpdateChase(_token.Token);
+                _chaseToken = _chaseToken.Refresh();
+                _stopChaseToken.TryCancel();
+                _ = UpdateChase(_chaseToken.Token);
             }
         }
 
         public void StopChase()
         {
+            _stopChaseToken.TryCancel();
             _sight.SetLookAtTransformableTarget(null);
-            _token.TryCancel();
+            DropChaseTarget();
+        }
+
+        public void StopChase(float delay)
+        {
+            _stopChaseToken = _stopChaseToken.Refresh();
+            _sight.SetLookAtTransformableTarget(null);
+            _ = StopChaseDelay(delay, _stopChaseToken.Token);
+        }
+
+        private void DropChaseTarget()
+        {
+            _chaseToken.TryCancel();
             _target = null;
         }
 
@@ -126,6 +135,13 @@ namespace HideAndSeek
 
                 await UniTask.Delay(TimeSpan.FromSeconds(_model.RepathTime), cancellationToken: token);
             }
+        }
+
+        private async UniTask StopChaseDelay(float delay, CancellationToken token)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: token);
+
+            DropChaseTarget();
         }
     }
 }

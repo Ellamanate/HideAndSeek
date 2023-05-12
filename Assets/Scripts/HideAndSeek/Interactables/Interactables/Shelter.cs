@@ -1,17 +1,21 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using System;
+using System.Threading;
+using UnityEngine;
 using Zenject;
 
 namespace HideAndSeek
 {
-    [RequireComponent(typeof(Collider))]
-    public class Shelter : MonoBehaviour, IInteractableForPlayer, IInteractableForEnemy, IResettable
+    public class Shelter : BaseInteraction, IInteractable<Player>, IInteractable<Enemy>, 
+        ILimitingReuseTime, IResettable, IAnimatableInteraction<Enemy>
     {
-        [SerializeField] private Transform EnemyInteractPoint;
+        [SerializeField] private Transform _enemyInteractPoint;
+        [SerializeField] private float _enemyInteractionTime = 3;
+        [SerializeField] private LimitInteract _defaultInteractLimits;
+        [SerializeField] private ReuseTimeRule _timeRule;
 
+        public LimitInteract LimitInteract { get; private set; }
         [field: SerializeField] public bool TouchTrigger { get; private set; }
-
-        public bool CanPlayerInteract { get; private set; } = true;
-        public bool CanEnemyInteract { get; private set; } = true;
 
         private FailGame _failGame;
         private HidePlayer _hidePlayer;
@@ -21,21 +25,21 @@ namespace HideAndSeek
         {
             _failGame = failGame;
             _hidePlayer = hidePlayer;
+            ToDefault();
         }
 
         public Vector3 Position => transform.position;
-        public Vector3 InteractionPosition => EnemyInteractPoint.position;
+        public Vector3 InteractionPosition => _enemyInteractPoint.position;
+        public ReuseTimeRule ReuseTimeRule => _timeRule;
 
         public void Interact(Player player)
         {
             _hidePlayer.Hide(this);
         }
 
-        public void Interact(Enemy interactor)
+        public void Interact(Enemy enemy)
         {
-            CanEnemyInteract = false;
-
-            if (_hidePlayer.CurrentShelter == this)
+            if (_hidePlayer.CurrentShelter == this && _hidePlayer.CanCatchInCurrentShelter(enemy))
             {
                 _failGame.SetFail();
             }
@@ -43,8 +47,16 @@ namespace HideAndSeek
 
         public void ToDefault()
         {
-            CanPlayerInteract = true;
-            CanEnemyInteract = true;
+            LimitInteract = new LimitInteract
+            {
+                CanPlayerInteract = _defaultInteractLimits.CanPlayerInteract,
+                CanEnemyInteract = _defaultInteractLimits.CanEnemyInteract
+            };
+        }
+
+        public async UniTask PlayInteractionAnimation(Enemy interactor, CancellationToken token)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(_enemyInteractionTime), cancellationToken: token);
         }
     }
 }

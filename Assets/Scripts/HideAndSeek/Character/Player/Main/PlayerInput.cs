@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using HideAndSeek.Utils;
+using System;
+using System.Threading;
 using UnityEngine;
 using Zenject;
 
@@ -9,17 +12,18 @@ namespace HideAndSeek
         private readonly Player _player;
         private readonly PlayerUpdateBody _updateBody;
         private readonly PlayerInteract _interact;
-        private readonly HidePlayer _hidePlayer;
         private readonly InputSystem _inputSystem;
+
+        private CancellationTokenSource _token;
+        private bool _animating;
 
         public bool Active { get; private set; }
 
-        public PlayerInput(Player player, PlayerUpdateBody updateBody, PlayerInteract interact, HidePlayer hidePlayer, InputSystem inputSystem)
+        public PlayerInput(Player player, PlayerUpdateBody updateBody, PlayerInteract interact, InputSystem inputSystem)
         {
             _player = player;
             _updateBody = updateBody;
             _interact = interact;
-            _hidePlayer = hidePlayer;
             _inputSystem = inputSystem;
 
             _inputSystem.OnInteract += Interact;
@@ -27,7 +31,13 @@ namespace HideAndSeek
 
         public void Dispose()
         {
+            _token.CancelAndDispose();
             _inputSystem.OnInteract -= Interact;
+        }
+
+        public void ToDefault()
+        {
+            _token.TryCancel();
         }
 
         public void FixedTick()
@@ -46,13 +56,23 @@ namespace HideAndSeek
 
         private void Interact()
         {
-            if (!_player.Model.Visible)
+            if (_animating)
             {
-                _hidePlayer.Show();
-                return;
+                _token.TryCancel();
             }
-
-            _interact.Interact(_player);
+            else
+            {
+                if (_interact.CurrentInteractable is IAnimatableInteraction<Player> animatable)
+                {
+                    _token = _token.Refresh();
+                    _ = InteractAnimation(animatable, _player, _token.Token);
+                }
+                else
+                {
+                    _token.TryCancel();
+                    _interact.Interact(_player);
+                }
+            }
         }
 
         private Vector3 CalculateMovementDirection(float up, float side)
@@ -62,6 +82,26 @@ namespace HideAndSeek
             return direction.magnitude > 1 ? direction.normalized : direction;
 
             Vector3 ProjectOnFloor(Vector3 direction) => Vector3.ProjectOnPlane(direction, _player.Model.Up).normalized;
+        }
+
+        private async UniTask InteractAnimation(IAnimatableInteraction<Player> animatable,
+            Player player, CancellationToken token)
+        {
+            SetActive(false);
+            _animating = true;
+            player.UpdateBody.SetVelocity(Vector3.zero);
+
+            try
+            {
+                await animatable.PlayInteractionAnimation(player, token);
+
+                _interact.Interact(_player);
+            }
+            finally
+            {
+                SetActive(true);
+                _animating = false;
+            }
         }
     }
 }

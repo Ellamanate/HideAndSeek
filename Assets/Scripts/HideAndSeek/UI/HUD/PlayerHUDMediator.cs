@@ -8,12 +8,23 @@ namespace HideAndSeek
     public class PlayerHUDMediator : MonoBehaviour
     {
         [SerializeField] private FadeAnimation _interact;
+        [SerializeField] private InteractionHint _interactionHint;
 
         private PlayerHUD _hud;
 
         private void Construct(PlayerHUD hud)
         {
             _hud = hud;
+        }
+
+        public void SetActiveInteractionHint(bool active)
+        {
+            _interactionHint.SetAcive(active);
+        }
+
+        public void SetInteractionHintTarget(IPositionedInteraction interactable)
+        {
+            _interactionHint.SetPosition(interactable.Position);
         }
 
         public void SetInteractEnable(float alpha, bool blocksRaycasts)

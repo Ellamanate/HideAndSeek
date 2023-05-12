@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using HideAndSeek.Utils;
 using UnityEngine;
 
 namespace HideAndSeek
@@ -16,6 +17,12 @@ namespace HideAndSeek
         {
             _virtualCamera.Follow = target;
             _virtualCamera.LookAt = target;
+        }
+
+        public void SetDampingX(float damping)
+        {
+            var follow = _virtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+            follow.Damping = follow.Damping.ChangeX(damping);
         }
     }
 }

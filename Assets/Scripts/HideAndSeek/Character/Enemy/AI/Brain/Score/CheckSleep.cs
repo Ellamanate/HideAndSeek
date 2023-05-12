@@ -19,7 +19,14 @@ namespace HideAndSeek.AI
         {
             if (!_enemy.Model.Moved && _enemy.Model.CurrentAttentiveness != AttentivenessType.Chase && !_patrol.PlayingLookAround)
             {
-                _actions.AddScoreTo(OrderActionType.Patrol, 0.1f);
+                if (_enemy.Model.CurrentAttentiveness == AttentivenessType.Relax)
+                {
+                    _actions.AddScoreTo(OrderActionType.Patrol, 0.1f);
+                }
+                else if (_enemy.Model.CurrentAttentiveness == AttentivenessType.Seaching)
+                {
+                    _actions.AddScoreTo(OrderActionType.Search, 0.1f);
+                }
             }
         }
 

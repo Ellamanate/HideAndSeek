@@ -51,6 +51,7 @@ namespace HideAndSeek
             Brain.Dispose();
             Patrol.Dispose();
             SightMovement.Dispose();
+            Interact.Dispose();
         }
 
         public void Destroy()
@@ -94,12 +95,12 @@ namespace HideAndSeek
             OnDestroyed?.Invoke();
         }
 
-        private void InteractableEnter(IInteractableForEnemy interactable)
+        private void InteractableEnter(IInteractable<Enemy> interactable)
         {
             Interact.AddInteractable(this, interactable);
         }
 
-        private void InteractableExit(IInteractableForEnemy interactable)
+        private void InteractableExit(IInteractable<Enemy> interactable)
         {
             Interact.RemoveInteractable(interactable);
         }

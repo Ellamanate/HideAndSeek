@@ -5,7 +5,6 @@ namespace HideAndSeek.AI
     public class CheckSearching : IScoreCounter
     {
         private readonly Enemy _enemy;
-        private readonly EnemyPatrol _patrol;
         private readonly SceneInteractions _sceneInteractions;
         private readonly Actions<OrderActionType> _actions;
 
@@ -14,7 +13,6 @@ namespace HideAndSeek.AI
         {
             _actions = actions;
             _enemy = enemy;
-            _patrol = patrol;
             _sceneInteractions = sceneInteractions;
         }
 
@@ -22,7 +20,7 @@ namespace HideAndSeek.AI
         {
             bool searchingState = SearchingState();
 
-            if (_enemy.Model.Moved && searchingState && DestinationNotPatrol())
+            if (_enemy.Model.Moved && searchingState)
             {
                 _actions.AddScoreTo(OrderActionType.Search, 0.75f);
             }
@@ -31,13 +29,12 @@ namespace HideAndSeek.AI
             {
                 _actions.AddScoreTo(OrderActionType.MoveToInteraction, 1);
             }
-            else if (searchingState && _sceneInteractions.TryGetPriorityInteractionNear(_enemy, out var interactable))
+            else if (searchingState && _sceneInteractions.TryGetInteractionNear(_enemy, out var interactable))
             {
                 _actions.AddScoreTo(OrderActionType.MoveToInteraction, 0.5f);
             }
 
             bool SearchingState() => _enemy.Model.CurrentAttentiveness == AttentivenessType.Seaching;
-            bool DestinationNotPatrol() => !_patrol.IsPatrolPoint(_enemy.Model.Destination);
         }
 
         public class Factory : PlaceholderFactory<CheckSearching> { }

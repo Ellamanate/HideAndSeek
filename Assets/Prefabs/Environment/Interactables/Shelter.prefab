@@ -48,7 +48,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 485f085e14226ec42a2369f2463fbe89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyInteractPoint: {fileID: 4585264459219746026}
+  _enemyInteractPoint: {fileID: 4585264459219746026}
+  _defaultInteractLimits:
+    CanPlayerInteract: 1
+    CanEnemyInteract: 1
+  _timeRule:
+    InteractorType: 2
+    TimeToReuse: 5
   <TouchTrigger>k__BackingField: 0
 --- !u!114 &1125950005181790947
 MonoBehaviour:
@@ -154,7 +160,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3797951139174182016}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3002946091542475453}

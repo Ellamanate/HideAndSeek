@@ -19,6 +19,7 @@ namespace HideAndSeek
         }
 
         public bool Available => !_model.Destroyed && _body != null;
+        public Transform Transform => _body.transform;
 
         public void Initialize(PlayerBody body)
         {

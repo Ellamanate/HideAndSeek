@@ -7,16 +7,18 @@
         private readonly EnemySpawner _enemySpawner;
         private readonly PlayerInteract _interact;
         private readonly HidePlayer _hidePlayer;
+        private readonly GlobalSearching _globalSearching;
         private readonly IResettable[] _resettables;
 
         public RestartGame(SetGameState gameState, ChangePatrolPoints changePatrolPoints, EnemySpawner enemySpawner,
-            PlayerInteract interact, HidePlayer hidePlayer, IResettable[] resettables)
+            PlayerInteract interact, HidePlayer hidePlayer, GlobalSearching globalSearching, IResettable[] resettables)
         {
             _gameState = gameState;
             _changePatrolPoints = changePatrolPoints;
             _enemySpawner = enemySpawner;
             _interact = interact;
             _hidePlayer = hidePlayer;
+            _globalSearching = globalSearching;
             _resettables = resettables;
         }
 
@@ -27,6 +29,7 @@
                 resettable.ToDefault();
             }
 
+            _globalSearching.Clear();
             _changePatrolPoints.Clear();
             _enemySpawner.ResetEnemys();
             _interact.Clear();

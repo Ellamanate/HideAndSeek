@@ -22,6 +22,7 @@ namespace HideAndSeek
 
         public async UniTask FailGame(CancellationToken token)
         {
+            _playerInput.ToDefault();
             _playerInput.SetActive(false);
             _playerBody.SetVelocity(Vector3.zero);
 
@@ -35,6 +36,7 @@ namespace HideAndSeek
 
         public async UniTask CompleteGame(CancellationToken token)
         {
+            _playerInput.ToDefault();
             _playerInput.SetActive(false);
             _playerBody.SetVelocity(Vector3.zero);
 

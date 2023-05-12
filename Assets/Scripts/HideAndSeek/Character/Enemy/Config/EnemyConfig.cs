@@ -13,6 +13,8 @@ namespace HideAndSeek
         [field: SerializeField] public float RepathTime { get; private set; }
         [field: SerializeField] public float AttentivenesDeclineTime { get; private set; }
         [field: SerializeField] public float MaxDistanceToInteractable { get; private set; }
+        [field: SerializeField] public float StopChaseDelay { get; private set; } = 1.5f;
+        [field: SerializeField] public float CatchShelterChance { get; private set; } = 10;
         [field: SerializeField] public LayerMask RaycastLayers { get; private set; }
         [field: SerializeField] public OrderActionType Actions { get; private set; }
         [field: SerializeField] public OrderCounterType Counters { get; private set; }

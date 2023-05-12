@@ -21,12 +21,12 @@ namespace HideAndSeek
 
         public void SetPosition(Vector3 position)
         {
-            _body.position = position;
+            transform.position = position;
         }
 
         public void SetRotation(Quaternion rotation)
         {
-            _body.rotation = rotation;
+            transform.rotation = rotation;
         }
     }
 }

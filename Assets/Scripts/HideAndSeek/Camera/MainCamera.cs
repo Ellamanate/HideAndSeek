@@ -17,6 +17,22 @@ namespace HideAndSeek
         {
             _playerTransform = playerTransform;
             _moveCamera.SetTarget(_playerTransform);
+            _moveCamera.SetDampingX(0);
+        }
+
+        public void LookAtShelter(Shelter shelter)
+        {
+            _moveCamera.SetTarget(shelter.transform);
+            _moveCamera.SetDampingX(0.5f);
+        }
+
+        public void LookAtPlayer()
+        {
+            if (_playerTransform != null)
+            {
+                _moveCamera.SetTarget(_playerTransform);
+                _moveCamera.SetDampingX(0);
+            }
         }
     }
 }

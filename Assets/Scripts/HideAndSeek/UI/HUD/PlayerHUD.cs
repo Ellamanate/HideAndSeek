@@ -10,6 +10,8 @@ namespace HideAndSeek
 
         private CancellationTokenSource _token;
 
+        public bool InteractablerShown { get; private set; }
+
         public PlayerHUD(PlayerHUDMediator mediator)
         {
             _mediator = mediator;
@@ -22,19 +24,57 @@ namespace HideAndSeek
 
         public void Reinitialize()
         {
+            InteractablerShown = false;
             _mediator.SetInteractEnable(0, false);
+            _mediator.SetActiveInteractionHint(false);
         }
 
-        public void ShowInteractionIcon()
+        public void SetInteraction(IPositionedInteraction interaction)
         {
-            _token = _token.Refresh();
-            _ = _mediator.ShowInteract(_token.Token);
+            if (interaction != null)
+            {
+                _mediator.SetActiveInteractionHint(true);
+                _mediator.SetInteractionHintTarget(interaction);
+            }
+            else
+            {
+                _mediator.SetActiveInteractionHint(false);
+            }
         }
 
-        public void HideInteractionIcon()
+        public void ShowInteraction(IPositionedInteraction interaction)
         {
-            _token = _token.Refresh();
-            _ = _mediator.HideInteract(_token.Token);
+            if (interaction != null)
+            {
+                SetInteraction(interaction);
+                ShowInteractionIcon();
+            }
+        }
+
+        public void HideInteraction()
+        {
+            _mediator.SetActiveInteractionHint(false);
+            HideInteractionIcon();
+        }
+
+        private void ShowInteractionIcon()
+        {
+            if (!InteractablerShown)
+            {
+                InteractablerShown = true;
+                _token = _token.Refresh();
+                _ = _mediator.ShowInteract(_token.Token);
+            }
+        }
+
+        private void HideInteractionIcon()
+        {
+            if (InteractablerShown)
+            {
+                InteractablerShown = false;
+                _token = _token.Refresh();
+                _ = _mediator.HideInteract(_token.Token);
+            }
         }
     }
 }

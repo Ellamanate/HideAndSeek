@@ -32,13 +32,15 @@ namespace HideAndSeek
         private void BindEnemy(DiContainer container)
         {;
             container.Bind<Enemy>().AsSingle();
-            container.Bind<EnemyInteract>().AsSingle();
+            container.BindInterfacesAndSelfTo<EnemyInteract>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyVision>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemySightMovement>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyUpdateBrain>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyUpdateBody>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyPatrol>().AsSingle();
+            container.Bind<DefaultPatrol>().AsSingle();
+            container.Bind<SearchingPatrol>().AsSingle();
         }
 
         private void BindBrain(DiContainer container)
