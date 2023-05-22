@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5403820421790400535
+--- !u!1 &8082283907708108752
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,26 +8,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5403820421790400530}
-  - component: {fileID: 5130062924601237683}
-  - component: {fileID: 7850491125661780044}
-  - component: {fileID: 5403820421790400532}
-  - component: {fileID: 5403820421790400533}
-  - component: {fileID: 5403820421790400534}
+  - component: {fileID: 8082283907708108757}
+  - component: {fileID: 8082283907708108751}
+  - component: {fileID: 6207856374377936779}
+  - component: {fileID: 8082283907708108755}
+  - component: {fileID: 8082283907708108754}
+  - component: {fileID: 8082283907708108753}
   m_Layer: 9
-  m_Name: OpenDoor
+  m_Name: SwitchDoor
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!4 &5403820421790400530
+--- !u!4 &8082283907708108757
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403820421790400535}
+  m_GameObject: {fileID: 8082283907708108752}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -35,61 +35,60 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5130062924601237683
+--- !u!114 &8082283907708108751
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403820421790400535}
+  m_GameObject: {fileID: 8082283907708108752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c2c15deaac7584e8cc94700b43aa34, type: 3}
+  m_Script: {fileID: 11500000, guid: 6dbc82f831cc3c54e82737f84a2148a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _doors: []
+  _door: {fileID: 0}
   _defaultInteractLimits:
     CanPlayerInteract: 1
     CanEnemyInteract: 0
   _interactionTime: 3
-  _openAtStart: 0
   _reuseActionRule:
     InteractorType: 1
     Unlimit: 1
-    Limit: 0
---- !u!114 &7850491125661780044
+    Limit: 1
+--- !u!114 &6207856374377936779
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403820421790400535}
+  m_GameObject: {fileID: 8082283907708108752}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _components:
-  - {fileID: 5130062924601237683}
+  - {fileID: 8082283907708108751}
   _identifier: 
   _useSceneContext: 0
   _context: {fileID: 0}
   _bindType: 1
---- !u!33 &5403820421790400532
+--- !u!33 &8082283907708108755
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403820421790400535}
+  m_GameObject: {fileID: 8082283907708108752}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &5403820421790400533
+--- !u!23 &8082283907708108754
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403820421790400535}
+  m_GameObject: {fileID: 8082283907708108752}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -124,13 +123,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5403820421790400534
+--- !u!65 &8082283907708108753
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403820421790400535}
+  m_GameObject: {fileID: 8082283907708108752}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1

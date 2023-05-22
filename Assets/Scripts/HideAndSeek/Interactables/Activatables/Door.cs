@@ -1,28 +1,37 @@
 ﻿using Cysharp.Threading.Tasks;
 using HideAndSeek.Utils;
 using Sirenix.OdinInspector;
+using System;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace HideAndSeek
 {
-    public class Door : MonoBehaviour, IResettable
+    public class Door : MonoBehaviour, IStateChanging
     {
+        public event Action OnStateChanged;
+
         [SerializeField] private Animator _animator;
         [SerializeField] private NavMeshObstacle _obstacle;
-        [SerializeField] private bool _openAtStart;
         [SerializeField] private string _openingKey;
         [SerializeField] private string _openingState = "OpenDoor";
         [SerializeField] private string _closingState = "CloseDoor";
 
         private CancellationTokenSource _token;
+        private bool _opened;
 
-        public bool Opened { get; private set; }
-
-        private void Awake()
-        {
-            ToDefault();
+        public bool Opened 
+        { 
+            get => _opened; 
+            private set
+            {
+                if (_opened != value)
+                {
+                    _opened = value;
+                    OnStateChanged?.Invoke();
+                }
+            }
         }
 
         private void OnDestroy()
@@ -52,17 +61,28 @@ namespace HideAndSeek
             await UniTask.WaitUntilCanceled(_token.Token);
         }
 
-        public void ToDefault()
+        public void SetOpen()
         {
-            Opened = _openAtStart;
-            _animator.Play(Opened ? _openingState : _closingState, 0, 1);
-            _animator.SetBool(_openingKey, Opened);
-            _obstacle.enabled = !Opened;
+            Opened = true;
+            UpdateState();
+        }
+
+        public void SetClose()
+        {
+            Opened = false;
+            UpdateState();
         }
 
         public void OnAnimationEnded()
         {
             _token.TryCancel();
+        }
+
+        private void UpdateState()
+        {
+            _animator.Play(Opened ? _openingState : _closingState, 0, 1);
+            _animator.SetBool(_openingKey, Opened);
+            _obstacle.enabled = !Opened;
         }
 
         private void SetOpenState(bool open)
