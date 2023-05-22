@@ -17,6 +17,7 @@ namespace HideAndSeek
         [SerializeField] private float _interactionTime = 2;
         [SerializeField] private bool _openAtStart;
         [SerializeField] private ReuseActionRule _reuseActionRule;
+        [SerializeField] private InvokeEvents _events;
 
         public bool Opened { get; protected set; }
 
@@ -62,16 +63,10 @@ namespace HideAndSeek
             }
         }
 
-        public virtual void Interact(Player player)
+        public void Interact(Player player)
         {
-            if (Opened)
-            {
-                CloseDoors();
-            }
-            else
-            {
-                OpenDoors();
-            }
+            OnInteract(player);
+            InvokeEvents();
         }
 
         public void ToDefault()
@@ -108,6 +103,18 @@ namespace HideAndSeek
         protected virtual void OnClosed() { }
         protected virtual void OnConstruct() { }
         protected virtual void OnDoorStateChanged() { }
+
+        protected virtual void OnInteract(Player player) 
+        {
+            if (Opened)
+            {
+                CloseDoors();
+            }
+            else
+            {
+                OpenDoors();
+            }
+        }
 
         protected void SetOpeningState()
         {
@@ -167,6 +174,14 @@ namespace HideAndSeek
             }
 
             OnOpened();
+        }
+
+        private void InvokeEvents()
+        {
+            if (_events != null && _events.CanInvoke())
+            {
+                _events.Invoke();
+            }
         }
 
         private void Clear()

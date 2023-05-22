@@ -4,7 +4,7 @@
     {
         private bool _hasClosedDoor;
 
-        public override void Interact(Player player)
+        protected override void OnInteract(Player player)
         {
             if (_hasClosedDoor)
             {
