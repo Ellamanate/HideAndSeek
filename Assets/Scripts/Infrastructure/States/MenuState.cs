@@ -16,7 +16,7 @@ namespace Infrastructure
         public void Enter()
         {
             Time.timeScale = 1;
-            _loadingScene.LoadScene(_scenesConfig.MenuSceneName);
+            _loadingScene.LoadScene(_scenesConfig.MainMenu);
         }
     }
 }

@@ -39,6 +39,7 @@ namespace HideAndSeek
 
         [Button] public void Exit() => _mainGame.Exit();
         [Button] public void Restart() => _restart.Restart();
+        [Button] public void LoadLevel() => _mainGame.LoadLevel();
         [Button] public void OpenPauseMenu() => _gameMenu.OpenPauseMenu();
         [Button] public void ClosePauseMenu() => _gameMenu.ClosePauseMenu();
 

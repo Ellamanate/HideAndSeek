@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11df3133ba1e21945ab8aedbb16578ca, type: 3}
-  m_Name: ScenesConfig
+  m_Script: {fileID: 11500000, guid: 9d03a3f37a1f7fb49a3d6e3ac5cbb16a, type: 3}
+  m_Name: TestScene
   m_EditorClassIdentifier: 
-  <MainMenu>k__BackingField:
-    sceneAsset: {fileID: 102900000, guid: dbf40d754beb36d46abfff8533e314a7, type: 3}
-    scenePath: Assets/Scenes/Menu.unity
+  <Scene>k__BackingField:
+    sceneAsset: {fileID: 102900000, guid: 0aac62618a65d7b4b9ab3de102f307a5, type: 3}
+    scenePath: Assets/Scenes/GameScene1.unity

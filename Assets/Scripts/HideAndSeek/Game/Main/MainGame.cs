@@ -6,14 +6,17 @@ namespace HideAndSeek
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly SetGameState _gameState;
+        private readonly LevelsService _levelsService;
 
-        public MainGame(GameStateMachine gameStateMachine, SetGameState gameState)
+        public MainGame(GameStateMachine gameStateMachine, SetGameState gameState, LevelsService levelsService)
         {
             _gameStateMachine = gameStateMachine;
             _gameState = gameState;
+            _levelsService = levelsService;
         }
 
         public void Exit() => _gameStateMachine.MoveToState<MenuState>();
+        public void LoadLevel() => _gameStateMachine.MoveToState<MainGameState>();
         
         public void StartGame()
         {
@@ -22,6 +25,7 @@ namespace HideAndSeek
 
         public void CompleteGame()
         {
+            _levelsService.CompleteLevel();
             _gameState.CompleteGame();
         }
     }

@@ -1,13 +1,13 @@
-﻿using Sirenix.OdinInspector;
-using Sirenix.Serialization;
+﻿using HideAndSeek;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Infrastructure
 {
     [CreateAssetMenu(menuName = "Configs/BootstrapConfig", fileName = "BootstrapConfig")]
-    public class BootstrapConfig : SerializedScriptableObject
+    public class BootstrapConfig : ScriptableObject
     {
-        [OdinSerialize] public bool StartFromMenu { get; private set; }
-        [OdinSerialize, HideIf(nameof(StartFromMenu))] public GameSceneType StartScene { get; private set; }
+        [field: SerializeField] public bool StartFromMenu { get; private set; }
+        [field: SerializeField, HideIf(nameof(StartFromMenu))] public LevelData LoadLevel { get; private set; }
     }
 }

@@ -12,18 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0307c16cf804644b8918417fb406c8e, type: 3}
   m_Name: BootstrapConfig
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: StartFromMenu
-      Entry: 5
-      Data: false
-    - Name: StartScene
-      Entry: 3
-      Data: 2
+  <StartFromMenu>k__BackingField: 1
+  <LoadLevel>k__BackingField: {fileID: 11400000, guid: 5b0f04fa5c2c9d2478e9fdf8e463509f, type: 2}

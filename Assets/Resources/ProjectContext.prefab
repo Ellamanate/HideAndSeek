@@ -76,6 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bootstrapConfig: {fileID: 11400000, guid: 359f3b1c5ba0309429fd65274362d88f, type: 2}
   _sceneConfig: {fileID: 11400000, guid: 4eb6ef5950fbe9a44b8ad656d7e60f91, type: 2}
+  _levelsConfig: {fileID: 11400000, guid: 2284ffacf8dfc43468aaf60f216c347b, type: 2}
   _playerConfig: {fileID: 11400000, guid: d702f6ebcdec5eb4cbca838996979bad, type: 2}
 --- !u!114 &3572099460353947840
 MonoBehaviour:

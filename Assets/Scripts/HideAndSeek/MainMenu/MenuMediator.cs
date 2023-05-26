@@ -1,5 +1,4 @@
-﻿using Sirenix.OdinInspector;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 namespace HideAndSeek
@@ -14,6 +13,6 @@ namespace HideAndSeek
             _mainMenu = mainMenu;
         }
 
-        [Button] public void PlayGame() => _mainMenu.PlayGame();
+        public void PlayGame(LevelData levelData) => _mainMenu.PlayGame(levelData);
     }
 }

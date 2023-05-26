@@ -8,6 +8,7 @@ namespace Infrastructure
     {
         [SerializeField] private BootstrapConfig _bootstrapConfig;
         [SerializeField] private ScenesConfig _sceneConfig;
+        [SerializeField] private LevelsConfig _levelsConfig;
         [SerializeField] private PlayerConfig _playerConfig;
 
         public override void InstallBindings()
@@ -16,7 +17,7 @@ namespace Infrastructure
 
             BindData();
             BindStates();
-            BindLoading();
+            BindScenesServices();
             BindInput();
         }
 
@@ -30,6 +31,7 @@ namespace Infrastructure
         {
             Container.Bind<BootstrapConfig>().FromInstance(_bootstrapConfig).AsSingle();
             Container.Bind<ScenesConfig>().FromInstance(_sceneConfig).AsSingle();
+            Container.Bind<LevelsConfig>().FromInstance(_levelsConfig).AsSingle();
             Container.Bind<PlayerConfig>().FromInstance(_playerConfig).AsSingle();
         }
 
@@ -42,9 +44,10 @@ namespace Infrastructure
             Container.BindFactory<GameStateMachine, BootstrapState, BootstrapState.Factory>();
         }
 
-        private void BindLoading()
+        private void BindScenesServices()
         {
             Container.Bind<LoadingScene>().AsSingle();
+            Container.Bind<LevelsService>().AsSingle();
         }
 
         private void BindInput()
