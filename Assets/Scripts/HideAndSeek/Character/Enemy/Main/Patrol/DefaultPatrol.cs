@@ -13,8 +13,11 @@
 
         public void SetNextQueue(PatrolQueue queue)
         {
-            _patrolSet.TryGetPatrolPoints(queue, out PatrolPoints);
-            CurrentPatrolIndex = 0;
+            if (_patrolSet.TryGetPatrolPoints(queue, out var points))
+            {
+                PatrolPoints = points;
+                CurrentPatrolIndex = 0;
+            }
         }
     }
 }
