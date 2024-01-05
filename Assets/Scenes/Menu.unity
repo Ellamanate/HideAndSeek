@@ -364,15 +364,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2902410516099190143, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_Name
-      value: SceneIgor
+      value: Scene2
       objectReference: {fileID: 0}
     - target: {fileID: 3588053412776836370, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_text
-      value: Scene Igor
+      value: Scene2
       objectReference: {fileID: 0}
     - target: {fileID: 3588053412776836370, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_fontSize
-      value: 39.15
+      value: 55.95
       objectReference: {fileID: 0}
     - target: {fileID: 6926170428871775781, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_Pivot.x
@@ -908,17 +908,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2902410516099190143, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_Name
-      value: SceneDima
+      value: Scene3
       objectReference: {fileID: 0}
     - target: {fileID: 3588053412776836370, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_text
-      value: 'Scene Dima
-
-'
+      value: Scene3
       objectReference: {fileID: 0}
     - target: {fileID: 3588053412776836370, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_fontSize
-      value: 34.65
+      value: 55.95
       objectReference: {fileID: 0}
     - target: {fileID: 6926170428871775781, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_Pivot.x
@@ -1052,15 +1050,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2902410516099190143, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_Name
-      value: TestScene
+      value: Scene1
       objectReference: {fileID: 0}
     - target: {fileID: 3588053412776836370, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_text
-      value: TestScene
+      value: Scene1
       objectReference: {fileID: 0}
     - target: {fileID: 3588053412776836370, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_fontSize
-      value: 50.2
+      value: 55.95
       objectReference: {fileID: 0}
     - target: {fileID: 6926170428871775781, guid: 25a1b1b1dab2663478504090033aa844, type: 3}
       propertyPath: m_Pivot.x
